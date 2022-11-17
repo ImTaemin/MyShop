@@ -1,0 +1,69 @@
+pipeline {
+    agent any
+
+    tools {
+        maven "maven-3.8.6"
+    }
+
+    environment {
+        TARGET_HOST = "root@172.17.0.1"
+        GIT_CHANGE_BRANCH_NAME=''
+    }
+
+    options {
+        skipDefaultCheckout()
+    }
+
+    stages {
+
+        stage('git checkout & clone') {
+            steps {
+                script {
+                    cleanWs()
+                    git branch: 'main', credentialsId: 'repo-and-hook-access-token-credentials', url: 'https://github.com/ImTaemin/MyShop.git'
+				}
+			}
+		}
+
+        stage('Build') {
+            steps {
+                sh "mvn -f provider/backend/pom.xml -DskipTests clean package"
+                archiveArtifacts 'provider/backend/target/*.jar'
+            }
+        }
+
+        stage('UnDeploy') {
+            steps {
+                sshagent (credentials: ['jenkins-ssh']) {
+                sh """
+                    ssh -o StrictHostKeyChecking=no ${TARGET_HOST} -T sh < /var/lib/jenkins/docker-undeploy.sh
+                    """
+                }
+            }
+        }
+
+        stage('Dockerfile Build & Push To Docker Hub & Delete Docker Image') {
+            steps {
+				dir('provider/backend'){
+					script {
+						sh "docker build -t localhost:5000/myshop-provider ."
+						sh "docker push localhost:5000/myshop-provider"
+						sh "docker rmi localhost:5000/myshop-provider"
+
+					}
+				}
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                sshagent (credentials: ['jenkins-ssh']) {
+                sh """
+                    ssh -o StrictHostKeyChecking=no ${TARGET_HOST} -T sh < /var/lib/jenkins/docker-deploy.sh
+                    """
+                }
+            }
+        }
+
+    }
+}
