@@ -11,17 +11,16 @@ import java.time.LocalDateTime;
 public class Provider {
 
     @Id
-    @Column(name="PROVIDER_ID", length = 20)
+    @Column(length = 20)
     private String providerId;
 
-    @Column(name="PROVIDER_PW", nullable = false)
+    @Column(nullable = false)
     private String providerPw;
 
-    @Column(name="STORE_NAME", unique = true, nullable = false)
+    @Column(unique = true, nullable = false)
     private String storeName;
 
     @CreationTimestamp
-    @Column(name="CREATE_DATE")
-    private LocalDateTime createData;
+    private LocalDateTime createDate;
 
 }
