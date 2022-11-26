@@ -235,3 +235,4 @@ provider/backend/.mvn/wrapper/maven-wrapper.properties
 logs
 **/*.backup.*
 **/*.back.*
+*.iml
