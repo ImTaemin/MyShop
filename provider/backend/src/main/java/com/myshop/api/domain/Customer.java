@@ -2,7 +2,6 @@ package com.myshop.api.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -12,11 +11,11 @@ import java.util.List;
 
 @Data
 @Entity
-public class Provider {
+public class Customer {
 
     @Id
-    @Column(name = "provider_id")
-    private String id;
+    @Column(name = "customer_id")
+    private Long id;
 
     @Column(nullable = false)
     private String password;
@@ -24,18 +23,23 @@ public class Provider {
     @Column(nullable = false)
     private String phone;
 
-    @Column(unique = true, nullable = false)
-    private String brandName;
+    @Column(nullable = false)
+    private String name;
+
+    @OneToMany(mappedBy = "customer")
+    private List<Orders> orderList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "customer")
+    private List<Cart> cartList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "customer")
+    private List<Wish> wishList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "customer")
+    private List<Coupon> usedCouponList = new ArrayList<>();
 
     @Column(nullable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     @CreationTimestamp
     private LocalDateTime createDate;
-
-    @OneToMany(mappedBy = "provider")
-    private List<Item> items = new ArrayList<>();
-
-    @OneToMany(mappedBy = "provider")
-    private List<Coupon> coupons = new ArrayList<>();
-
 }
