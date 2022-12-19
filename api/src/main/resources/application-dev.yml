@@ -4,7 +4,7 @@ spring:
   jpa:
     database: mysql
     hibernate:
-      ddl-auto: create-drop # 테이블 생성 완료 후 none으로 변경
+      ddl-auto: none # 테이블 생성 완료 후 none으로 변경
       use-new-id-generator-mappings: false
     open-in-view: false # true일 경우 영속성 컨텍스트가 트랜잭션 범위를 넘어선 레이어까지 살아있다.
     show-sql: true
@@ -22,4 +22,4 @@ spring:
     password: 1234
 
 server:
-  port: 9000
+  port: 9090

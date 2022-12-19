@@ -1,6 +1,5 @@
 package com.myshop.api.config;
 
-import lombok.val;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -12,11 +11,12 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
+@EnableSwagger2
 public class SwaggerConfig {
 
     private final String API_NAME = "MyShop API";
     private final String API_VERSION = "1.0.0";
-    private final String API_DESCRIPTION = "API 명세서";
+    private final String API_DESCRIPTION = "MYSHOP API 명세서";
 
     @Bean
     public Docket api() {

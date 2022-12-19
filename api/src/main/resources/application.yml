@@ -1,3 +1,8 @@
 spring:
   profiles:
     active: prod, dev
+    include: jwt
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
