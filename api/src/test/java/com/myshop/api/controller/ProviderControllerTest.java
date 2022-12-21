@@ -90,7 +90,7 @@ public class ProviderControllerTest {
 
     @Test
     @WithUser
-    @DisplayName("판매처 입점")
+    @DisplayName("판매자 입점 테스트")
     public void signUpTest() throws Exception {
         //given
         given(signService.signUp(any(ProviderDto.class)))
@@ -106,11 +106,9 @@ public class ProviderControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .with(csrf()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.loginId").exists())
-                .andExpect(jsonPath("$.password").doesNotExist())
-                .andExpect(jsonPath("$.phone").exists())
-                .andExpect(jsonPath("$.brandName").exists())
-                .andExpect(jsonPath("$.createDate").exists())
+                .andExpect(jsonPath("$.success").isBoolean())
+                .andExpect(jsonPath("$.code").exists())
+                .andExpect(jsonPath("$.msg").exists())
                 .andDo(print());
 
         //then
@@ -119,7 +117,7 @@ public class ProviderControllerTest {
 
     @Test
     @WithUser
-    @DisplayName("판매처 로그인")
+    @DisplayName("판매자 로그인 테스트. 200 반환 시 토큰이 있음.")
     public void signInTest() throws Exception {
         //given
         given(signService.signIn(anyString(), anyString()))
@@ -151,7 +149,7 @@ public class ProviderControllerTest {
 
     @Test
     @WithUser
-    @DisplayName("판매처 브랜드명 확인")
+    @DisplayName("브랜드명 중복 확인")
     public void checkBrandNameTest() throws Exception {
         //given
         given(providerService.checkBrandName(anyString()))
@@ -170,7 +168,7 @@ public class ProviderControllerTest {
 
     @Test
     @WithUser
-    @DisplayName("판매처 수정")
+    @DisplayName("판매자 수정")
     public void modifyTest() throws Exception {
         //given
         given(providerService.modify(any(ProviderUpdateParam.class)))
@@ -199,7 +197,7 @@ public class ProviderControllerTest {
 
     @Test
     @WithUser
-    @DisplayName("판매처 퇴점")
+    @DisplayName("판매자 퇴점")
     public void withdrawalTest() throws Exception {
         //given
         given(providerService.withdrawal(anyString(), anyString()))
