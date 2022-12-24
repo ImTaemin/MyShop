@@ -1,4 +1,4 @@
-package com.myshop.api.dto.provider;
+package com.myshop.api.dto.customer;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -14,18 +14,18 @@ import javax.validation.constraints.Pattern;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class ProviderUpdateParam {
+public class CustomerUpdateParam {
 
-    @ApiModelProperty(value = "판매자 아이디", required = true)
+    @ApiModelProperty(value = "구매자 아이디", required = true)
     private String userId;
 
-    @ApiModelProperty(value = "판매자 비밀번호", required = true)
+    @ApiModelProperty(value = "구매자 비밀번호", required = true)
     private String password;
 
-    @ApiModelProperty(value = "판매자 변경 비밀번호", required = true)
+    @ApiModelProperty(value = "구매자 변경 비밀번호", required = true)
     private String modifyPassword;
 
     @Pattern(regexp = "^\\d{3}-\\d{4}-\\d{4}$")
-    @ApiModelProperty(value = "판매자 대표 번호", required = true)
+    @ApiModelProperty(value = "구매자 핸드폰 번호", required = true)
     private String phone;
 }

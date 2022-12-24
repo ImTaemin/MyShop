@@ -1,7 +1,7 @@
 package com.myshop.api.mapper;
 
 import com.myshop.api.domain.Customer;
-import com.myshop.api.dto.CustomerDto;
+import com.myshop.api.dto.customer.CustomerDto;
 import com.myshop.api.repository.CustomerRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ public class CustomerMapperTest {
     @Transactional
     public void dtoToEntity(){
         CustomerDto dto = CustomerDto.builder()
-                .id("id")
+                .userId("id")
                 .name("name")
                 .password("1234")
                 .phone("010-1234-5678")
@@ -35,7 +35,7 @@ public class CustomerMapperTest {
         CustomerDto customer = CustomerMapper.INSTANCE.toDto(customerRepository.findById("userid").orElse(null));
         System.out.println(customer.toString());
 
-        assertEquals(dto.getId(), entity.getId());
+        assertEquals(dto.getUserId(), entity.getUserId());
         assertEquals(dto.getName(), entity.getName());
 
     }
@@ -43,7 +43,7 @@ public class CustomerMapperTest {
     @Test
     public void entityToDto(){
         Customer entity = Customer.builder()
-                .id("userid")
+                .userId("userid")
                 .name("user1")
                 .password("1234")
                 .phone("010-1234-5678")
@@ -51,7 +51,7 @@ public class CustomerMapperTest {
 
         CustomerDto dto = CustomerMapper.INSTANCE.toDto(entity);
 
-        assertEquals(dto.getId(), entity.getId());
+        assertEquals(dto.getUserId(), entity.getUserId());
         assertEquals(dto.getName(), entity.getName());
     }
 }

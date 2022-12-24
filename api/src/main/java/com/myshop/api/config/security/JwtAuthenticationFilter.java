@@ -1,6 +1,7 @@
 package com.myshop.api.config.security;
 
-import org.junit.platform.commons.util.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -25,6 +26,7 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
+    private final Logger LOGGER = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
 
     public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider) {
         this.jwtTokenProvider = jwtTokenProvider;
@@ -33,6 +35,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = jwtTokenProvider.resolveToken(request);
+        LOGGER.info("token 값 추출 완료 : {}", token);
 
         // 토큰 값 유효성 검사
         if(token != null && jwtTokenProvider.validateToken(token)) {

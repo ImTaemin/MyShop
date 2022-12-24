@@ -52,11 +52,16 @@ public class SecurityConfig {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
+                // 상단부터 차례차례 적용됨(순서 중요!)
                 .and()
                 .authorizeRequests()
+                .antMatchers(HttpMethod.GET, "/auth/provider").hasRole("PROVIDER")
                 .antMatchers(Constant.permitAllArray).permitAll() //부분 허용
                 .antMatchers(HttpMethod.GET, "/**").permitAll() //GET 모두 허용
                 .antMatchers("**exception**").permitAll()
+                // 기타 요청은 인증된 권한을 가진 사용자만
+//                .anyRequest()
+//                .hasAnyRole() // 인증된 권한. 인자에 경로 넣으면 됨
 
                 .and()
                 .exceptionHandling().accessDeniedHandler(new CustomAccessDeniedHandler())
