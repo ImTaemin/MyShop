@@ -1,12 +1,12 @@
 package com.myshop.api.util;
 
-import com.myshop.api.dto.User;
+import com.myshop.api.dto.UserDto;
 import com.myshop.api.exception.EmptyPasswordException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
 public class PasswordEncryptor {
 
-    public static void bcrypt(User user) {
+    public static void bcrypt(UserDto user) {
         user.setPassword(bcrypt(user.getPassword()));
     }
 

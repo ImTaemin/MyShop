@@ -35,7 +35,7 @@ class ProviderServiceTest {
         providerService = new ProviderServiceImpl(providerRepository);
 
         provider = Provider.builder()
-                .loginId("taemin")
+                .userId("taemin")
                 .password("$2a$12$Liq1iPQn58mqSt8Efe.mn.bQt7W4uuVNypg8N2IAHG.cEPqLqyMZ6")
                 .phone("010-1234-5678")
                 .brandName("커버낫")
@@ -44,16 +44,16 @@ class ProviderServiceTest {
 
     @Test
     @DisplayName("로그인 정보 조회")
-    void getProviderByLoginId() throws Exception {
+    void getProviderByUserId() throws Exception {
         //given
-        given(providerRepository.findByLoginId(anyString())).willReturn(Optional.of(provider));
+        given(providerRepository.findByUserId(anyString())).willReturn(Optional.of(provider));
 
         //when
-        UserDetails user = providerService.getProviderByLoginId("taemin");
+        UserDetails user = providerService.getProviderByUserId("taemin");
 
         //then
         Assertions.assertNotNull(user);
-        verify(providerRepository).findByLoginId(anyString());
+        verify(providerRepository).findByUserId(anyString());
     }
 
     @Test
@@ -74,10 +74,10 @@ class ProviderServiceTest {
     @DisplayName("판매자 정보 수정. db의 비밀번호와 파라미터 비밀번호가 같을 경우 수정")
     void modify() {
         //given
-        given(providerRepository.findByLoginId(anyString())).willReturn(Optional.of(provider));
+        given(providerRepository.findByUserId(anyString())).willReturn(Optional.of(provider));
 
         ProviderUpdateParam updateParam = ProviderUpdateParam.builder()
-                .loginId("taemin")
+                .userId("taemin")
                 .password("1234")
                 .modifyPassword("5678")
                 .phone("010-5678-1234")
@@ -90,7 +90,7 @@ class ProviderServiceTest {
         //then
         Assertions.assertTrue(isPasswordMatch);
         Assertions.assertTrue(isModifySuccess);
-        verify(providerRepository).findByLoginId(anyString());
+        verify(providerRepository).findByUserId(anyString());
         verify(providerRepository).save(any(Provider.class));
     }
 
@@ -98,19 +98,19 @@ class ProviderServiceTest {
     @DisplayName("판매자 정보 삭제. db의 비밀번호와 파라미터 비밀번호가 같을 경우 삭제")
     void withdrawal() {
         //given
-        given(providerRepository.findByLoginId(anyString())).willReturn(Optional.of(provider));
+        given(providerRepository.findByUserId(anyString())).willReturn(Optional.of(provider));
 
-        String loginId = "taemin";
+        String userId = "taemin";
         String password = "1234";
 
         //when
         boolean isPasswordMatch = PasswordEncryptor.isMatchBcrypt(password, provider.getPassword());
-        boolean isDeleteSuccess = providerService.withdrawal(loginId, password);
+        boolean isDeleteSuccess = providerService.withdrawal(userId, password);
 
         //then
         Assertions.assertTrue(isPasswordMatch);
         Assertions.assertTrue(isDeleteSuccess);
-        verify(providerRepository).findByLoginId(anyString());
+        verify(providerRepository).findByUserId(anyString());
         verify(providerRepository).delete(any(Provider.class));
     }
 }

@@ -1,6 +1,7 @@
 package com.myshop.api.service;
 
 import com.myshop.api.domain.Provider;
+import com.myshop.api.domain.account.ProviderAccount;
 import com.myshop.api.dto.provider.ProviderUpdateParam;
 import com.myshop.api.exception.NotExistUserException;
 import com.myshop.api.repository.ProviderRepository;
@@ -21,8 +22,16 @@ public class ProviderServiceImpl implements ProviderService{
     private final ProviderRepository providerRepository;
 
     @Override
-    public UserDetails getProviderByLoginId(String loginId) {
-        return providerRepository.findByLoginId(loginId).orElseThrow(NotExistUserException::new);
+    public UserDetails getProviderByUserId(String userId) {
+        Provider provider =  providerRepository.findByUserId(userId).orElseThrow(NotExistUserException::new);
+
+        return new ProviderAccount(provider);
+    }
+
+    @Transactional
+    @Override
+    public Boolean checkUserId(String userId) {
+        return !providerRepository.existsByUserId(userId);
     }
 
     @Transactional
@@ -34,7 +43,7 @@ public class ProviderServiceImpl implements ProviderService{
     @Transactional
     @Override
     public Boolean modify(ProviderUpdateParam updateParam) {
-        Provider dbProvider = providerRepository.findByLoginId(updateParam.getLoginId()).orElseThrow(NotExistUserException::new);
+        Provider dbProvider = providerRepository.findByUserId(updateParam.getUserId()).orElseThrow(NotExistUserException::new);
 
         if(PasswordEncryptor.isMatchBcrypt(updateParam.getPassword(), dbProvider.getPassword())){
             dbProvider.setPassword(updateParam.getModifyPassword());
@@ -51,11 +60,12 @@ public class ProviderServiceImpl implements ProviderService{
 
     @Transactional
     @Override
-    public Boolean withdrawal(String loginId, String password) {
-        Provider dbProvider = providerRepository.findByLoginId(loginId).orElseThrow(NotExistUserException::new);
+    public Boolean withdrawal(String userId, String password) {
+        Provider dbProvider = providerRepository.findByUserId(userId).orElseThrow(NotExistUserException::new);
         
        if(PasswordEncryptor.isMatchBcrypt(password, dbProvider.getPassword())) {
            providerRepository.delete(dbProvider);
+
            return true;
         }
         

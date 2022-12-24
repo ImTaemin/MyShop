@@ -9,6 +9,7 @@ import java.util.Optional;
 @Repository
 public interface ProviderRepository extends JpaRepository<Provider, String> {
 
-    Optional<Provider> findByLoginId(String loginId);
+    Optional<Provider> findByUserId(String userId);
+    Boolean existsByUserId(String userId);
     Boolean existsByBrandName(String brandName);
 }

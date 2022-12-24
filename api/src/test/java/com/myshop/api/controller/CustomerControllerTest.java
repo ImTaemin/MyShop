@@ -3,10 +3,10 @@ package com.myshop.api.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.myshop.api.dto.SignInResultDto;
 import com.myshop.api.dto.SignUpResultDto;
-import com.myshop.api.dto.provider.ProviderDto;
-import com.myshop.api.dto.provider.ProviderUpdateParam;
+import com.myshop.api.dto.customer.CustomerDto;
+import com.myshop.api.dto.customer.CustomerUpdateParam;
 import com.myshop.api.enumeration.CommonResponse;
-import com.myshop.api.service.ProviderService;
+import com.myshop.api.service.CustomerService;
 import com.myshop.api.service.SignService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -36,20 +36,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+
 @ExtendWith(SpringExtension.class)
-@WebMvcTest(controllers = ProviderController.class)
-public class ProviderControllerTest {
+@WebMvcTest(controllers = CustomerController.class)
+class CustomerControllerTest {
 
     @Autowired
     MockMvc mockMvc;
 
     @MockBean
-    ProviderService providerService;
+    CustomerService customerService;
 
     @MockBean
     SignService signService;
 
-    ProviderDto provider;
+    CustomerDto customer;
 
     SignUpResultDto signUpResultDto;
     SignInResultDto signInResultDto;
@@ -70,29 +71,29 @@ public class ProviderControllerTest {
                 .token("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0YWVtaW4iLCJpYXQiOjE2NzE0NDA0NzAsImV4cCI6MTY3MTQ0NDA3MH0.AFvbCHzDXowGpBqfjBbcWfphe0Bv0o-UMijgOA2jnnQ")
                 .build();
 
-        provider = ProviderDto.builder()
+        customer = CustomerDto.builder()
                 .userId("taemin")
                 .password("1234")
                 .phone("010-1234-5678")
-                .brandName("커버낫")
-                .roles(Collections.singletonList("ROLE_PROVIDER"))
+                .name("김태민")
+                .roles(Collections.singletonList("ROLE_CUSTOMER"))
                 .build();
     }
 
     @Test
     @WithUser
-    @DisplayName("판매자 입점 테스트")
+    @DisplayName("구매자 회원 가입 테스트")
     public void signUpTest() throws Exception {
         //given
-        given(signService.signUp(any(ProviderDto.class)))
+        given(signService.signUp(any(CustomerDto.class)))
                 .willReturn(signUpResultDto);
 
         ObjectMapper objectMapper = new ObjectMapper();
-        String content = objectMapper.writeValueAsString(provider);
+        String content = objectMapper.writeValueAsString(customer);
 
         //when
         mockMvc.perform(
-                        post("/auth/provider/sign-up")
+                        post("/auth/customer/sign-up")
                                 .content(content)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .with(csrf()))
@@ -103,15 +104,15 @@ public class ProviderControllerTest {
                 .andDo(print());
 
         //then
-        verify(signService).signUp(any(ProviderDto.class));
+        verify(signService).signUp(any(CustomerDto.class));
     }
 
     @Test
-    @WithUser
+    @ProviderControllerTest.WithUser
     @DisplayName("판매자 로그인 테스트. 200 반환 시 토큰이 있음.")
     public void signInTest() throws Exception {
         //given
-        given(signService.signInProvider(anyString(), anyString()))
+        given(signService.signInCustomer(anyString(), anyString()))
                 .willReturn(signInResultDto);
 
         Map<String, String> paramMap = new HashMap<>();
@@ -123,7 +124,7 @@ public class ProviderControllerTest {
 
         //when
         mockMvc.perform(
-                        post("/auth/provider/sign-in")
+                        post("/auth/customer/sign-in")
                                 .content(content)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .with(csrf()))
@@ -135,53 +136,34 @@ public class ProviderControllerTest {
                 .andDo(print());
 
         //then
-        verify(signService).signInProvider(anyString(), anyString());
+        verify(signService).signInCustomer(anyString(), anyString());
     }
 
     @Test
     @WithUser
-    @DisplayName("판매자 아이디 중복 확인")
+    @DisplayName("구매자 아이디 중복 확인")
     public void checkUserIdTest() throws Exception {
         //given
-        given(providerService.checkUserId(anyString()))
+        given(customerService.checkUserId(anyString()))
                 .willReturn(true);
 
         //when
         mockMvc.perform(
-                        get("/auth/provider/exists/id/taemin")
+                        get("/auth/customer/exists/id/taemin")
                                 .with(csrf()))
                 .andExpect(status().isOk())
                 .andDo(print());
 
         //then
-        verify(providerService).checkUserId(anyString());
+        verify(customerService).checkUserId(anyString());
     }
 
     @Test
-    @WithUser
-    @DisplayName("브랜드명 중복 확인")
-    public void checkBrandNameTest() throws Exception {
-        //given
-        given(providerService.checkBrandName(anyString()))
-                .willReturn(true);
-
-        //when
-        mockMvc.perform(
-                        get("/auth/provider/exists/brand/커버낫")
-                                .with(csrf()))
-                .andExpect(status().isOk())
-                .andDo(print());
-
-        //then
-        verify(providerService).checkBrandName(anyString());
-    }
-
-    @Test
-    @WithUser
-    @DisplayName("판매자 정보 수정")
+    @ProviderControllerTest.WithUser
+    @DisplayName("구매자 정보 수정")
     public void modifyTest() throws Exception {
         //given
-        given(providerService.modify(any(ProviderUpdateParam.class)))
+        given(customerService.modify(any(CustomerUpdateParam.class)))
                 .willReturn(true);
 
         Map<String, String> paramMap = new HashMap<>();
@@ -194,7 +176,7 @@ public class ProviderControllerTest {
 
         //when
         mockMvc.perform(
-                        put("/auth/provider/")
+                        put("/auth/customer/")
                                 .content(content)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .with(csrf()))
@@ -202,35 +184,35 @@ public class ProviderControllerTest {
                 .andDo(print());
 
         //then
-        verify(providerService).modify(any(ProviderUpdateParam.class));
+        verify(customerService).modify(any(CustomerUpdateParam.class));
     }
 
     @Test
-    @WithUser
-    @DisplayName("판매자 퇴점")
+    @ProviderControllerTest.WithUser
+    @DisplayName("구매자 회원 탈퇴")
     public void withdrawalTest() throws Exception {
         //given
-        given(providerService.withdrawal(anyString(), anyString()))
+        given(customerService.withdrawal(anyString(), anyString()))
                 .willReturn(true);
 
         Map<String, String> paramMap = new HashMap<>();
-        paramMap.put("userId", provider.getUserId());
-        paramMap.put("password", provider.getPassword());
+        paramMap.put("userId", customer.getUserId());
+        paramMap.put("password", customer.getPassword());
 
         ObjectMapper objectMapper = new ObjectMapper();
         String content = objectMapper.writeValueAsString(paramMap);
 
         //when
         mockMvc.perform(
-                delete("/auth/provider/")
-                        .content(content)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .with(csrf()))
+                        delete("/auth/customer/")
+                                .content(content)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .with(csrf()))
                 .andExpect(status().isOk())
                 .andDo(print());
 
         //then
-        verify(providerService).withdrawal(anyString(), anyString());
+        verify(customerService).withdrawal(anyString(), anyString());
     }
 
 }

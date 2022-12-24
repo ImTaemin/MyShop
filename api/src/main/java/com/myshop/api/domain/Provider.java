@@ -2,7 +2,6 @@ package com.myshop.api.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,16 +21,17 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @Entity
 @Table(name = "Provider", indexes = {
-        @Index(name = "idx_provider_loginid", columnList = "loginId"),
+        @Index(name = "idx_provider_userid", columnList = "userId"),
         @Index(name = "idx_provider_brandname", columnList = "brandName")
 })
+
 public class Provider implements UserDetails {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(unique = true, nullable = false)
-    private String loginId;
+    private String userId;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(nullable = false)
@@ -73,7 +73,7 @@ public class Provider implements UserDetails {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Override
     public String getUsername() {
-        return this.loginId;
+        return this.userId;
     }
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -101,9 +101,9 @@ public class Provider implements UserDetails {
     }
 
     @Builder
-    public Provider(Long id, String loginId, String password, String phone, String brandName, LocalDateTime createDate, List<Item> items, List<Coupon> coupons, List<String> roles) {
+    public Provider(Long id, String userId, String password, String phone, String brandName, LocalDateTime createDate, List<Item> items, List<Coupon> coupons, List<String> roles) {
         this.id = id;
-        this.loginId = loginId;
+        this.userId = userId;
         this.password = password;
         this.phone = phone;
         this.brandName = brandName;
