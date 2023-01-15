@@ -21,6 +21,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
@@ -42,7 +43,7 @@ public class JwtTokenProvider {
     }
 
     // 토큰 생성
-    public String createToken(String userId, List<String> roles) {
+    public String createToken(String userId, Set<String> roles) {
         Claims claims = Jwts.claims().setSubject(userId);
         claims.put("roles", roles);
 
@@ -99,6 +100,8 @@ public class JwtTokenProvider {
                 .toString();
 
         LOGGER.info("권한 정보 : " + roles);
+
+        // [PROVIDER, CUSTOMER] 이런 형식 중 앞 글자만
         return roles.charAt(1);
     }
 

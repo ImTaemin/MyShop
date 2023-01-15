@@ -1,15 +1,16 @@
 package com.myshop.api.config.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.myshop.api.dto.EntryPointErrorResponse;
+import com.myshop.api.domain.dto.response.EntryPointErrorResponse;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 @Component
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
@@ -22,8 +23,8 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
         entryPointErrorResponse.setMsg("인증이 실패했습니다.");
 
         response.setStatus(401);
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         response.getWriter().write(objectMapper.writeValueAsString(entryPointErrorResponse));
     }
 }

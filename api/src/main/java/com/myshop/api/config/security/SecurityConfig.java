@@ -55,6 +55,8 @@ public class SecurityConfig {
                 // 상단부터 차례차례 적용됨(순서 중요!)
                 .and()
                 .authorizeRequests()
+                // TODO 적용 했는데 권한이 없어도 접근이 된다... UI 완료 후 확인
+                .antMatchers(HttpMethod.POST, "/item").hasRole("PROVIDER")
                 .antMatchers(HttpMethod.GET, "/auth/provider").hasRole("PROVIDER")
                 .antMatchers(Constant.permitAllArray).permitAll() //부분 허용
                 .antMatchers(HttpMethod.GET, "/**").permitAll() //GET 모두 허용
