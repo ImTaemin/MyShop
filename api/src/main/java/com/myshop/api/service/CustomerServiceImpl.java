@@ -1,8 +1,9 @@
 package com.myshop.api.service;
 
-import com.myshop.api.domain.Customer;
-import com.myshop.api.domain.account.CustomerAccount;
-import com.myshop.api.dto.customer.CustomerUpdateParam;
+import com.myshop.api.domain.dto.response.data.CustomerData;
+import com.myshop.api.domain.entity.Customer;
+import com.myshop.api.domain.dto.account.CustomerAccount;
+import com.myshop.api.domain.dto.request.UserUpdateRequest;
 import com.myshop.api.exception.NotExistUserException;
 import com.myshop.api.repository.CustomerRepository;
 import com.myshop.api.util.PasswordEncryptor;
@@ -25,6 +26,14 @@ public class CustomerServiceImpl implements CustomerService{
         return new CustomerAccount(customer);
     }
 
+    @Override
+    public CustomerData.Customer getInfo(CustomerAccount customerAccount) {
+        Customer customer = customerAccount.getCustomer();
+        return CustomerData.Customer.builder()
+                .customer(customer)
+                .build();
+    }
+
     @Transactional
     @Override
     public Boolean checkUserId(String userId) {
@@ -33,7 +42,7 @@ public class CustomerServiceImpl implements CustomerService{
 
     @Transactional
     @Override
-    public Boolean modify(CustomerUpdateParam updateParam) {
+    public Boolean modify(UserUpdateRequest updateParam) {
         Customer dbCustomer = customerRepository.findByUserId(updateParam.getUserId()).orElseThrow(NotExistUserException::new);
 
         if(PasswordEncryptor.isMatchBcrypt(updateParam.getPassword(), dbCustomer.getPassword())) {
@@ -53,7 +62,7 @@ public class CustomerServiceImpl implements CustomerService{
         Customer dbCustomer = customerRepository.findByUserId(userId).orElseThrow(NotExistUserException::new);
 
         if(PasswordEncryptor.isMatchBcrypt(password, dbCustomer.getPassword())) {
-            customerRepository.delete(dbCustomer);;
+            customerRepository.delete(dbCustomer);
 
             return true;
         }

@@ -1,8 +1,9 @@
 package com.myshop.api.service;
 
-import com.myshop.api.domain.Provider;
-import com.myshop.api.domain.account.ProviderAccount;
-import com.myshop.api.dto.provider.ProviderUpdateParam;
+import com.myshop.api.domain.dto.account.ProviderAccount;
+import com.myshop.api.domain.dto.request.UserUpdateRequest;
+import com.myshop.api.domain.dto.response.data.ProviderData;
+import com.myshop.api.domain.entity.Provider;
 import com.myshop.api.exception.NotExistUserException;
 import com.myshop.api.repository.ProviderRepository;
 import com.myshop.api.util.PasswordEncryptor;
@@ -28,6 +29,12 @@ public class ProviderServiceImpl implements ProviderService{
         return new ProviderAccount(provider);
     }
 
+    @Override
+    public ProviderData.Provider getInfo(ProviderAccount providerAccount) {
+        Provider provider = providerAccount.getProvider();
+        return new ProviderData.Provider(provider);
+    }
+
     @Transactional
     @Override
     public Boolean checkUserId(String userId) {
@@ -42,7 +49,7 @@ public class ProviderServiceImpl implements ProviderService{
 
     @Transactional
     @Override
-    public Boolean modify(ProviderUpdateParam updateParam) {
+    public Boolean modify(UserUpdateRequest updateParam) {
         Provider dbProvider = providerRepository.findByUserId(updateParam.getUserId()).orElseThrow(NotExistUserException::new);
 
         if(PasswordEncryptor.isMatchBcrypt(updateParam.getPassword(), dbProvider.getPassword())){

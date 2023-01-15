@@ -1,6 +1,6 @@
 package com.myshop.api.util;
 
-import com.myshop.api.dto.UserDto;
+import com.myshop.api.domain.dto.request.UserDto;
 import com.myshop.api.exception.EmptyPasswordException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
@@ -16,7 +16,7 @@ public class PasswordEncryptor {
     }
 
     private static void checkPassword(String password) {
-        if(password.isBlank()) throw new EmptyPasswordException("패스워드가 비어있습니다.");
+        if(password.isBlank()) throw new EmptyPasswordException();
     }
 
     public static boolean isMatchBcrypt(String password, String hashedPassword) {

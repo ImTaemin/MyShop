@@ -1,7 +1,8 @@
 package com.myshop.api.service;
 
-import com.myshop.api.domain.Provider;
-import com.myshop.api.dto.provider.ProviderUpdateParam;
+import com.myshop.api.domain.dto.request.UserUpdateRequest;
+import com.myshop.api.domain.entity.Provider;
+import com.myshop.api.enumeration.UserRole;
 import com.myshop.api.repository.ProviderRepository;
 import com.myshop.api.util.PasswordEncryptor;
 import org.junit.jupiter.api.Assertions;
@@ -14,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Optional;
+import java.util.Set;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -39,6 +41,7 @@ class ProviderServiceTest {
                 .password("$2a$12$Liq1iPQn58mqSt8Efe.mn.bQt7W4uuVNypg8N2IAHG.cEPqLqyMZ6")
                 .phone("010-1234-5678")
                 .brandName("커버낫")
+                .roles(Set.of(UserRole.PROVIDER.toString()))
                 .build();
     }
 
@@ -76,7 +79,7 @@ class ProviderServiceTest {
         //given
         given(providerRepository.findByUserId(anyString())).willReturn(Optional.of(provider));
 
-        ProviderUpdateParam updateParam = ProviderUpdateParam.builder()
+        UserUpdateRequest updateParam = UserUpdateRequest.builder()
                 .userId("taemin")
                 .password("1234")
                 .modifyPassword("5678")

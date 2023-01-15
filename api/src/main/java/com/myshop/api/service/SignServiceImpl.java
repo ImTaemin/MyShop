@@ -1,17 +1,14 @@
 package com.myshop.api.service;
 
 import com.myshop.api.config.security.JwtTokenProvider;
-import com.myshop.api.domain.Customer;
-import com.myshop.api.domain.Provider;
-import com.myshop.api.dto.SignInResultDto;
-import com.myshop.api.dto.SignUpResultDto;
-import com.myshop.api.dto.UserDto;
-import com.myshop.api.dto.customer.CustomerDto;
-import com.myshop.api.dto.provider.ProviderDto;
+import com.myshop.api.domain.dto.request.CustomerRequest;
+import com.myshop.api.domain.dto.request.ProviderRequest;
+import com.myshop.api.domain.dto.request.UserDto;
+import com.myshop.api.domain.dto.response.data.SignData;
+import com.myshop.api.domain.entity.Customer;
+import com.myshop.api.domain.entity.Provider;
 import com.myshop.api.enumeration.CommonResponse;
 import com.myshop.api.exception.PasswordNotMatchException;
-import com.myshop.api.mapper.CustomerMapper;
-import com.myshop.api.mapper.ProviderMapper;
 import com.myshop.api.repository.CustomerRepository;
 import com.myshop.api.repository.ProviderRepository;
 import com.myshop.api.util.PasswordEncryptor;
@@ -23,7 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.security.auth.login.AccountNotFoundException;
-import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -33,38 +30,36 @@ public class SignServiceImpl implements SignService {
 
     private final ProviderRepository providerRepository;
     private final CustomerRepository customerRepository;
-    private final ProviderMapper providerMapper;
-    private final CustomerMapper customerMapper;
     private final JwtTokenProvider jwtTokenProvider;
 
     @Transactional
     @Override
-    public SignUpResultDto signUp(UserDto signUpParam) {
-        PasswordEncryptor.bcrypt(signUpParam);
+    public SignData.SignUpResponse signUp(UserDto userRequest) {
+        PasswordEncryptor.bcrypt(userRequest);
 
-        UserDetails savedUser = this.saveUser(signUpParam);
+        UserDetails savedUser = saveUser(userRequest);
 
-        SignUpResultDto signUpResultDto = new SignUpResultDto();
+        SignData.SignUpResponse signUpResponse = new SignData.SignUpResponse();
         if(!savedUser.getUsername().isEmpty()) {
-            setSuccessResult(signUpResultDto);
+            setSuccessResult(signUpResponse);
             LOGGER.info("회원가입 성공");
         } else {
-            setFailResult(signUpResultDto);
+            setFailResult(signUpResponse);
             LOGGER.info("회원가입 실패");
         }
 
-        return signUpResultDto;
+        return signUpResponse;
     }
 
     @Override
-    public SignInResultDto signInProvider(String userId, String password) throws AccountNotFoundException {
+    public SignData.SignInResponse signInProvider(String userId, String password) throws AccountNotFoundException {
         Provider dbProvider = providerRepository.findByUserId(userId).orElseThrow(AccountNotFoundException::new);
 
         return signIn(userId, password, dbProvider.getPassword(), dbProvider.getRoles());
     }
 
     @Override
-    public SignInResultDto signInCustomer(String userId, String password) throws AccountNotFoundException {
+    public SignData.SignInResponse signInCustomer(String userId, String password) throws AccountNotFoundException {
         Customer dbCustomer = customerRepository.findByUserId(userId).orElseThrow(AccountNotFoundException::new);
 
         return signIn(userId, password, dbCustomer.getPassword(), dbCustomer.getRoles());
@@ -73,42 +68,57 @@ public class SignServiceImpl implements SignService {
 
     // 판매자, 구매자 구별 없는 회원가입 메서드
     private UserDetails saveUser(UserDto userDto) {
-        if(userDto instanceof CustomerDto) {
+        if(userDto instanceof CustomerRequest) {
             // 구매자
-            Customer signUpCustomer = customerMapper.toEntity((CustomerDto) userDto);
+            CustomerRequest customerRequest = (CustomerRequest) userDto;
+            Customer signUpCustomer = Customer.builder()
+                    .userId(customerRequest.getUserId())
+                    .password(customerRequest.getPassword())
+                    .phone(customerRequest.getPhone())
+                    .name(customerRequest.getName())
+                    .roles(customerRequest.getRoles())
+                    .build();
+
             return customerRepository.save(signUpCustomer);
         }
 
         // 판매자
-        Provider signUpProvider = providerMapper.toEntity((ProviderDto) userDto);
+        ProviderRequest providerRequest = (ProviderRequest) userDto;
+        Provider signUpProvider = Provider.builder()
+                .userId(providerRequest.getUserId())
+                .password(providerRequest.getPassword())
+                .phone(providerRequest.getPhone())
+                .brandName(providerRequest.getBrandName())
+                .roles(providerRequest.getRoles())
+                .build();
+
         return providerRepository.save(signUpProvider);
     }
 
     // 판매자, 구매자 구별 없는 로그인 메서드
-    private SignInResultDto signIn(String userId, String password, String dbPassword, List<String> roles) {
+    private SignData.SignInResponse signIn(String userId, String password, String dbPassword, Set<String> roles) {
         if(!PasswordEncryptor.isMatchBcrypt(password, dbPassword)) {
             LOGGER.info("패스워드 불일치");
-            throw new PasswordNotMatchException("패스워드가 일치하지 않습니다.");
+            throw new PasswordNotMatchException();
         }
 
-        SignInResultDto signInResultDto = SignInResultDto.builder()
-                .token(jwtTokenProvider.createToken(userId, roles))
-                .build();
+        SignData.SignInResponse signInResult = new SignData.SignInResponse();
+        setSuccessResult(signInResult);
+        signInResult.setToken(jwtTokenProvider.createToken(userId, roles));
 
-        setSuccessResult(signInResultDto);
         LOGGER.info("로그인 성공");
-        return signInResultDto;
+        return signInResult;
     }
 
-    private void setSuccessResult(SignUpResultDto signUpResultDto) {
-        signUpResultDto.setSuccess(true);
-        signUpResultDto.setCode(CommonResponse.SUCCESS.getCode());
-        signUpResultDto.setMsg(CommonResponse.SUCCESS.getMsg());
+    private void setSuccessResult(SignData.SignUpResponse signUpResponse) {
+        signUpResponse.setSuccess(true);
+        signUpResponse.setCode(CommonResponse.SUCCESS.getCode());
+        signUpResponse.setMsg(CommonResponse.SUCCESS.getMsg());
     }
 
-    private void setFailResult(SignUpResultDto signUpResultDto) {
-        signUpResultDto.setSuccess(false);
-        signUpResultDto.setCode(CommonResponse.FAIL.getCode());
-        signUpResultDto.setMsg(CommonResponse.FAIL.getMsg());
+    private void setFailResult(SignData.SignUpResponse signUpResponse) {
+        signUpResponse.setSuccess(false);
+        signUpResponse.setCode(CommonResponse.FAIL.getCode());
+        signUpResponse.setMsg(CommonResponse.FAIL.getMsg());
     }
 }
