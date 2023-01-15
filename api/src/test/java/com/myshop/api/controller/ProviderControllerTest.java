@@ -1,11 +1,11 @@
 package com.myshop.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.myshop.api.dto.SignInResultDto;
-import com.myshop.api.dto.SignUpResultDto;
-import com.myshop.api.dto.provider.ProviderDto;
-import com.myshop.api.dto.provider.ProviderUpdateParam;
+import com.myshop.api.domain.dto.request.ProviderRequest;
+import com.myshop.api.domain.dto.request.UserUpdateRequest;
+import com.myshop.api.domain.dto.response.data.SignData;
 import com.myshop.api.enumeration.CommonResponse;
+import com.myshop.api.enumeration.UserRole;
 import com.myshop.api.service.ProviderService;
 import com.myshop.api.service.SignService;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,6 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(controllers = ProviderController.class)
 public class ProviderControllerTest {
 
+    @SuppressWarnings("all")
     @Autowired
     MockMvc mockMvc;
 
@@ -49,10 +50,10 @@ public class ProviderControllerTest {
     @MockBean
     SignService signService;
 
-    ProviderDto provider;
+    ProviderRequest providerRequest;
 
-    SignUpResultDto signUpResultDto;
-    SignInResultDto signInResultDto;
+    SignData.SignUpResponse signUpResponse;
+    SignData.SignInResponse signInResult;
 
     @Retention(RetentionPolicy.RUNTIME)
     @WithMockUser(username = "테스트_최고관리자", roles = "SUPER")
@@ -61,21 +62,21 @@ public class ProviderControllerTest {
 
     @BeforeEach
     public void initEach() {
-        signUpResultDto = new SignUpResultDto(true, CommonResponse.SUCCESS.getCode(), CommonResponse.SUCCESS.getMsg());
+        signUpResponse.setSuccess(true);
+        signUpResponse.setCode(CommonResponse.SUCCESS.getCode());
+        signUpResponse.setMsg(CommonResponse.SUCCESS.getMsg());
 
-        signInResultDto = SignInResultDto.builder()
-                .success(true)
-                .code(CommonResponse.SUCCESS.getCode())
-                .msg(CommonResponse.SUCCESS.getMsg())
-                .token("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0YWVtaW4iLCJpYXQiOjE2NzE0NDA0NzAsImV4cCI6MTY3MTQ0NDA3MH0.AFvbCHzDXowGpBqfjBbcWfphe0Bv0o-UMijgOA2jnnQ")
-                .build();
+        signInResult.setSuccess(true);
+        signInResult.setCode(CommonResponse.SUCCESS.getCode());
+        signInResult.setMsg(CommonResponse.SUCCESS.getMsg());
+        signInResult.setToken("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0YWVtaW4iLCJpYXQiOjE2NzE0NDA0NzAsImV4cCI6MTY3MTQ0NDA3MH0.AFvbCHzDXowGpBqfjBbcWfphe0Bv0o-UMijgOA2jnnQ");
 
-        provider = ProviderDto.builder()
+        providerRequest = ProviderRequest.builder()
                 .userId("taemin")
                 .password("1234")
                 .phone("010-1234-5678")
                 .brandName("커버낫")
-                .roles(Collections.singletonList("ROLE_PROVIDER"))
+                .roles(Collections.singleton(UserRole.PROVIDER.toString()))
                 .build();
     }
 
@@ -84,11 +85,11 @@ public class ProviderControllerTest {
     @DisplayName("판매자 입점 테스트")
     public void signUpTest() throws Exception {
         //given
-        given(signService.signUp(any(ProviderDto.class)))
-                .willReturn(signUpResultDto);
+        given(signService.signUp(any(ProviderRequest.class)))
+                .willReturn(signUpResponse);
 
         ObjectMapper objectMapper = new ObjectMapper();
-        String content = objectMapper.writeValueAsString(provider);
+        String content = objectMapper.writeValueAsString(providerRequest);
 
         //when
         mockMvc.perform(
@@ -103,7 +104,7 @@ public class ProviderControllerTest {
                 .andDo(print());
 
         //then
-        verify(signService).signUp(any(ProviderDto.class));
+        verify(signService).signUp(any(ProviderRequest.class));
     }
 
     @Test
@@ -112,7 +113,7 @@ public class ProviderControllerTest {
     public void signInTest() throws Exception {
         //given
         given(signService.signInProvider(anyString(), anyString()))
-                .willReturn(signInResultDto);
+                .willReturn(signInResult);
 
         Map<String, String> paramMap = new HashMap<>();
         paramMap.put("userId", "taemin");
@@ -181,7 +182,7 @@ public class ProviderControllerTest {
     @DisplayName("판매자 정보 수정")
     public void modifyTest() throws Exception {
         //given
-        given(providerService.modify(any(ProviderUpdateParam.class)))
+        given(providerService.modify(any(UserUpdateRequest.class)))
                 .willReturn(true);
 
         Map<String, String> paramMap = new HashMap<>();
@@ -202,7 +203,7 @@ public class ProviderControllerTest {
                 .andDo(print());
 
         //then
-        verify(providerService).modify(any(ProviderUpdateParam.class));
+        verify(providerService).modify(any(UserUpdateRequest.class));
     }
 
     @Test
@@ -214,8 +215,8 @@ public class ProviderControllerTest {
                 .willReturn(true);
 
         Map<String, String> paramMap = new HashMap<>();
-        paramMap.put("userId", provider.getUserId());
-        paramMap.put("password", provider.getPassword());
+        paramMap.put("userId", providerRequest.getUserId());
+        paramMap.put("password", providerRequest.getPassword());
 
         ObjectMapper objectMapper = new ObjectMapper();
         String content = objectMapper.writeValueAsString(paramMap);

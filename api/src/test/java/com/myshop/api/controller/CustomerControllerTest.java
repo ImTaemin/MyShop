@@ -1,11 +1,11 @@
 package com.myshop.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.myshop.api.dto.SignInResultDto;
-import com.myshop.api.dto.SignUpResultDto;
-import com.myshop.api.dto.customer.CustomerDto;
-import com.myshop.api.dto.customer.CustomerUpdateParam;
+import com.myshop.api.domain.dto.request.CustomerRequest;
+import com.myshop.api.domain.dto.request.UserUpdateRequest;
+import com.myshop.api.domain.dto.response.data.SignData;
 import com.myshop.api.enumeration.CommonResponse;
+import com.myshop.api.enumeration.UserRole;
 import com.myshop.api.service.CustomerService;
 import com.myshop.api.service.SignService;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,6 +41,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(controllers = CustomerController.class)
 class CustomerControllerTest {
 
+    @SuppressWarnings("all")
     @Autowired
     MockMvc mockMvc;
 
@@ -50,10 +51,10 @@ class CustomerControllerTest {
     @MockBean
     SignService signService;
 
-    CustomerDto customer;
+    CustomerRequest customerRequest;
 
-    SignUpResultDto signUpResultDto;
-    SignInResultDto signInResultDto;
+    SignData.SignUpResponse signUpResponse;
+    SignData.SignInResponse signInResponse;
 
     @Retention(RetentionPolicy.RUNTIME)
     @WithMockUser(username = "테스트_최고관리자", roles = "SUPER")
@@ -62,21 +63,22 @@ class CustomerControllerTest {
 
     @BeforeEach
     public void initEach() {
-        signUpResultDto = new SignUpResultDto(true, CommonResponse.SUCCESS.getCode(), CommonResponse.SUCCESS.getMsg());
+        signUpResponse.setSuccess(true);
+        signUpResponse.setCode(CommonResponse.SUCCESS.getCode());
+        signUpResponse.setMsg(CommonResponse.SUCCESS.getMsg());
 
-        signInResultDto = SignInResultDto.builder()
-                .success(true)
-                .code(CommonResponse.SUCCESS.getCode())
-                .msg(CommonResponse.SUCCESS.getMsg())
-                .token("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0YWVtaW4iLCJpYXQiOjE2NzE0NDA0NzAsImV4cCI6MTY3MTQ0NDA3MH0.AFvbCHzDXowGpBqfjBbcWfphe0Bv0o-UMijgOA2jnnQ")
-                .build();
+        signInResponse.setSuccess(true);
+        signInResponse.setCode(CommonResponse.SUCCESS.getCode());
+        signInResponse.setMsg(CommonResponse.SUCCESS.getMsg());
+        signInResponse.setToken("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0YWVtaW4iLCJpYXQiOjE2NzE0NDA0NzAsImV4cCI6MTY3MTQ0NDA3MH0.AFvbCHzDXowGpBqfjBbcWfphe0Bv0o-UMijgOA2jnnQ");
 
-        customer = CustomerDto.builder()
+
+        customerRequest = CustomerRequest.builder()
                 .userId("taemin")
                 .password("1234")
                 .phone("010-1234-5678")
                 .name("김태민")
-                .roles(Collections.singletonList("ROLE_CUSTOMER"))
+                .roles(Collections.singleton(UserRole.CUSTOMER.toString()))
                 .build();
     }
 
@@ -85,11 +87,11 @@ class CustomerControllerTest {
     @DisplayName("구매자 회원 가입 테스트")
     public void signUpTest() throws Exception {
         //given
-        given(signService.signUp(any(CustomerDto.class)))
-                .willReturn(signUpResultDto);
+        given(signService.signUp(any(CustomerRequest.class)))
+                .willReturn(signUpResponse);
 
         ObjectMapper objectMapper = new ObjectMapper();
-        String content = objectMapper.writeValueAsString(customer);
+        String content = objectMapper.writeValueAsString(customerRequest);
 
         //when
         mockMvc.perform(
@@ -104,7 +106,7 @@ class CustomerControllerTest {
                 .andDo(print());
 
         //then
-        verify(signService).signUp(any(CustomerDto.class));
+        verify(signService).signUp(any(CustomerRequest.class));
     }
 
     @Test
@@ -113,7 +115,7 @@ class CustomerControllerTest {
     public void signInTest() throws Exception {
         //given
         given(signService.signInCustomer(anyString(), anyString()))
-                .willReturn(signInResultDto);
+                .willReturn(signInResponse);
 
         Map<String, String> paramMap = new HashMap<>();
         paramMap.put("userId", "taemin");
@@ -163,7 +165,7 @@ class CustomerControllerTest {
     @DisplayName("구매자 정보 수정")
     public void modifyTest() throws Exception {
         //given
-        given(customerService.modify(any(CustomerUpdateParam.class)))
+        given(customerService.modify(any(UserUpdateRequest.class)))
                 .willReturn(true);
 
         Map<String, String> paramMap = new HashMap<>();
@@ -184,7 +186,7 @@ class CustomerControllerTest {
                 .andDo(print());
 
         //then
-        verify(customerService).modify(any(CustomerUpdateParam.class));
+        verify(customerService).modify(any(UserUpdateRequest.class));
     }
 
     @Test
@@ -196,8 +198,8 @@ class CustomerControllerTest {
                 .willReturn(true);
 
         Map<String, String> paramMap = new HashMap<>();
-        paramMap.put("userId", customer.getUserId());
-        paramMap.put("password", customer.getPassword());
+        paramMap.put("userId", customerRequest.getUserId());
+        paramMap.put("password", customerRequest.getPassword());
 
         ObjectMapper objectMapper = new ObjectMapper();
         String content = objectMapper.writeValueAsString(paramMap);

@@ -1,11 +1,7 @@
 package com.myshop.api.exception;
 
 public class NotExistUserException extends RuntimeException{
-
     public NotExistUserException() {
-    }
-
-    public NotExistUserException(String message) {
-        super(message);
+        super("회원 정보가 없습니다.");
     }
 }
