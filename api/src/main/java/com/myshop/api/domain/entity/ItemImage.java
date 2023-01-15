@@ -1,4 +1,4 @@
-package com.myshop.api.domain;
+package com.myshop.api.domain.entity;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -15,29 +15,24 @@ import javax.persistence.*;
 })
 public class ItemImage {
 
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "item_id")
     private Item item;
 
     @Column(nullable = false)
     private String path;
 
-    @Column(nullable = false)
-    private String name;
-
-    @Column(nullable = false)
+    @Column
     private int sequence;
 
     @Builder
-    public ItemImage(Long id, Item item, String path, String name, int sequence) {
+    public ItemImage(Long id, Item item, String path, int sequence) {
         this.id = id;
         this.item = item;
         this.path = path;
-        this.name = name;
         this.sequence = sequence;
     }
 }

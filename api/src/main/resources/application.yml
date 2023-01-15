@@ -1,8 +1,19 @@
 spring:
   profiles:
     active: prod, dev
-    include: jwt
+    include: jwt, gcp
 
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+
+
+  cloud:
+    gcp:
+      credentials:
+        location: classpath:myshop-373122-5a778e754845.json
+
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
