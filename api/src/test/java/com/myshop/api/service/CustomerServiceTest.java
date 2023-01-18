@@ -4,6 +4,7 @@ import com.myshop.api.domain.entity.Customer;
 import com.myshop.api.domain.dto.request.UserUpdateRequest;
 import com.myshop.api.enumeration.UserRole;
 import com.myshop.api.repository.CustomerRepository;
+import com.myshop.api.repository.ItemRepository;
 import com.myshop.api.util.PasswordEncryptor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,13 +29,16 @@ public class CustomerServiceTest {
     @Mock
     CustomerRepository customerRepository;
 
+    @Mock
+    ItemRepository itemRepository;
+
     CustomerService customerService;
 
     Customer customer;
 
     @BeforeEach
     public void init() {
-        customerService = new CustomerServiceImpl(customerRepository);
+        customerService = new CustomerServiceImpl(customerRepository, itemRepository);
 
         customer = Customer.builder()
                 .userId("taemin")

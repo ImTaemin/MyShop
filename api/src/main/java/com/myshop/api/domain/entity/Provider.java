@@ -42,8 +42,7 @@ public class Provider implements UserDetails {
     private String brandName;
 
     @Column
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @CreationTimestamp
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.dd HH:mm", timezone = "Asia/Seoul")    @CreationTimestamp
     private LocalDateTime createDate;
 
     @OneToMany(mappedBy = "provider")

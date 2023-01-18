@@ -17,18 +17,18 @@ public class CustomerData {
     @Data
     @NoArgsConstructor
     public static class Customer {
-        @ApiModelProperty(value = ApiValueUtils.USER_ID)
+        @ApiModelProperty(value = ApiValueUtils.User.USER_ID)
         private String userId;
 
         @Pattern(regexp = "^\\d{3}-\\d{4}-\\d{4}$")
-        @ApiModelProperty(value = ApiValueUtils.PHONE)
+        @ApiModelProperty(value = ApiValueUtils.User.PHONE)
         private String phone;
 
-        @ApiModelProperty(value = ApiValueUtils.Customer.NAME)
+        @ApiModelProperty(value = ApiValueUtils.User.Customer.NAME)
         private String name;
 
-        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-        @ApiModelProperty(value = ApiValueUtils.CREATE_DATE)
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.dd HH:mm", timezone = "Asia/Seoul")
+        @ApiModelProperty(value = ApiValueUtils.User.CREATE_DATE)
         private LocalDateTime createDate;
 
         @Builder

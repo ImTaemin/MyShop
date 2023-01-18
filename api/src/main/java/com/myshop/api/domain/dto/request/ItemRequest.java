@@ -26,13 +26,13 @@ public class ItemRequest {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class PriceAndQuantity {
-        @ApiModelProperty(value = ApiValueUtils.Item.ID, required = true)
+        @ApiModelProperty(value = ApiValueUtils.Item.ID, required = true, example = "1")
         private Long id;
 
-        @ApiModelProperty(value = ApiValueUtils.Item.PRICE, required = true)
+        @ApiModelProperty(value = ApiValueUtils.Item.PRICE, required = true, example = "30000")
         private int price;
 
-        @ApiModelProperty(value = ApiValueUtils.Item.QUANTITY, required = true)
+        @ApiModelProperty(value = ApiValueUtils.Item.QUANTITY, required = true, example = "2")
         private int quantity;
     }
 
@@ -42,7 +42,7 @@ public class ItemRequest {
     @AllArgsConstructor
     public static class Item {
 
-        @ApiModelProperty(value = ApiValueUtils.Item.ID)
+        @ApiModelProperty(value = ApiValueUtils.Item.ID, example = "1")
         private Long id;
 
         @ApiModelProperty(value = ApiValueUtils.Item.CODE, required = true)
@@ -54,10 +54,10 @@ public class ItemRequest {
         @ApiModelProperty(value = ApiValueUtils.Item.BRAND_NAME, required = true)
         private String brandName;
 
-        @ApiModelProperty(value = ApiValueUtils.Item.PRICE, required = true)
+        @ApiModelProperty(value = ApiValueUtils.Item.PRICE, required = true, example = "1")
         private int price;
 
-        @ApiModelProperty(value = ApiValueUtils.Item.QUANTITY, required = true)
+        @ApiModelProperty(value = ApiValueUtils.Item.QUANTITY, required = true, example = "5")
         private int quantity;
 
         @ApiModelProperty(value = ApiValueUtils.Item.CONTENT, required = true)
@@ -66,14 +66,7 @@ public class ItemRequest {
         @ApiModelProperty(
                 value = ApiValueUtils.Item.ITEM_TYPE,
                 required = true,
-                allowableValues =
-                        "    TOP, OUTER, PANTS,\n" +
-                        "    ONEPIECE, SKIRT, SNEAKERS,\n" +
-                        "    SHOES, BAG, SPORTS,\n" +
-                        "    HEADWEAR, SOCKS_LEGWEAR, UNDERWEAR,\n" +
-                        "    EYEWEAR, ACCESSORY, WATCH,\n" +
-                        "    JEWELRY, BEAUTY, DIGITAL_TECH,\n" +
-                        "    LIFE, CULTURE, PET")
+                allowableValues = ApiValueUtils.Item.ITEM_TYPE_ENUM)
         private ItemType itemType;
 
         @ApiModelProperty(

@@ -6,6 +6,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
-@WithSecurityContext(factory = WithMockProviderSecurityContextFactory.class)
-public @interface WithMockProvider {
+@WithSecurityContext(factory = WithMockCustomerSecurityContextFactory.class)
+public @interface WithMockCustomer {
 }

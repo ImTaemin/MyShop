@@ -45,7 +45,7 @@ public class Item {
     private int quantity;
 
     @Setter
-    @Column(nullable = false)
+    @Column
     private String mainImage;
 
     @Lob
@@ -61,8 +61,7 @@ public class Item {
     private GenderType genderType;
 
     @Column
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @CreationTimestamp
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.dd HH:mm", timezone = "Asia/Seoul")    @CreationTimestamp
     private LocalDate uploadDate;
 
     @Setter

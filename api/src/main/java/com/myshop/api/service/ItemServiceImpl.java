@@ -83,6 +83,8 @@ public class ItemServiceImpl implements ItemService {
 
             List<ItemImage> itemImageList = gcpStorageService.uploadImages(reqItem.getImageList(), item);
 
+            item.setMainImage(itemImageList.get(0).getPath());
+
             itemImageRepository.saveAll(itemImageList);
             itemList.add(item);
         });

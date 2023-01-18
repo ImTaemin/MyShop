@@ -1,5 +1,6 @@
 package com.myshop.api.config.security;
 
+import com.myshop.api.enumeration.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -56,9 +57,10 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests()
                 // TODO 적용 했는데 권한이 없어도 접근이 된다... UI 완료 후 확인
-                .antMatchers(HttpMethod.POST, "/item").hasRole("PROVIDER")
-                .antMatchers(HttpMethod.GET, "/auth/provider").hasRole("PROVIDER")
                 .antMatchers(Constant.permitAllArray).permitAll() //부분 허용
+                .antMatchers(HttpMethod.POST, "/item").hasRole(UserRole.PROVIDER.toString())
+                .antMatchers(HttpMethod.GET, "/provider").hasRole(UserRole.PROVIDER.toString())
+                .antMatchers(HttpMethod.GET, "/customer").hasRole(UserRole.CUSTOMER.toString())
                 .antMatchers(HttpMethod.GET, "/**").permitAll() //GET 모두 허용
                 .antMatchers("**exception**").permitAll()
                 // 기타 요청은 인증된 권한을 가진 사용자만

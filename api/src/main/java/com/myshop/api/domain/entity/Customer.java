@@ -34,6 +34,7 @@ public class Customer implements UserDetails {
     @Column(unique = true, nullable = false)
     private String userId;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(nullable = false)
     private String password;
 
@@ -56,12 +57,6 @@ public class Customer implements UserDetails {
 
     @OneToMany(mappedBy = "customer")
     private List<Cart> cartList = new ArrayList<>();
-
-    @OneToMany
-    @JoinTable(name = "wish_list",
-    joinColumns = @JoinColumn(name = "customer_id"),
-    inverseJoinColumns = @JoinColumn(name = "item_id"))
-    private Set<Item> wishList = new HashSet<>();
 
     @OneToMany(mappedBy = "customer")
     private List<Coupon> usedCouponList = new ArrayList<>();
@@ -117,7 +112,7 @@ public class Customer implements UserDetails {
      */
     @Builder
 
-    public Customer(Long id, String userId, String password, String phone, String name, LocalDateTime createDate, Set<String> roles, List<Orders> orderList, List<Cart> cartList, Set<Item> wishList, List<Coupon> usedCouponList) {
+    public Customer(Long id, String userId, String password, String phone, String name, LocalDateTime createDate, Set<String> roles, List<Orders> orderList, List<Cart> cartList, List<Coupon> usedCouponList) {
         this.id = id;
         this.userId = userId;
         this.password = password;
@@ -127,7 +122,6 @@ public class Customer implements UserDetails {
         this.roles = roles;
         this.orderList = orderList;
         this.cartList = cartList;
-        this.wishList = wishList;
         this.usedCouponList = usedCouponList;
     }
 }

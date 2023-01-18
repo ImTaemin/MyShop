@@ -19,19 +19,19 @@ import java.util.Set;
 @Data
 public class CustomerRequest implements UserDto{
 
-    @ApiModelProperty(value = ApiValueUtils.USER_ID, required = true)
+    @ApiModelProperty(value = ApiValueUtils.User.USER_ID, required = true)
     private String userId;
 
-    @ApiModelProperty(value = ApiValueUtils.PASSWORD, required = true)
+    @ApiModelProperty(value = ApiValueUtils.User.PASSWORD, required = true)
     private String password;
 
     @Pattern(regexp = "^\\d{3}-\\d{4}-\\d{4}$")
-    @ApiModelProperty(value = ApiValueUtils.PHONE, required = true)
+    @ApiModelProperty(value = ApiValueUtils.User.PHONE, required = true)
     private String phone;
 
-    @ApiModelProperty(value = ApiValueUtils.Customer.NAME, required = true)
+    @ApiModelProperty(value = ApiValueUtils.User.Customer.NAME, required = true)
     private String name;
 
-    @ApiModelProperty(value = ApiValueUtils.USER_ROLE, hidden = true)
+    @ApiModelProperty(value = ApiValueUtils.User.USER_ROLE, hidden = true)
     private Set<String> roles = new HashSet<>();
 }

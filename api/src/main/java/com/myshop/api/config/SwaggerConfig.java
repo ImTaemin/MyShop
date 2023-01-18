@@ -1,5 +1,7 @@
 package com.myshop.api.config;
 
+import com.myshop.api.annotation.CurrentCustomer;
+import com.myshop.api.annotation.CurrentProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,7 +24,7 @@ public class SwaggerConfig {
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
-                .ignoredParameterTypes(AuthenticationPrincipal.class)
+                .ignoredParameterTypes(AuthenticationPrincipal.class, CurrentCustomer.class, CurrentProvider.class)
                 .apiInfo(apiInfo())
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.myshop.api"))
