@@ -20,7 +20,7 @@ import javax.validation.Valid;
 @Api(tags = {"판매자 REST API"})
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/auth/provider")
+@RequestMapping("/provider")
 public class ProviderController {
 
     private final ProviderService providerService;

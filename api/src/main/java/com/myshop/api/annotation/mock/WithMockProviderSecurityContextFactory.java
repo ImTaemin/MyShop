@@ -11,7 +11,7 @@ import org.springframework.security.test.context.support.WithSecurityContextFact
 
 import java.util.Set;
 
-public class WithMockProviderSercurityContextFactory implements WithSecurityContextFactory<WithMockProvider> {
+public class WithMockProviderSecurityContextFactory implements WithSecurityContextFactory<WithMockProvider> {
 
     @Override
     public SecurityContext createSecurityContext(WithMockProvider annotation) {

@@ -1,13 +1,16 @@
 package com.myshop.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.myshop.api.annotation.mock.WithMockCustomer;
 import com.myshop.api.domain.dto.request.CustomerRequest;
 import com.myshop.api.domain.dto.request.UserUpdateRequest;
 import com.myshop.api.domain.dto.response.data.SignData;
+import com.myshop.api.domain.entity.Customer;
 import com.myshop.api.enumeration.CommonResponse;
 import com.myshop.api.enumeration.UserRole;
 import com.myshop.api.service.CustomerService;
 import com.myshop.api.service.SignService;
+import com.myshop.api.service.WishService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,6 +22,8 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -26,11 +31,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -53,12 +58,14 @@ class CustomerControllerTest {
 
     CustomerRequest customerRequest;
 
-    SignData.SignUpResponse signUpResponse;
-    SignData.SignInResponse signInResponse;
+    SignData.SignUpResponse signUpResponse = new SignData.SignUpResponse();
+    SignData.SignInResponse signInResponse = new SignData.SignInResponse();
+
+    ObjectMapper objectMapper = new ObjectMapper();
 
     @Retention(RetentionPolicy.RUNTIME)
-    @WithMockUser(username = "테스트_최고관리자", roles = "SUPER")
-    public @interface WithUser {
+    @WithMockUser(username = "테스트 구매자", roles = "CUSTOMER")
+    public @interface WithCustomer {
     }
 
     @BeforeEach
@@ -83,19 +90,18 @@ class CustomerControllerTest {
     }
 
     @Test
-    @WithUser
+    @WithMockUser
     @DisplayName("구매자 회원 가입 테스트")
     public void signUpTest() throws Exception {
         //given
         given(signService.signUp(any(CustomerRequest.class)))
                 .willReturn(signUpResponse);
 
-        ObjectMapper objectMapper = new ObjectMapper();
         String content = objectMapper.writeValueAsString(customerRequest);
 
         //when
         mockMvc.perform(
-                        post("/auth/customer/sign-up")
+                        post("/customer/sign-up")
                                 .content(content)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .with(csrf()))
@@ -110,8 +116,8 @@ class CustomerControllerTest {
     }
 
     @Test
-    @ProviderControllerTest.WithUser
-    @DisplayName("판매자 로그인 테스트. 200 반환 시 토큰이 있음.")
+    @WithMockUser
+    @DisplayName("구매자 로그인 테스트.")
     public void signInTest() throws Exception {
         //given
         given(signService.signInCustomer(anyString(), anyString()))
@@ -121,12 +127,11 @@ class CustomerControllerTest {
         paramMap.put("userId", "taemin");
         paramMap.put("password", "1234");
 
-        ObjectMapper objectMapper = new ObjectMapper();
         String content = objectMapper.writeValueAsString(paramMap);
 
         //when
         mockMvc.perform(
-                        post("/auth/customer/sign-in")
+                        post("/customer/sign-in")
                                 .content(content)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .with(csrf()))
@@ -142,7 +147,7 @@ class CustomerControllerTest {
     }
 
     @Test
-    @WithUser
+    @WithMockCustomer
     @DisplayName("구매자 아이디 중복 확인")
     public void checkUserIdTest() throws Exception {
         //given
@@ -151,7 +156,7 @@ class CustomerControllerTest {
 
         //when
         mockMvc.perform(
-                        get("/auth/customer/exists/id/taemin")
+                        get("/customer/exists/id/taemin")
                                 .with(csrf()))
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -161,7 +166,7 @@ class CustomerControllerTest {
     }
 
     @Test
-    @ProviderControllerTest.WithUser
+    @WithMockCustomer
     @DisplayName("구매자 정보 수정")
     public void modifyTest() throws Exception {
         //given
@@ -173,12 +178,11 @@ class CustomerControllerTest {
         paramMap.put("password", "1234");
         paramMap.put("phone", "010-5678-1234");
 
-        ObjectMapper objectMapper = new ObjectMapper();
         String content = objectMapper.writeValueAsString(paramMap);
 
         //when
         mockMvc.perform(
-                        put("/auth/customer/")
+                        put("/customer/")
                                 .content(content)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .with(csrf()))
@@ -190,7 +194,7 @@ class CustomerControllerTest {
     }
 
     @Test
-    @ProviderControllerTest.WithUser
+    @WithMockCustomer
     @DisplayName("구매자 회원 탈퇴")
     public void withdrawalTest() throws Exception {
         //given
@@ -201,12 +205,11 @@ class CustomerControllerTest {
         paramMap.put("userId", customerRequest.getUserId());
         paramMap.put("password", customerRequest.getPassword());
 
-        ObjectMapper objectMapper = new ObjectMapper();
         String content = objectMapper.writeValueAsString(paramMap);
 
         //when
         mockMvc.perform(
-                        delete("/auth/customer/")
+                        delete("/customer/")
                                 .content(content)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .with(csrf()))

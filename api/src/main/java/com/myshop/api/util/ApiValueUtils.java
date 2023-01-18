@@ -2,20 +2,22 @@ package com.myshop.api.util;
 
 public class ApiValueUtils {
 
-    public static final String USER_ID = "아이디";
-    public static final String PASSWORD = "비밀번호";
-    public static final String MODIFY_PASSWORD = "변경 비밀번호";
-    public static final String PHONE = "휴대폰 번호";
-    public static final String CREATE_DATE = "가입일";
-    public static final String USER_ROLE = "사용자 권한";
-    
-    
-    public static class Provider {
-        public static final String BRAND_NAME = "브랜드명";
-    }
+    public static class User {
+        public static final String USER_ID = "아이디";
+        public static final String PASSWORD = "비밀번호";
+        public static final String MODIFY_PASSWORD = "변경 비밀번호";
+        public static final String PHONE = "휴대폰 번호";
+        public static final String CREATE_DATE = "가입일";
+        public static final String USER_ROLE = "사용자 권한";
+        public static final String GENDER_TYPE = "MEN, WOMEN";
 
-    public static class Customer {
-        public static final String NAME = "이름";
+        public static class Provider {
+            public static final String BRAND_NAME = "브랜드명";
+        }
+
+        public static class Customer {
+            public static final String NAME = "이름";
+        }
     }
 
     public static class Item {
@@ -34,6 +36,13 @@ public class ApiValueUtils {
         public static final String ITEM_LIST = "상품 목록";
         public static final String PRICE_QUANTITY = "상품 가격, 재고수량 목록";
         public static final String UPLOAD_DATE = "상품 등록일";
+        public static final String ITEM_TYPE_ENUM = "TOP, OUTER, PANTS,\n" +
+                "ONEPIECE, SKIRT, SNEAKERS,\n" +
+                "SHOES, BAG, SPORTS,\n" +
+                "HEADWEAR, SOCKS_LEGWEAR, UNDERWEAR,\n" +
+                "EYEWEAR, ACCESSORY, WATCH,\n" +
+                "JEWELRY, BEAUTY, DIGITAL_TECH,\n" +
+                "LIFE, CULTURE, PET";
     }
 
     public static class ItemImage {
@@ -49,8 +58,43 @@ public class ApiValueUtils {
         public static final String TOKEN = "로그인에 성공했을 때 받는 토큰";
     }
 
+    public static class Order {
+        public static final String ID = "주문 고유번호";
+        public static final String ORDER_NO = "주문 번호";
+        public static final String TID = "거래 번호";
+        public static final String TOTAL_PAYMENT = "총 결제 금액";
+        public static final String ORDER_DATE = "주문일";
+        public static final String CANCEL_DATE = "주문 취소일";
+        public static final String CUSTOMER = "구매자";
+        public static final String ORDER_ITEM_LIST = "주문 목록";
+        public static final String ORDER_STATUS_ENUM = "RECEIVED,\n" +
+                "CANCELED,\n" +
+                "DELIVERING,\n" +
+                "DELIVERED";
+
+        public static class Address {
+            public static final String LOAD = "도로명 주소";
+            public static final String DETAIL = "상세 주소";
+            public static final String POSTAL_CODE = "우편번호";
+        }
+   }
+   
+   public static class OrderItem {
+        public static final String ID = "주문 상품 고유번호";
+        public static final String QUANTITY = "주문 수량";
+        public static final String PAYMENT = "주문 금액(상품금액 - 할인금액)";
+        public static final String COUPON = "사용 쿠폰";
+        public static final String ORDER_STATUS = "주문 상태";
+   }
+
     public static class Page {
         public static final String PAGE = "페이지 번호";
         public static final String SIZE = "페이지 총 개수";
+    }
+    
+    public static class Wish {
+        public static final String CUSTOMER = "구매자 정보";
+        public static final String ITEM_ID = "상품 고유번호";
+
     }
 }

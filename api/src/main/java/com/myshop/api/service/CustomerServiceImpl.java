@@ -4,8 +4,11 @@ import com.myshop.api.domain.dto.response.data.CustomerData;
 import com.myshop.api.domain.entity.Customer;
 import com.myshop.api.domain.dto.account.CustomerAccount;
 import com.myshop.api.domain.dto.request.UserUpdateRequest;
+import com.myshop.api.domain.entity.Item;
+import com.myshop.api.exception.ItemNotFoundException;
 import com.myshop.api.exception.NotExistUserException;
 import com.myshop.api.repository.CustomerRepository;
+import com.myshop.api.repository.ItemRepository;
 import com.myshop.api.util.PasswordEncryptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CustomerServiceImpl implements CustomerService{
 
     private final CustomerRepository customerRepository;
+    private final ItemRepository itemRepository;
 
     @Override
     public UserDetails getCustomerByUserId(String userId) throws UsernameNotFoundException {
@@ -27,8 +31,7 @@ public class CustomerServiceImpl implements CustomerService{
     }
 
     @Override
-    public CustomerData.Customer getInfo(CustomerAccount customerAccount) {
-        Customer customer = customerAccount.getCustomer();
+    public CustomerData.Customer getInfo(Customer customer) {
         return CustomerData.Customer.builder()
                 .customer(customer)
                 .build();
@@ -69,4 +72,5 @@ public class CustomerServiceImpl implements CustomerService{
 
         return false;
     }
+
 }

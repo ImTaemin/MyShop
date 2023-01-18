@@ -18,16 +18,16 @@ import javax.validation.constraints.Pattern;
 @Data
 public class UserUpdateRequest {
 
-    @ApiModelProperty(value = ApiValueUtils.USER_ID, required = true)
+    @ApiModelProperty(value = ApiValueUtils.User.USER_ID, required = true)
     private String userId;
 
-    @ApiModelProperty(value = ApiValueUtils.PASSWORD, required = true)
+    @ApiModelProperty(value = ApiValueUtils.User.PASSWORD, required = true)
     private String password;
 
-    @ApiModelProperty(value = ApiValueUtils.MODIFY_PASSWORD, required = true)
+    @ApiModelProperty(value = ApiValueUtils.User.MODIFY_PASSWORD, required = true)
     private String modifyPassword;
 
     @Pattern(regexp = "^\\d{3}-\\d{4}-\\d{4}$")
-    @ApiModelProperty(value = ApiValueUtils.PHONE, required = true)
+    @ApiModelProperty(value = ApiValueUtils.User.PHONE, required = true)
     private String phone;
 }

@@ -9,10 +9,10 @@ import org.springframework.data.domain.Sort.Direction;
 @ApiModel
 public class CustomPageRequest {
 
-    @ApiModelProperty(value = ApiValueUtils.Page.PAGE)
+    @ApiModelProperty(value = ApiValueUtils.Page.PAGE, example = "1")
     private int page = 1;
 
-    @ApiModelProperty(value = ApiValueUtils.Page.SIZE)
+    @ApiModelProperty(value = ApiValueUtils.Page.SIZE, example = "30")
     private int size = 30;
     
     private Direction direction = Direction.DESC;

@@ -1,5 +1,6 @@
 package com.myshop.api.domain.dto.response.data;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.myshop.api.enumeration.GenderType;
 import com.myshop.api.enumeration.ItemType;
 import com.myshop.api.util.ApiValueUtils;
@@ -58,12 +59,13 @@ public class ItemData {
         @ApiModelProperty(value = ApiValueUtils.Item.CONTENT)
         private String content;
 
-        @ApiModelProperty(value = ApiValueUtils.Item.ITEM_TYPE)
+        @ApiModelProperty(value = ApiValueUtils.Item.ITEM_TYPE, allowableValues = ApiValueUtils.Item.ITEM_TYPE_ENUM)
         private ItemType itemType;
 
-        @ApiModelProperty(value = ApiValueUtils.Item.GENDER_TYPE)
+        @ApiModelProperty(value = ApiValueUtils.Item.GENDER_TYPE, allowableValues = ApiValueUtils.User.GENDER_TYPE)
         private GenderType genderType;
 
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.dd HH:mm", timezone = "Asia/Seoul")
         @ApiModelProperty(value = ApiValueUtils.Item.UPLOAD_DATE)
         private LocalDate uploadDate;
 
@@ -81,7 +83,6 @@ public class ItemData {
             item.getItemImageList().forEach(itemImage -> {
                 this.imageDetailList.add(new ItemImageData.ItemImage(itemImage));
             });
-
         }
 
     }
