@@ -75,7 +75,7 @@ class ItemControllerTest {
         resItem.setId(1L);
         resItem.setCode("ABCD-BK");
         resItem.setName("ABCD 블랙");
-        resItem.setBrandName("커버낫");
+        resItem.setBrandName("브랜드명");
         resItem.setPrice(30000);
         resItem.setQuantity(1000);
         resItem.setMainImage("");
@@ -87,7 +87,7 @@ class ItemControllerTest {
         resItemSimple = new ItemData.ItemSimple();
         resItemSimple.setId(1L);
         resItemSimple.setName("ABCD 블랙");
-        resItemSimple.setBrandName("커버낫");
+        resItemSimple.setBrandName("브랜드명");
         resItemSimple.setPrice(30000);
         resItemSimple.setMainImage("메인 이미지");
 
@@ -139,7 +139,7 @@ class ItemControllerTest {
 
         //when
         mockMvc.perform(
-                        get("/item/brands/커버낫")
+                        get("/item/brands/브랜드명")
                                 .content(content)
                                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                                 .with(csrf()))
@@ -176,7 +176,7 @@ class ItemControllerTest {
         ItemRequest.Item requestItem = new ItemRequest.Item();
         requestItem.setCode("ABCD-BK");
         requestItem.setName("ABCD 블랙");
-        requestItem.setBrandName("커버낫");
+        requestItem.setBrandName("브랜드명");
         requestItem.setPrice(30000);
         requestItem.setContent("내용내용내용");
         requestItem.setItemType(ItemType.BAG);

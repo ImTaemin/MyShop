@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
 @Table(name = "Customer", indexes = {
         @Index(name = "idx_customer_userid", columnList = "userId")
 })
-
 public class Customer implements UserDetails {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,7 +55,7 @@ public class Customer implements UserDetails {
     private List<Orders> orderList = new ArrayList<>();
 
     @OneToMany(mappedBy = "customer")
-    private List<Cart> cartList = new ArrayList<>();
+    private List<Cart> cartList;
 
     @OneToMany(mappedBy = "customer")
     private List<Coupon> usedCouponList = new ArrayList<>();

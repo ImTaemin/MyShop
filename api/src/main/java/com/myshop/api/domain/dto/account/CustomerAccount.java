@@ -13,7 +13,7 @@ public class CustomerAccount extends User {
     Customer customer;
 
     public CustomerAccount(Customer customer) {
-        super(customer.getUserId(), customer.getPassword(), List.of(new SimpleGrantedAuthority("ROLE_CUSTOMER")));
+        super(customer.getUserId(), customer.getPassword(), customer.getAuthorities());
         this.customer = customer;
     }
 }

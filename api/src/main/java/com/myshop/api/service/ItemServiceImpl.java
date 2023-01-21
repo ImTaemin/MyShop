@@ -29,7 +29,6 @@ public class ItemServiceImpl implements ItemService {
 
     private final ItemRepository itemRepository;
     private final ItemImageRepository itemImageRepository;
-
     private final GCPStorageService gcpStorageService;
 
     @Transactional

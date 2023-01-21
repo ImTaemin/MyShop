@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
 // ItemRepositoryCustom에 정의한 메서드 내용(실제 쿼리) 작성
@@ -18,14 +19,15 @@ import java.util.List;
 public class ItemRepositoryCustomImpl extends QuerydslRepositorySupport implements ItemRepositoryCustom {
 
     private final JPAQueryFactory jpaQueryFactory;
-    private final EntityManager entityManager;
+
+    @PersistenceContext
+    EntityManager entityManager;
 
     QItem qItem = QItem.item;
 
-    public ItemRepositoryCustomImpl(JPAQueryFactory jpaQueryFactory, EntityManager entityManager) {
+    public ItemRepositoryCustomImpl(JPAQueryFactory jpaQueryFactory) {
         super(Item.class);
         this.jpaQueryFactory = jpaQueryFactory;
-        this.entityManager = entityManager;
     }
 
     @Override

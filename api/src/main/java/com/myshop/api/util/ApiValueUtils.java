@@ -35,7 +35,7 @@ public class ApiValueUtils {
         public static final String IMAGE_LIST = "상품 이미지 목록";
         public static final String ITEM_LIST = "상품 목록";
         public static final String PRICE_QUANTITY = "상품 가격, 재고수량 목록";
-        public static final String UPLOAD_DATE = "상품 등록일";
+        public static final String CREATE_DATE = "상품 등록일";
         public static final String ITEM_TYPE_ENUM = "TOP, OUTER, PANTS,\n" +
                 "ONEPIECE, SKIRT, SNEAKERS,\n" +
                 "SHOES, BAG, SPORTS,\n" +
@@ -92,9 +92,10 @@ public class ApiValueUtils {
         public static final String SIZE = "페이지 총 개수";
     }
     
-    public static class Wish {
-        public static final String CUSTOMER = "구매자 정보";
+    public static class Cart {
+        public static final String ID = "장바구니 상품 고유번호";
         public static final String ITEM_ID = "상품 고유번호";
-
+        public static final String QUANTITY = "수량";
     }
+    
 }

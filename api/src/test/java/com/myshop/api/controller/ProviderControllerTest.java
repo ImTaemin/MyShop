@@ -75,7 +75,7 @@ public class ProviderControllerTest {
                 .userId("taemin")
                 .password("1234")
                 .phone("010-1234-5678")
-                .brandName("커버낫")
+                .brandName("브랜드명")
                 .roles(Collections.singleton(UserRole.PROVIDER.toString()))
                 .build();
     }
@@ -168,7 +168,7 @@ public class ProviderControllerTest {
 
         //when
         mockMvc.perform(
-                        get("/auth/provider/exists/brand/커버낫")
+                        get("/auth/provider/exists/brand/브랜드명")
                                 .with(csrf()))
                 .andExpect(status().isOk())
                 .andDo(print());
