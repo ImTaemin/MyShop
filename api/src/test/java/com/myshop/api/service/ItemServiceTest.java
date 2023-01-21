@@ -68,7 +68,7 @@ public class ItemServiceTest {
                 .userId("taemin")
                 .password("1234")
                 .phone("010-1234-5678")
-                .brandName("커버낫")
+                .brandName("브랜드명")
                 .roles(Set.of(UserRole.PROVIDER.toString()))
                 .build();
 
@@ -78,14 +78,14 @@ public class ItemServiceTest {
                 .id(1L)
                 .code("AAA_BK")
                 .name("aaa")
-                .brandName("커버낫")
+                .brandName("브랜드명")
                 .price(3500)
                 .mainImage("메인 이미지 경로")
                 .quantity(1000)
-                .content("커버낫 코트")
+                .content("브랜드명 코트")
                 .itemType(ItemType.OUTER)
                 .genderType(GenderType.MEN)
-                .uploadDate(LocalDate.now())
+                .createDate(LocalDate.now())
                 .build();
 
         itemImage = ItemImage.builder()
@@ -105,11 +105,11 @@ public class ItemServiceTest {
         ItemRequest.Item reqItem = new ItemRequest.Item();
         reqItem.setId(1L);
         reqItem.setName("aaa");
-        reqItem.setBrandName("커버낫");
+        reqItem.setBrandName("브랜드명");
         reqItem.setPrice(3500);
         reqItem.setCode("AAA_BK");
         reqItem.setQuantity(1000);
-        reqItem.setContent("커버낫 코트");
+        reqItem.setContent("브랜드명 코트");
         reqItem.setItemType(ItemType.OUTER);
         reqItem.setGenderType(GenderType.MEN);
         reqItem.setImageList(List.of(mock(MultipartFile.class)));
@@ -125,21 +125,21 @@ public class ItemServiceTest {
         resItem = new ItemData.Item();
         resItem.setId(1L);
         resItem.setName("aaa");
-        resItem.setBrandName("커버낫");
+        resItem.setBrandName("브랜드명");
         resItem.setPrice(3500);
         resItem.setMainImage("메인 이미지 경로");
         resItem.setCode("AAA_BK");
         resItem.setQuantity(1000);
-        resItem.setContent("커버낫 코트");
+        resItem.setContent("브랜드명 코트");
         resItem.setItemType(ItemType.OUTER);
         resItem.setGenderType(GenderType.MEN);
-        resItem.setUploadDate(LocalDate.now());
+        resItem.setCreateDate(LocalDate.now());
         resItem.setImageDetailList(List.of(resItemImage));
 
         resItemSimple = new ItemData.ItemSimple();
         resItemSimple.setId(1L);
         resItemSimple.setName("aaa");
-        resItemSimple.setBrandName("커버낫");
+        resItemSimple.setBrandName("브랜드명");
         resItemSimple.setPrice(3500);
         resItemSimple.setMainImage("메인 이미지 경로");
 
@@ -165,7 +165,7 @@ public class ItemServiceTest {
         Assertions.assertNotNull(resItem.getContent());
         Assertions.assertNotNull(resItem.getItemType());
         Assertions.assertNotNull(resItem.getGenderType());
-        Assertions.assertNotNull(resItem.getUploadDate());
+        Assertions.assertNotNull(resItem.getCreateDate());
         Assertions.assertNotNull(resItem.getImageDetailList());
     }
 

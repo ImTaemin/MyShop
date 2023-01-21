@@ -32,6 +32,6 @@ public class CustomPageRequest {
     }
 
     public PageRequest of() {
-        return PageRequest.of(page - 1, size, direction, "upload_date");
+        return PageRequest.of(page - 1, size, direction, "create_date");
     }
 }

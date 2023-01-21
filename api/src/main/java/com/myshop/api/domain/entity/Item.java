@@ -1,7 +1,6 @@
 package com.myshop.api.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.myshop.api.domain.dto.request.ItemRequest;
 import com.myshop.api.enumeration.GenderType;
 import com.myshop.api.enumeration.ItemType;
 import lombok.*;
@@ -62,7 +61,7 @@ public class Item {
 
     @Column
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.dd HH:mm", timezone = "Asia/Seoul")    @CreationTimestamp
-    private LocalDate uploadDate;
+    private LocalDate createDate;
 
     @Setter
     @OneToMany(
@@ -79,16 +78,15 @@ public class Item {
     @JoinColumn(name = "provider_id", nullable = false)
     private Provider provider;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cart_id", insertable = false, updatable = false)
-    private Cart cart;
+    @OneToMany(mappedBy = "item", fetch = FetchType.LAZY)
+    private List<Cart> cartList;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", insertable = false, updatable = false)
     private Customer customer;
 
     @Builder
-    public Item(Long id, String code, String name, String brandName, int price, int quantity, String mainImage, String content, ItemType itemType, GenderType genderType, LocalDate uploadDate, List<ItemImage> itemImageList, Provider provider, Cart cart, Customer customer) {
+    public Item(Long id, String code, String name, String brandName, int price, int quantity, String mainImage, String content, ItemType itemType, GenderType genderType, LocalDate createDate, List<ItemImage> itemImageList, Provider provider, List<Cart> cartList, Customer customer) {
         this.id = id;
         this.code = code;
         this.name = name;
@@ -99,10 +97,10 @@ public class Item {
         this.content = content;
         this.itemType = itemType;
         this.genderType = genderType;
-        this.uploadDate = uploadDate;
+        this.createDate = createDate;
         this.itemImageList = itemImageList;
         this.provider = provider;
-        this.cart = cart;
+        this.cartList = cartList;
         this.customer = customer;
     }
 }

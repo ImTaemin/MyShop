@@ -40,7 +40,7 @@ class ProviderServiceTest {
                 .userId("taemin")
                 .password("$2a$12$Liq1iPQn58mqSt8Efe.mn.bQt7W4uuVNypg8N2IAHG.cEPqLqyMZ6")
                 .phone("010-1234-5678")
-                .brandName("커버낫")
+                .brandName("브랜드명")
                 .roles(Set.of(UserRole.PROVIDER.toString()))
                 .build();
     }
@@ -66,7 +66,7 @@ class ProviderServiceTest {
         given(providerRepository.existsByBrandName(anyString())).willReturn(true);
 
         //when
-        boolean isAvailable = !providerService.checkBrandName("커버낫");
+        boolean isAvailable = !providerService.checkBrandName("브랜드명");
 
         //then
         Assertions.assertTrue(isAvailable);

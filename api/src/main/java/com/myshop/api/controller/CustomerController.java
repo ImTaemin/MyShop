@@ -2,14 +2,12 @@ package com.myshop.api.controller;
 
 import com.myshop.api.annotation.CurrentCustomer;
 import com.myshop.api.domain.dto.request.CustomerRequest;
-import com.myshop.api.domain.dto.request.ProviderRequest;
 import com.myshop.api.domain.dto.request.UserUpdateRequest;
 import com.myshop.api.domain.dto.response.data.CustomerData;
 import com.myshop.api.domain.dto.response.data.SignData;
 import com.myshop.api.domain.entity.Customer;
 import com.myshop.api.service.CustomerService;
 import com.myshop.api.service.SignService;
-import com.myshop.api.service.WishService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -47,7 +45,7 @@ public class CustomerController {
 
     @ApiOperation(value = "구매자 로그인")
     @PostMapping(value = "/sign-in", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<SignData.SignInResponse> signIn(@RequestBody ProviderRequest param) throws AccountNotFoundException {
+    public ResponseEntity<SignData.SignInResponse> signIn(@RequestBody CustomerRequest param) throws AccountNotFoundException {
         SignData.SignInResponse signInResultDto = signService.signInCustomer(param.getUserId(), param.getPassword());
 
         return ResponseEntity.ok(signInResultDto);

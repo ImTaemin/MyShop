@@ -66,8 +66,8 @@ public class ItemData {
         private GenderType genderType;
 
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.dd HH:mm", timezone = "Asia/Seoul")
-        @ApiModelProperty(value = ApiValueUtils.Item.UPLOAD_DATE)
-        private LocalDate uploadDate;
+        @ApiModelProperty(value = ApiValueUtils.Item.CREATE_DATE)
+        private LocalDate createDate;
 
         @ApiModelProperty(value = ApiValueUtils.Item.IMAGE_LIST)
         private List<ItemImageData.ItemImage> imageDetailList = new ArrayList<>();
@@ -79,7 +79,7 @@ public class ItemData {
             this.content = item.getContent();
             this.itemType = item.getItemType();
             this.genderType = item.getGenderType();
-            this.uploadDate = item.getUploadDate();
+            this.createDate = item.getCreateDate();
             item.getItemImageList().forEach(itemImage -> {
                 this.imageDetailList.add(new ItemImageData.ItemImage(itemImage));
             });

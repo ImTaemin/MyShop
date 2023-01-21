@@ -21,7 +21,7 @@ public class WithMockProviderSecurityContextFactory implements WithSecurityConte
                 .userId("taemin")
                 .password("1234")
                 .phone("010-1234-5678")
-                .brandName("커버낫")
+                .brandName("브랜드명")
                 .roles(Set.of(UserRole.PROVIDER.toString()))
                 .build();
         ProviderAccount providerAccount = new ProviderAccount(provider);
