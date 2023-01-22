@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.myshop.api.annotation.mock.WithMockCustomer;
 import com.myshop.api.domain.dto.request.CustomerRequest;
 import com.myshop.api.domain.dto.request.UserUpdateRequest;
+import com.myshop.api.domain.dto.response.BaseResponse;
 import com.myshop.api.domain.dto.response.data.SignData;
 import com.myshop.api.enumeration.CommonResponse;
 import com.myshop.api.enumeration.UserRole;
@@ -59,19 +60,12 @@ class CustomerControllerTest {
 
     ObjectMapper objectMapper = new ObjectMapper();
 
-    @Retention(RetentionPolicy.RUNTIME)
-    @WithMockUser(username = "테스트 구매자", roles = "CUSTOMER")
-    public @interface WithCustomer {
-    }
-
     @BeforeEach
     public void initEach() {
-        signUpResponse.setSuccess(true);
-        signUpResponse.setCode(CommonResponse.SUCCESS.getCode());
+        signUpResponse.setStatus(CommonResponse.SUCCESS.getStatus());
         signUpResponse.setMsg(CommonResponse.SUCCESS.getMsg());
 
-        signInResponse.setSuccess(true);
-        signInResponse.setCode(CommonResponse.SUCCESS.getCode());
+        signInResponse.setStatus(CommonResponse.SUCCESS.getStatus());
         signInResponse.setMsg(CommonResponse.SUCCESS.getMsg());
         signInResponse.setToken("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0YWVtaW4iLCJpYXQiOjE2NzE0NDA0NzAsImV4cCI6MTY3MTQ0NDA3MH0.AFvbCHzDXowGpBqfjBbcWfphe0Bv0o-UMijgOA2jnnQ");
 
@@ -102,8 +96,7 @@ class CustomerControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .with(csrf()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.success").isBoolean())
-                .andExpect(jsonPath("$.code").exists())
+                .andExpect(jsonPath("$.status").exists())
                 .andExpect(jsonPath("$.msg").exists())
                 .andDo(print());
 
@@ -116,6 +109,10 @@ class CustomerControllerTest {
     @DisplayName("구매자 로그인 테스트.")
     public void signInTest() throws Exception {
         //given
+        BaseResponse baseResponse = new BaseResponse();
+        baseResponse.setStatus(CommonResponse.SUCCESS.getStatus());
+        baseResponse.setMsg(CommonResponse.SUCCESS.getMsg());
+
         given(signService.signInCustomer(anyString(), anyString()))
                 .willReturn(signInResponse);
 
@@ -132,10 +129,8 @@ class CustomerControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .with(csrf()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.success").exists())
-                .andExpect(jsonPath("$.code").exists())
+                .andExpect(jsonPath("$.status").exists())
                 .andExpect(jsonPath("$.msg").exists())
-                .andExpect(jsonPath("$.token").exists())
                 .andDo(print());
 
         //then
@@ -143,7 +138,7 @@ class CustomerControllerTest {
     }
 
     @Test
-    @WithMockCustomer
+    @WithMockUser
     @DisplayName("구매자 아이디 중복 확인")
     public void checkUserIdTest() throws Exception {
         //given

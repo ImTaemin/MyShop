@@ -1,6 +1,7 @@
 package com.myshop.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.myshop.api.annotation.mock.WithMockProvider;
 import com.myshop.api.domain.dto.request.ProviderRequest;
 import com.myshop.api.domain.dto.request.UserUpdateRequest;
 import com.myshop.api.domain.dto.response.data.SignData;
@@ -52,24 +53,17 @@ public class ProviderControllerTest {
 
     ProviderRequest providerRequest;
 
-    SignData.SignUpResponse signUpResponse;
-    SignData.SignInResponse signInResult;
-
-    @Retention(RetentionPolicy.RUNTIME)
-    @WithMockUser(username = "테스트_최고관리자", roles = "SUPER")
-    public @interface WithUser {
-    }
+    SignData.SignUpResponse signUpResponse = new SignData.SignUpResponse();
+    SignData.SignInResponse signInResponse = new SignData.SignInResponse();
 
     @BeforeEach
     public void initEach() {
-        signUpResponse.setSuccess(true);
-        signUpResponse.setCode(CommonResponse.SUCCESS.getCode());
+        signUpResponse.setStatus(CommonResponse.SUCCESS.getStatus());
         signUpResponse.setMsg(CommonResponse.SUCCESS.getMsg());
 
-        signInResult.setSuccess(true);
-        signInResult.setCode(CommonResponse.SUCCESS.getCode());
-        signInResult.setMsg(CommonResponse.SUCCESS.getMsg());
-        signInResult.setToken("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0YWVtaW4iLCJpYXQiOjE2NzE0NDA0NzAsImV4cCI6MTY3MTQ0NDA3MH0.AFvbCHzDXowGpBqfjBbcWfphe0Bv0o-UMijgOA2jnnQ");
+        signInResponse.setStatus(CommonResponse.SUCCESS.getStatus());
+        signInResponse.setMsg(CommonResponse.SUCCESS.getMsg());
+        signInResponse.setToken("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0YWVtaW4iLCJpYXQiOjE2NzE0NDA0NzAsImV4cCI6MTY3MTQ0NDA3MH0.AFvbCHzDXowGpBqfjBbcWfphe0Bv0o-UMijgOA2jnnQ");
 
         providerRequest = ProviderRequest.builder()
                 .userId("taemin")
@@ -81,7 +75,7 @@ public class ProviderControllerTest {
     }
 
     @Test
-    @WithUser
+    @WithMockUser
     @DisplayName("판매자 입점 테스트")
     public void signUpTest() throws Exception {
         //given
@@ -93,13 +87,12 @@ public class ProviderControllerTest {
 
         //when
         mockMvc.perform(
-                        post("/auth/provider/sign-up")
+                        post("/provider/sign-up")
                                 .content(content)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .with(csrf()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.success").isBoolean())
-                .andExpect(jsonPath("$.code").exists())
+                .andExpect(jsonPath("$.status").isBoolean())
                 .andExpect(jsonPath("$.msg").exists())
                 .andDo(print());
 
@@ -108,12 +101,12 @@ public class ProviderControllerTest {
     }
 
     @Test
-    @WithUser
+    @WithMockUser
     @DisplayName("판매자 로그인 테스트. 200 반환 시 토큰이 있음.")
     public void signInTest() throws Exception {
         //given
         given(signService.signInProvider(anyString(), anyString()))
-                .willReturn(signInResult);
+                .willReturn(signInResponse);
 
         Map<String, String> paramMap = new HashMap<>();
         paramMap.put("userId", "taemin");
@@ -124,13 +117,12 @@ public class ProviderControllerTest {
 
         //when
         mockMvc.perform(
-                        post("/auth/provider/sign-in")
+                        post("/provider/sign-in")
                                 .content(content)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .with(csrf()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.success").exists())
-                .andExpect(jsonPath("$.code").exists())
+                .andExpect(jsonPath("$.status").isBoolean())
                 .andExpect(jsonPath("$.msg").exists())
                 .andExpect(jsonPath("$.token").exists())
                 .andDo(print());
@@ -140,7 +132,7 @@ public class ProviderControllerTest {
     }
 
     @Test
-    @WithUser
+    @WithMockUser
     @DisplayName("판매자 아이디 중복 확인")
     public void checkUserIdTest() throws Exception {
         //given
@@ -149,7 +141,7 @@ public class ProviderControllerTest {
 
         //when
         mockMvc.perform(
-                        get("/auth/provider/exists/id/taemin")
+                        get("/provider/exists/id/taemin")
                                 .with(csrf()))
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -159,7 +151,7 @@ public class ProviderControllerTest {
     }
 
     @Test
-    @WithUser
+    @WithMockUser
     @DisplayName("브랜드명 중복 확인")
     public void checkBrandNameTest() throws Exception {
         //given
@@ -168,7 +160,7 @@ public class ProviderControllerTest {
 
         //when
         mockMvc.perform(
-                        get("/auth/provider/exists/brand/브랜드명")
+                        get("/provider/exists/brand/브랜드명")
                                 .with(csrf()))
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -178,7 +170,7 @@ public class ProviderControllerTest {
     }
 
     @Test
-    @WithUser
+    @WithMockProvider
     @DisplayName("판매자 정보 수정")
     public void modifyTest() throws Exception {
         //given
@@ -195,7 +187,7 @@ public class ProviderControllerTest {
 
         //when
         mockMvc.perform(
-                        put("/auth/provider/")
+                        put("/provider/")
                                 .content(content)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .with(csrf()))
@@ -207,7 +199,7 @@ public class ProviderControllerTest {
     }
 
     @Test
-    @WithUser
+    @WithMockProvider
     @DisplayName("판매자 퇴점")
     public void withdrawalTest() throws Exception {
         //given
@@ -223,7 +215,7 @@ public class ProviderControllerTest {
 
         //when
         mockMvc.perform(
-                delete("/auth/provider/")
+                delete("/provider/")
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf()))

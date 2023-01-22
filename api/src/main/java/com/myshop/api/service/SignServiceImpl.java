@@ -8,6 +8,7 @@ import com.myshop.api.domain.dto.response.data.SignData;
 import com.myshop.api.domain.entity.Customer;
 import com.myshop.api.domain.entity.Provider;
 import com.myshop.api.enumeration.CommonResponse;
+import com.myshop.api.exception.NotExistUserException;
 import com.myshop.api.exception.PasswordNotMatchException;
 import com.myshop.api.repository.CustomerRepository;
 import com.myshop.api.repository.ProviderRepository;
@@ -19,7 +20,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.security.auth.login.AccountNotFoundException;
 import java.util.Set;
 
 @Service
@@ -52,15 +52,15 @@ public class SignServiceImpl implements SignService {
     }
 
     @Override
-    public SignData.SignInResponse signInProvider(String userId, String password) throws AccountNotFoundException {
-        Provider dbProvider = providerRepository.findByUserId(userId).orElseThrow(AccountNotFoundException::new);
+    public SignData.SignInResponse signInProvider(String userId, String password) {
+        Provider dbProvider = providerRepository.findByUserId(userId).orElseThrow(NotExistUserException::new);
 
         return signIn(userId, password, dbProvider.getPassword(), dbProvider.getRoles());
     }
 
     @Override
-    public SignData.SignInResponse signInCustomer(String userId, String password) throws AccountNotFoundException {
-        Customer dbCustomer = customerRepository.findByUserId(userId).orElseThrow(AccountNotFoundException::new);
+    public SignData.SignInResponse signInCustomer(String userId, String password) {
+        Customer dbCustomer = customerRepository.findByUserId(userId).orElseThrow(NotExistUserException::new);
 
         return signIn(userId, password, dbCustomer.getPassword(), dbCustomer.getRoles());
     }
@@ -111,14 +111,12 @@ public class SignServiceImpl implements SignService {
     }
 
     private void setSuccessResult(SignData.SignUpResponse signUpResponse) {
-        signUpResponse.setSuccess(true);
-        signUpResponse.setCode(CommonResponse.SUCCESS.getCode());
+        signUpResponse.setStatus(CommonResponse.SUCCESS.getStatus());
         signUpResponse.setMsg(CommonResponse.SUCCESS.getMsg());
     }
 
     private void setFailResult(SignData.SignUpResponse signUpResponse) {
-        signUpResponse.setSuccess(false);
-        signUpResponse.setCode(CommonResponse.FAIL.getCode());
+        signUpResponse.setStatus(CommonResponse.FAIL.getStatus());
         signUpResponse.setMsg(CommonResponse.FAIL.getMsg());
     }
 }

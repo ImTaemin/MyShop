@@ -2,18 +2,18 @@ package com.myshop.api.enumeration;
 
 public enum CommonResponse {
 
-    SUCCESS(0, "Success"), FAIL(-1, "Fail");
+    SUCCESS(true, "success"), FAIL(false, "fail");
 
-    int code;
+    boolean status;
     String msg;
 
-    CommonResponse(int code, String msg) {
-        this.code = code;
+    CommonResponse(boolean status, String msg) {
+        this.status = status;
         this.msg = msg;
     }
 
-    public int getCode() {
-        return code;
+    public boolean getStatus() {
+        return status;
     }
 
     public String getMsg() {

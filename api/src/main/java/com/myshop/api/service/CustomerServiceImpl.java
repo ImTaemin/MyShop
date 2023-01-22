@@ -32,9 +32,9 @@ public class CustomerServiceImpl implements CustomerService{
 
     @Override
     public CustomerData.Customer getInfo(Customer customer) {
-        return CustomerData.Customer.builder()
-                .customer(customer)
-                .build();
+        if(customer == null) throw new NotExistUserException();
+
+        return new CustomerData.Customer(customer);
     }
 
     @Transactional

@@ -30,8 +30,9 @@ public class ProviderServiceImpl implements ProviderService{
     }
 
     @Override
-    public ProviderData.Provider getInfo(ProviderAccount providerAccount) {
-        Provider provider = providerAccount.getProvider();
+    public ProviderData.Provider getInfo(Provider provider) {
+        if(provider == null) throw new NotExistUserException();
+
         return new ProviderData.Provider(provider);
     }
 
