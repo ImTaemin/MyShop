@@ -55,7 +55,7 @@ public class GCPStorageServiceImpl implements GCPStorageService{
         for (MultipartFile image : images) {
             try {
                 String filename = image.getOriginalFilename();
-                if(filename == null) throw  new FileNameException();
+                if(filename == null) throw new FileNameException();
 
                 // MIME 타입을 확인하기 위한 Path
                 Path path = new File(filename).toPath();

@@ -3,6 +3,7 @@ package com.myshop.api.controller;
 import com.myshop.api.annotation.CurrentProvider;
 import com.myshop.api.domain.dto.request.CustomPageRequest;
 import com.myshop.api.domain.dto.request.ItemRequest;
+import com.myshop.api.domain.dto.response.BaseResponse;
 import com.myshop.api.domain.dto.response.data.ItemData;
 import com.myshop.api.domain.entity.Provider;
 import com.myshop.api.exception.ItemNotFoundException;
@@ -46,55 +47,43 @@ public class ItemController {
 
     @ApiOperation(value = "상품 등록")
     @PostMapping(value = "/", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<Void> insertItems(@CurrentProvider Provider provider, ItemRequest.ItemList itemRequestList) {
+    public ResponseEntity<BaseResponse> insertItems(@CurrentProvider Provider provider, ItemRequest.ItemList itemRequestList) {
         Boolean isUploaded = itemService.insertItems(provider, itemRequestList.getItemRequestList());
 
         return isUploaded
-                ? ResponseEntity.ok().build()
-                : ResponseEntity.badRequest().build();
+                ? BaseResponse.ok()
+                : BaseResponse.fail();
     }
     
     @ApiOperation(value = "상품 수정")
     @PutMapping(value = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Void> modifyItems(@CurrentProvider Provider provider, ItemRequest.ItemList itemRequestList) {
+    public ResponseEntity<BaseResponse> modifyItems(@CurrentProvider Provider provider, ItemRequest.ItemList itemRequestList) {
         Long modifiedCnt = itemService.modifyItems(provider, itemRequestList.getItemRequestList());
 
         return modifiedCnt > 0
-                ? ResponseEntity.ok().build()
-                : ResponseEntity.badRequest().build();
+                ? BaseResponse.ok()
+                : BaseResponse.fail();
     }
     
     @ApiOperation(value = "상품 가격, 수량 수정")
     @PatchMapping(value = "/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> modifyPriceAndQuantityItems(@CurrentProvider Provider provider, @RequestBody ItemRequest.PriceAndQuantityList priceAndQuantityList) {
+    public ResponseEntity<BaseResponse> modifyPriceAndQuantityItems(@CurrentProvider Provider provider, @RequestBody ItemRequest.PriceAndQuantityList priceAndQuantityList) {
 
         Long modifiedCnt = itemService.modifyPriceAndQuantityItems(provider, priceAndQuantityList.getPriceAndQuantityList());
 
         return modifiedCnt > 0
-                ? ResponseEntity.ok().build()
-                : ResponseEntity.badRequest().build();
+                ? BaseResponse.ok()
+                : BaseResponse.fail();
     }
     
     @ApiOperation(value = "상품 삭제")
     @DeleteMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> deleteItems(@CurrentProvider Provider provider, @RequestBody ItemRequest.ItemIdList itemIdList) {
+    public ResponseEntity<BaseResponse> deleteItems(@CurrentProvider Provider provider, @RequestBody ItemRequest.ItemIdList itemIdList) {
         Long deletedCnt = itemService.deleteItems(provider, itemIdList.getItemIdList());
 
         return deletedCnt > 0
-                ? ResponseEntity.ok().build()
-                : ResponseEntity.badRequest().build();
-    }
-
-    @ExceptionHandler(value = ItemNotFoundException.class)
-    public ResponseEntity<Map<String, String>> itemNotFoundHandler(ItemNotFoundException e) {
-
-        HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
-
-        Map<String, String> map = new HashMap<>();
-        map.put("msg", e.getMessage());
-
-        return new ResponseEntity<>(map, responseHeaders, HttpStatus.BAD_REQUEST);
+                ? BaseResponse.ok()
+                : BaseResponse.fail();
     }
 
 

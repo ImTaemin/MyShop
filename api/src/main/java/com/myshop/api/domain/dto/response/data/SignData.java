@@ -12,18 +12,14 @@ public class SignData {
     @Data
     @NoArgsConstructor
     public static class SignUpResponse {
-        @ApiModelProperty(value = ApiValueUtils.Sign.SUCCESS)
-        private boolean success;
-
-        @ApiModelProperty(value = ApiValueUtils.Sign.CODE)
-        private int code;
+        @ApiModelProperty(value = ApiValueUtils.Sign.STATUS)
+        private boolean status;
 
         @ApiModelProperty(value = ApiValueUtils.Sign.MSG)
         private String msg;
 
-        public SignUpResponse(boolean success, int code, String msg) {
-            this.success = success;
-            this.code = code;
+        public SignUpResponse(boolean status, String msg) {
+            this.status = status;
             this.msg = msg;
         }
     }
@@ -35,8 +31,8 @@ public class SignData {
         @ApiModelProperty(value = ApiValueUtils.Sign.TOKEN)
         private String token;
 
-        public SignInResponse(boolean success, int code, String msg, String token) {
-            super(success, code, msg);
+        public SignInResponse(boolean status, String msg, String token) {
+            super(status, msg);
             this.token = token;
         }
     }

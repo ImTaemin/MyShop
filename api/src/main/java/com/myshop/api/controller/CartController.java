@@ -3,6 +3,7 @@ package com.myshop.api.controller;
 import com.myshop.api.annotation.CurrentCustomer;
 import com.myshop.api.domain.dto.request.CartRequest;
 import com.myshop.api.domain.dto.request.CustomPageRequest;
+import com.myshop.api.domain.dto.response.BaseResponse;
 import com.myshop.api.domain.dto.response.data.CartData;
 import com.myshop.api.domain.entity.Customer;
 import com.myshop.api.service.CartService;
@@ -31,26 +32,26 @@ public class CartController {
 
     @ApiOperation(value = "구매자 장바구니 상품 추가")
     @PostMapping("/")
-    public ResponseEntity<Void> insertCartItem(@CurrentCustomer Customer customer, @RequestBody CartRequest cartRequest) {
+    public ResponseEntity<BaseResponse> insertCartItem(@CurrentCustomer Customer customer, @RequestBody CartRequest cartRequest) {
         cartService.insertCartItem(customer, cartRequest);
 
-        return ResponseEntity.ok().build();
+        return BaseResponse.ok();
     }
 
     @ApiOperation(value = "구매자 장바구니 상품 수량 수정")
     @PutMapping("/")
-    public ResponseEntity<Void> updateCartItemQuantity(@CurrentCustomer Customer customer, @RequestBody CartRequest cartRequest) {
+    public ResponseEntity<BaseResponse> updateCartItemQuantity(@CurrentCustomer Customer customer, @RequestBody CartRequest cartRequest) {
         cartService.updateCartItemQuantity(customer, cartRequest);
 
-        return ResponseEntity.ok().build();
+        return BaseResponse.ok();
     }
 
     @ApiOperation(value = "구매자 장바구니 상품 삭제")
     @DeleteMapping("/{itemId}")
-    public ResponseEntity<Void> deleteCartItem(@CurrentCustomer Customer customer, @PathVariable Long itemId) {
+    public ResponseEntity<BaseResponse> deleteCartItem(@CurrentCustomer Customer customer, @PathVariable Long itemId) {
         cartService.deleteCateItem(customer, itemId);
 
-        return ResponseEntity.ok().build();
+        return BaseResponse.ok();
     }
 
 

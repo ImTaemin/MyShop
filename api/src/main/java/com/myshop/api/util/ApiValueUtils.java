@@ -2,6 +2,12 @@ package com.myshop.api.util;
 
 public class ApiValueUtils {
 
+    public static class CommonResponse {
+        public static final String STATUS = "결과 코드";
+        public static final String MSG = "상세 메세지";
+        public static final String DATA = "내용";
+    }
+
     public static class User {
         public static final String USER_ID = "아이디";
         public static final String PASSWORD = "비밀번호";
@@ -53,7 +59,7 @@ public class ApiValueUtils {
 
     public static class Sign {
         public static final String SUCCESS = "가입 성공 여부. true - 성공";
-        public static final String CODE = "가입 성공 코드. 0 - 성공";
+        public static final String STATUS = "가입 성공 코드. 0 - 성공";
         public static final String MSG = "가입 성공 메세지. Success - 성공";
         public static final String TOKEN = "로그인에 성공했을 때 받는 토큰";
     }
