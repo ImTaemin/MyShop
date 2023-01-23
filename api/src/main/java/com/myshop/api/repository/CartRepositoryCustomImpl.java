@@ -2,7 +2,6 @@ package com.myshop.api.repository;
 
 import com.myshop.api.domain.dto.request.CartRequest;
 import com.myshop.api.domain.dto.response.data.CartData;
-import com.myshop.api.domain.dto.response.data.ItemData;
 import com.myshop.api.domain.entity.Cart;
 import com.myshop.api.domain.entity.Customer;
 import com.myshop.api.domain.entity.QCart;
@@ -13,7 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Component

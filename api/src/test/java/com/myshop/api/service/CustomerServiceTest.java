@@ -38,7 +38,7 @@ public class CustomerServiceTest {
 
     @BeforeEach
     public void init() {
-        customerService = new CustomerServiceImpl(customerRepository, itemRepository);
+        customerService = new CustomerServiceImpl(customerRepository);
 
         customer = Customer.builder()
                 .userId("taemin")

@@ -103,5 +103,13 @@ public class ApiValueUtils {
         public static final String ITEM_ID = "상품 고유번호";
         public static final String QUANTITY = "수량";
     }
+
+    public static class Coupon {
+        public static final String ID = "쿠폰 고유번호";
+        public static final String CODE = "쿠폰 코드";
+        public static final String CONTENT = "쿠폰 내용";
+        public static final String EXPIRE_DATE = "쿠폰 만료일";
+        public static final String DISCOUNT = "쿠폰 할인율";
+    }
     
 }

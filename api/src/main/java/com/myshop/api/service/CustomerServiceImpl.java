@@ -21,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class CustomerServiceImpl implements CustomerService{
 
     private final CustomerRepository customerRepository;
-    private final ItemRepository itemRepository;
 
     @Override
     public UserDetails getCustomerByUserId(String userId) throws UsernameNotFoundException {

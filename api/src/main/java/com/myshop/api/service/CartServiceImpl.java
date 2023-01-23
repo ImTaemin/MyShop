@@ -52,7 +52,7 @@ public class CartServiceImpl implements CartService {
 
     @Transactional
     @Override
-    public void deleteCateItem(Customer customer, Long itemId) {
+    public void deleteCartItem(Customer customer, Long itemId) {
         CartId cartId = CartId.builder()
                 .item(itemId)
                 .customer(customer.getId())

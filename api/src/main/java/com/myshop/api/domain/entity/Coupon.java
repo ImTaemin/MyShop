@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
@@ -33,7 +34,7 @@ public class Coupon {
     private String content;
 
     @Column(nullable = false)
-    private LocalDate expireDate;
+    private LocalDateTime expireDate;
 
     @Column(nullable = false)
     private float discount;
@@ -43,7 +44,7 @@ public class Coupon {
     private Customer customer;
 
     @Builder
-    public Coupon(Long id, Provider provider, String code, String content, LocalDate expireDate, float discount, Customer customer) {
+    public Coupon(Long id, Provider provider, String code, String content, LocalDateTime expireDate, float discount, Customer customer) {
         this.id = id;
         this.provider = provider;
         this.code = code;

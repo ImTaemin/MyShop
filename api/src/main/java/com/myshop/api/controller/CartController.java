@@ -49,7 +49,7 @@ public class CartController {
     @ApiOperation(value = "구매자 장바구니 상품 삭제")
     @DeleteMapping("/{itemId}")
     public ResponseEntity<BaseResponse> deleteCartItem(@CurrentCustomer Customer customer, @PathVariable Long itemId) {
-        cartService.deleteCateItem(customer, itemId);
+        cartService.deleteCartItem(customer, itemId);
 
         return BaseResponse.ok();
     }
