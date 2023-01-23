@@ -66,6 +66,11 @@ public class ExceptionControllerAdvice {
         return BaseResponse.error("잘못된 값입니다.");
     }
 
+    @ExceptionHandler(value = DuplicateCouponException.class)
+    public ResponseEntity<BaseResponse> duplicateCouponHandler(DuplicateCouponException e) {
+        return BaseResponse.error(e.getMessage());
+    }
+
     // Exception.class 만 넣으면 처리가 안된다. 왜지?
     @ExceptionHandler(value = {RuntimeException.class, Exception.class})
     public ResponseEntity<BaseResponse> runtimeExceptionHandler(RuntimeException e) {

@@ -157,6 +157,6 @@ public class CartControllerTest {
                 .andExpect(status().isOk());
 
         //then
-        verify(cartService).deleteCateItem(any(Customer.class), anyLong());
+        verify(cartService).deleteCartItem(any(Customer.class), anyLong());
     }
 }
