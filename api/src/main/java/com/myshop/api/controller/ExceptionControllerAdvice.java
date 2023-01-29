@@ -36,13 +36,13 @@ public class ExceptionControllerAdvice {
         return BaseResponse.error(e.getMessage());
     }
 
-    @ExceptionHandler(value = NotExistFavoriteException.class)
-    public ResponseEntity<BaseResponse> notExistFavoriteHandler(NotExistFavoriteException e) {
+    @ExceptionHandler(value = FavoriteNotFoundException.class)
+    public ResponseEntity<BaseResponse> favoriteNotFoundHandler(FavoriteNotFoundException e) {
         return BaseResponse.error(e.getMessage());
     }
 
-    @ExceptionHandler(value = NotExistUserException.class)
-    public ResponseEntity<BaseResponse> notExistUserHandler(NotExistUserException e) {
+    @ExceptionHandler(value = UserNotFoundException.class)
+    public ResponseEntity<BaseResponse> userNotFoundHandler(UserNotFoundException e) {
         return BaseResponse.error(e.getMessage());
     }
 
@@ -68,6 +68,16 @@ public class ExceptionControllerAdvice {
 
     @ExceptionHandler(value = DuplicateCouponException.class)
     public ResponseEntity<BaseResponse> duplicateCouponHandler(DuplicateCouponException e) {
+        return BaseResponse.error(e.getMessage());
+    }
+
+    @ExceptionHandler(value = IllegalOrderException.class)
+    public ResponseEntity<BaseResponse> IllegalOrderHandler(IllegalOrderException e) {
+        return BaseResponse.error(e.getMessage());
+    }
+
+    @ExceptionHandler(value = NotExistCouponException.class)
+    public ResponseEntity<BaseResponse> NotExistCouponHandler(NotExistCouponException e) {
         return BaseResponse.error(e.getMessage());
     }
 

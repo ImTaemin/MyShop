@@ -5,6 +5,7 @@ import com.myshop.api.domain.dto.response.data.CouponData;
 import com.myshop.api.domain.entity.Coupon;
 import com.myshop.api.domain.entity.Provider;
 import com.myshop.api.domain.entity.QCoupon;
+import com.myshop.api.domain.entity.QItem;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class CouponRepositoryCustomImpl extends QuerydslRepositorySupport implements CouponRepositoryCustom{
@@ -21,6 +23,7 @@ public class CouponRepositoryCustomImpl extends QuerydslRepositorySupport implem
     private final JPAQueryFactory jpaQueryFactory;
 
     QCoupon qCoupon = QCoupon.coupon;
+    QItem qItem = QItem.item;
 
     public CouponRepositoryCustomImpl(JPAQueryFactory jpaQueryFactory) {
         super(Coupon.class);
@@ -62,5 +65,22 @@ public class CouponRepositoryCustomImpl extends QuerydslRepositorySupport implem
                 .where(qCoupon.provider().id.eq(provider.getId())
                         .and(qCoupon.code.eq(code)))
                 .execute();
+    }
+
+    @Override
+    public Optional<Coupon> findByCodeAndItemId(String code, Long itemId) {
+        /*
+         * select * from coupon c, item
+         * where coupon.providerId = item.providerId
+         * and coupon.code = :code
+         * and item.id = :itemId
+         */
+        return Optional.ofNullable(jpaQueryFactory.select(qCoupon)
+                .from(qCoupon)
+                .innerJoin(qItem)
+                .on(qCoupon.provider().id.eq(qItem.provider().id))
+                .where(qCoupon.code.eq(code)
+                        .and(qItem.id.eq(itemId)))
+                .fetchOne());
     }
 }

@@ -1,7 +1,7 @@
 spring:
   profiles:
     active: prod, dev
-    include: jwt, gcp
+    include: jwt, gcp, pay
 
   mvc:
     pathmatch:
@@ -17,3 +17,7 @@ server:
   servlet:
     encoding:
       charset: UTF-8
+
+api:
+  url:
+    baseUrl: https://d75a-210-100-160-190.jp.ngrok.io

@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Profile;
 
 @Configuration
 @RequiredArgsConstructor
-@Profile("prod")
 public class JasyptConfig {
 
     // 서비스를 시작할 때 파라미터로 [-Djasypt.encryptor.password=패스워드] 형태로 넣어주면 패스워드 노출없이 실행 가능

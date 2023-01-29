@@ -29,6 +29,9 @@ public class Provider implements UserDetails {
     private Long id;
 
     @Column(unique = true, nullable = false)
+    private String cid = "TC0ONETIME";
+
+    @Column(unique = true, nullable = false)
     private String userId;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -98,8 +101,9 @@ public class Provider implements UserDetails {
     }
 
     @Builder
-    public Provider(Long id, String userId, String password, String phone, String brandName, LocalDateTime createDate, List<Item> items, List<Coupon> coupons, Set<String> roles) {
+    public Provider(Long id, String cid, String userId, String password, String phone, String brandName, LocalDateTime createDate, List<Item> items, List<Coupon> coupons, Set<String> roles) {
         this.id = id;
+        this.cid = cid;
         this.userId = userId;
         this.password = password;
         this.phone = phone;

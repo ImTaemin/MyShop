@@ -5,6 +5,7 @@ import com.myshop.api.domain.entity.Item;
 import com.myshop.api.domain.entity.ItemImage;
 import com.myshop.api.domain.entity.Provider;
 import com.myshop.api.domain.entity.QItem;
+import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
@@ -76,4 +77,5 @@ public class ItemRepositoryCustomImpl extends QuerydslRepositorySupport implemen
                         .and(qItem.provider().id.eq(providerId)))
                 .execute();
     }
+
 }

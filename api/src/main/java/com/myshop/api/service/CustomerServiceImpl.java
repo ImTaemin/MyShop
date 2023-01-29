@@ -4,11 +4,8 @@ import com.myshop.api.domain.dto.response.data.CustomerData;
 import com.myshop.api.domain.entity.Customer;
 import com.myshop.api.domain.dto.account.CustomerAccount;
 import com.myshop.api.domain.dto.request.UserUpdateRequest;
-import com.myshop.api.domain.entity.Item;
-import com.myshop.api.exception.ItemNotFoundException;
-import com.myshop.api.exception.NotExistUserException;
+import com.myshop.api.exception.UserNotFoundException;
 import com.myshop.api.repository.CustomerRepository;
-import com.myshop.api.repository.ItemRepository;
 import com.myshop.api.util.PasswordEncryptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,14 +21,14 @@ public class CustomerServiceImpl implements CustomerService{
 
     @Override
     public UserDetails getCustomerByUserId(String userId) throws UsernameNotFoundException {
-        Customer customer = customerRepository.findByUserId(userId).orElseThrow(NotExistUserException::new);
+        Customer customer = customerRepository.findByUserId(userId).orElseThrow(UserNotFoundException::new);
 
         return new CustomerAccount(customer);
     }
 
     @Override
     public CustomerData.Customer getInfo(Customer customer) {
-        if(customer == null) throw new NotExistUserException();
+        if(customer == null) throw new UserNotFoundException();
 
         return new CustomerData.Customer(customer);
     }
@@ -45,7 +42,7 @@ public class CustomerServiceImpl implements CustomerService{
     @Transactional
     @Override
     public Boolean modify(UserUpdateRequest updateParam) {
-        Customer dbCustomer = customerRepository.findByUserId(updateParam.getUserId()).orElseThrow(NotExistUserException::new);
+        Customer dbCustomer = customerRepository.findByUserId(updateParam.getUserId()).orElseThrow(UserNotFoundException::new);
 
         if(PasswordEncryptor.isMatchBcrypt(updateParam.getPassword(), dbCustomer.getPassword())) {
             dbCustomer.setPassword(updateParam.getPassword());
@@ -61,7 +58,7 @@ public class CustomerServiceImpl implements CustomerService{
     @Transactional
     @Override
     public Boolean withdrawal(String userId, String password) {
-        Customer dbCustomer = customerRepository.findByUserId(userId).orElseThrow(NotExistUserException::new);
+        Customer dbCustomer = customerRepository.findByUserId(userId).orElseThrow(UserNotFoundException::new);
 
         if(PasswordEncryptor.isMatchBcrypt(password, dbCustomer.getPassword())) {
             customerRepository.delete(dbCustomer);
