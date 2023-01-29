@@ -1,66 +1,76 @@
 package com.myshop.api.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.myshop.api.domain.entity.embedded.Address;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@DynamicUpdate
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "Orders", indexes = {
-        @Index(name = "idx_orders_customer_id", columnList = "customer_id")
-})
-public class Orders {
+public class Orders implements Persistable {
 
     @Id
-    @Column(name = "order_id")
+    @Column(name = "order_id", unique = true)
     private String id;
 
-    @Column(nullable = false)
+    @Setter
+    @Column
     private String tid;
 
-    @Column(nullable = false)
-    private float discountPrice;
+    @Setter
+    @Column
+    private int totalPayment;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.dd HH:mm", timezone = "Asia/Seoul")
     @Column(nullable = false)
-    private int totalPrice;
-
-    @Column(nullable = false)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-    @CreationTimestamp
     private LocalDateTime orderDate;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-    @Column(nullable = false)
+    @Column
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.dd HH:mm", timezone = "Asia/Seoul")
+    @CreationTimestamp
+    private LocalDateTime createDate;
+
+    @Column
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.dd HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime cancelDate;
 
-    @Column(nullable = false)
-    private String shippingLocation;
+    @Embedded
+    private Address address;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    @OneToMany(mappedBy = "item")
+    @Setter
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OneToMany(mappedBy = "item", cascade = CascadeType.PERSIST)
     private List<OrderItem> orderItemList = new ArrayList<>();
 
+    @Override
+    public boolean isNew() {
+        return createDate == null;
+    }
+
     @Builder
-    public Orders(String id, String tid, float discountPrice, int totalPrice, LocalDateTime orderDate, LocalDateTime cancelDate, String shippingLocation, Customer customer, List<OrderItem> orderItemList) {
+    public Orders(String id, String tid, int totalPayment, LocalDateTime orderDate, LocalDateTime createDate, LocalDateTime cancelDate, Address address, Customer customer, List<OrderItem> orderItemList) {
         this.id = id;
         this.tid = tid;
-        this.discountPrice = discountPrice;
-        this.totalPrice = totalPrice;
+        this.totalPayment = totalPayment;
         this.orderDate = orderDate;
+        this.createDate = createDate;
         this.cancelDate = cancelDate;
-        this.shippingLocation = shippingLocation;
+        this.address = address;
         this.customer = customer;
         this.orderItemList = orderItemList;
     }

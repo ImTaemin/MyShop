@@ -65,21 +65,22 @@ public class ApiValueUtils {
     }
 
     public static class Order {
-        public static final String ID = "주문 고유번호";
-        public static final String ORDER_NO = "주문 번호";
+        public static final String ID = "주문 번호";
         public static final String TID = "거래 번호";
         public static final String TOTAL_PAYMENT = "총 결제 금액";
         public static final String ORDER_DATE = "주문일";
         public static final String CANCEL_DATE = "주문 취소일";
         public static final String CUSTOMER = "구매자";
         public static final String ORDER_ITEM_LIST = "주문 목록";
-        public static final String ORDER_STATUS_ENUM = "RECEIVED,\n" +
+        public static final String PAY_METHOD = "KAKAO, NAVER";
+        public static final String ORDER_STATUS_ENUM = "REQUESTED" +
+                "RECEIVED,\n" +
                 "CANCELED,\n" +
                 "DELIVERING,\n" +
                 "DELIVERED";
 
         public static class Address {
-            public static final String LOAD = "도로명 주소";
+            public static final String LOAD_NAME = "도로명 주소";
             public static final String DETAIL = "상세 주소";
             public static final String POSTAL_CODE = "우편번호";
         }
@@ -111,5 +112,5 @@ public class ApiValueUtils {
         public static final String EXPIRE_DATE = "쿠폰 만료일";
         public static final String DISCOUNT = "쿠폰 할인율";
     }
-    
+
 }

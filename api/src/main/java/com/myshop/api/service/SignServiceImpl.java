@@ -8,7 +8,7 @@ import com.myshop.api.domain.dto.response.data.SignData;
 import com.myshop.api.domain.entity.Customer;
 import com.myshop.api.domain.entity.Provider;
 import com.myshop.api.enumeration.CommonResponse;
-import com.myshop.api.exception.NotExistUserException;
+import com.myshop.api.exception.UserNotFoundException;
 import com.myshop.api.exception.PasswordNotMatchException;
 import com.myshop.api.repository.CustomerRepository;
 import com.myshop.api.repository.ProviderRepository;
@@ -20,6 +20,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.SecureRandom;
 import java.util.Set;
 
 @Service
@@ -53,14 +54,14 @@ public class SignServiceImpl implements SignService {
 
     @Override
     public SignData.SignInResponse signInProvider(String userId, String password) {
-        Provider dbProvider = providerRepository.findByUserId(userId).orElseThrow(NotExistUserException::new);
+        Provider dbProvider = providerRepository.findByUserId(userId).orElseThrow(UserNotFoundException::new);
 
         return signIn(userId, password, dbProvider.getPassword(), dbProvider.getRoles());
     }
 
     @Override
     public SignData.SignInResponse signInCustomer(String userId, String password) {
-        Customer dbCustomer = customerRepository.findByUserId(userId).orElseThrow(NotExistUserException::new);
+        Customer dbCustomer = customerRepository.findByUserId(userId).orElseThrow(UserNotFoundException::new);
 
         return signIn(userId, password, dbCustomer.getPassword(), dbCustomer.getRoles());
     }
@@ -85,6 +86,8 @@ public class SignServiceImpl implements SignService {
         // 판매자
         ProviderRequest providerRequest = (ProviderRequest) userDto;
         Provider signUpProvider = Provider.builder()
+//                .cid(this.getCid())
+                .cid("TC0ONETIME")
                 .userId(providerRequest.getUserId())
                 .password(providerRequest.getPassword())
                 .phone(providerRequest.getPhone())
@@ -93,6 +96,24 @@ public class SignServiceImpl implements SignService {
                 .build();
 
         return providerRepository.save(signUpProvider);
+    }
+
+    private String getCid() {
+        final int LENGTH = 10;
+        final String CHAR_LOWER = "abcdefghijklmnopqrstuvwxyz";
+        final String CHAR_UPPER = CHAR_LOWER.toUpperCase();
+        final String NUMBER = "0123456789";
+        final String RANDOM_STRING_DATA = CHAR_LOWER + CHAR_UPPER + NUMBER;
+        SecureRandom random = new SecureRandom();
+
+        StringBuilder cidBuilder = new StringBuilder(LENGTH);
+        for (int i = 0; i < LENGTH; i++) {
+            int rndCharAt = random.nextInt(RANDOM_STRING_DATA.length());
+            char rndChar = RANDOM_STRING_DATA.charAt(rndCharAt);
+            cidBuilder.append(rndChar);
+        }
+
+        return cidBuilder.toString();
     }
 
     // 판매자, 구매자 구별 없는 로그인 메서드

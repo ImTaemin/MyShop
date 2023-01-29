@@ -4,7 +4,7 @@ import com.myshop.api.domain.dto.account.ProviderAccount;
 import com.myshop.api.domain.dto.request.UserUpdateRequest;
 import com.myshop.api.domain.dto.response.data.ProviderData;
 import com.myshop.api.domain.entity.Provider;
-import com.myshop.api.exception.NotExistUserException;
+import com.myshop.api.exception.UserNotFoundException;
 import com.myshop.api.repository.ProviderRepository;
 import com.myshop.api.util.PasswordEncryptor;
 import lombok.RequiredArgsConstructor;
@@ -24,14 +24,14 @@ public class ProviderServiceImpl implements ProviderService{
 
     @Override
     public UserDetails getProviderByUserId(String userId) {
-        Provider provider =  providerRepository.findByUserId(userId).orElseThrow(NotExistUserException::new);
+        Provider provider =  providerRepository.findByUserId(userId).orElseThrow(UserNotFoundException::new);
 
         return new ProviderAccount(provider);
     }
 
     @Override
     public ProviderData.Provider getInfo(Provider provider) {
-        if(provider == null) throw new NotExistUserException();
+        if(provider == null) throw new UserNotFoundException();
 
         return new ProviderData.Provider(provider);
     }
@@ -51,7 +51,7 @@ public class ProviderServiceImpl implements ProviderService{
     @Transactional
     @Override
     public Boolean modify(UserUpdateRequest updateParam) {
-        Provider dbProvider = providerRepository.findByUserId(updateParam.getUserId()).orElseThrow(NotExistUserException::new);
+        Provider dbProvider = providerRepository.findByUserId(updateParam.getUserId()).orElseThrow(UserNotFoundException::new);
 
         if(PasswordEncryptor.isMatchBcrypt(updateParam.getPassword(), dbProvider.getPassword())){
             dbProvider.setPassword(updateParam.getModifyPassword());
@@ -69,7 +69,7 @@ public class ProviderServiceImpl implements ProviderService{
     @Transactional
     @Override
     public Boolean withdrawal(String userId, String password) {
-        Provider dbProvider = providerRepository.findByUserId(userId).orElseThrow(NotExistUserException::new);
+        Provider dbProvider = providerRepository.findByUserId(userId).orElseThrow(UserNotFoundException::new);
         
        if(PasswordEncryptor.isMatchBcrypt(password, dbProvider.getPassword())) {
            providerRepository.delete(dbProvider);

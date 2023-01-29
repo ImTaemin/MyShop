@@ -2,6 +2,7 @@ package com.myshop.api.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.myshop.api.domain.entity.id.CartId;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @IdClass(CartId.class)
 public class Cart {

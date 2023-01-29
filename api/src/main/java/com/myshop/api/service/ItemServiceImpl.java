@@ -33,8 +33,8 @@ public class ItemServiceImpl implements ItemService {
 
     @Transactional
     @Override
-    public ItemData.Item getItem(Long itemCode) {
-        Item item = itemRepository.findById(itemCode).orElseThrow(ItemNotFoundException::new);
+    public ItemData.Item getItem(Long itemId) {
+        Item item = itemRepository.findById(itemId).orElseThrow(ItemNotFoundException::new);
         LOGGER.info("상품 조회 완료");
 
         ItemData.Item resItem = new ItemData.Item(item);
