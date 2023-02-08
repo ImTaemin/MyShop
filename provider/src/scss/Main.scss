@@ -1,0 +1,20 @@
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+
+  .content-container {
+    padding: 1.5rem!important;
+    background: #EEF5F9;
+
+    height: 100vh;
+
+    .content {
+      padding: 1em;
+      background: white;
+      box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 5%);
+      border-radius: 0.3rem;
+    }
+  }
+}
+
