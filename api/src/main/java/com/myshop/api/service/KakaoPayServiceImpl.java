@@ -160,9 +160,9 @@ public class KakaoPayServiceImpl implements KakaoPayService{
         params.add("quantity", String.valueOf(totalQuantity));
         params.add("total_amount", String.valueOf(totalPrice));
         params.add("tax_free_amount", "0");
-        params.add("approval_url", apiBaseUrl + "/order/kakao/approval?orderId=" + orderId);
-        params.add("cancel_url", apiBaseUrl + "/order/kakao/cancel?orderId=" + orderId);
-        params.add("fail_url", apiBaseUrl + "/order/kakao/fail?orderId=" + orderId);
+        params.add("approval_url", apiBaseUrl + "/customer/order/kakao/approval?orderId=" + orderId);
+        params.add("cancel_url", apiBaseUrl + "/customer/order/kakao/cancel?orderId=" + orderId);
+        params.add("fail_url", apiBaseUrl + "/customer/order/kakao/fail?orderId=" + orderId);
 
         // 헤더 설정
         HttpHeaders headers = new HttpHeaders();

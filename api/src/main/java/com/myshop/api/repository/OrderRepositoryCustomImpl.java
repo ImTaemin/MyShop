@@ -4,6 +4,7 @@ import com.myshop.api.domain.dto.request.CustomPageRequest;
 import com.myshop.api.domain.dto.response.data.ItemData;
 import com.myshop.api.domain.dto.response.data.OrderItemData;
 import com.myshop.api.domain.entity.*;
+import com.myshop.api.enumeration.OrderStatus;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -30,9 +31,9 @@ public class OrderRepositoryCustomImpl extends QuerydslRepositorySupport impleme
     }
 
     @Override
-    public List<OrderItemData> selectByCustom(Customer customer, Pageable pageable) {
-        
-        List<OrderItemData> resOrderItemList = jpaQueryFactory
+    public List<OrderItemData> selectByCustomer(Customer customer, Pageable pageable) {
+
+        return jpaQueryFactory
                 .select(
                         Projections.bean(OrderItemData.class,
                                 qOrderItem.orders().id.as("orderNo"),
@@ -43,6 +44,7 @@ public class OrderRepositoryCustomImpl extends QuerydslRepositorySupport impleme
                                 Projections.bean(ItemData.ItemSimple.class,
                                         qItem.id,
                                         qItem.name,
+                                        qItem.code,
                                         qItem.brandName,
                                         qItem.mainImage).as("item")))
                 .from(qOrders)
@@ -54,9 +56,54 @@ public class OrderRepositoryCustomImpl extends QuerydslRepositorySupport impleme
                 .where(qOrders.customer().id.eq(customer.getId()))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
+                .orderBy(qOrders.orderDate.desc())
                 .fetch();
+    }
 
-        return resOrderItemList;
+    @Override
+    public List<OrderItemData> selectByProvider(Provider provider, Pageable pageable, OrderStatus orderStatus) {
+
+        return jpaQueryFactory
+                .select(
+                        Projections.bean(OrderItemData.class,
+                                qOrderItem.cnt,
+                                qOrderItem.orders().id.as("orderNo"),
+                                qOrderItem.quantity,
+                                qOrderItem.payment,
+                                qOrderItem.orderStatus,
+                                qOrderItem.orderDate,
+                                Projections.bean(ItemData.ItemSimple.class,
+                                        qItem.id,
+                                        qItem.code,
+                                        qItem.name,
+                                        qItem.brandName,
+                                        qItem.mainImage).as("item")))
+                .from(qOrders)
+                .innerJoin(qOrderItem)
+                .on(qOrders.id.eq(qOrderItem.orders().id))
+                .innerJoin(qItem)
+                .on(qOrderItem.item().id.eq(qItem.id))
+
+                .where(qItem.provider().id.eq(provider.getId())
+                        .and(qOrderItem.orderStatus.eq(orderStatus)))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(qOrders.orderDate.desc())
+                .fetch();
+    }
+
+    @Override
+    public void changeOrders(List<String> orderNoList, OrderStatus orderStatus) {
+        // 주문 상품의 기본키가 [주문번호, 순서]라 in 사용x (업체별 주문 상태 변경 가능)
+        for (String orderNoAndCnt: orderNoList) {
+            String[] orderCntArr = orderNoAndCnt.split("-");
+
+            jpaQueryFactory.update(qOrderItem)
+                    .set(qOrderItem.orderStatus, orderStatus)
+                    .where(qOrderItem.orders().id.eq(orderCntArr[0])
+                            .and(qOrderItem.cnt.eq(Integer.valueOf(orderCntArr[1]))))
+                    .execute();
+        }
     }
 
     @Override

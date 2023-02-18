@@ -1,17 +1,14 @@
-import {useRoutes} from "react-router";
+import {useRoutes} from "react-router-dom";
 import Themeroutes from './routes/Router'
-import {Helmet} from "react-helmet-async";
+import 'bootstrap/dist/css/bootstrap.css';
 
 const App = () => {
   const routing = useRoutes(Themeroutes);
 
   return (
-    <>
-      <Helmet>
-        <title>메인 페이지</title>
-      </Helmet>
+    <div>
       {routing}
-    </>
+    </div>
   );
 }
 

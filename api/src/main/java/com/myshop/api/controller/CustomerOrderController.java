@@ -7,7 +7,6 @@ import com.myshop.api.domain.dto.request.OrderRequest;
 import com.myshop.api.domain.dto.response.BaseResponse;
 import com.myshop.api.domain.dto.response.data.OrderItemData;
 import com.myshop.api.domain.entity.Customer;
-import com.myshop.api.service.KakaoPayService;
 import com.myshop.api.service.OrderService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -15,24 +14,31 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-@Api(tags = {"주문 REST API"})
+@Api(tags = {"구매자 주문 REST API"})
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/order")
-public class OrderController {
+@RequestMapping("/customer/order")
+public class CustomerOrderController {
 
     private final OrderService orderService;
 
-    @ApiOperation(value = "주문내역 조회")
-    @GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "구매자 주문내역 조회")
+    @GetMapping(value = {"/", ""}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<PageImpl<OrderItemData>> getOrders(@CurrentCustomer Customer customer, CustomPageRequest pageRequest) {
-        PageImpl<OrderItemData> pagingOrders = orderService.getOrderByCustomer(customer, pageRequest.of());
+        PageImpl<OrderItemData> pagingOrders = orderService.getOrdersByCustomer(customer, pageRequest.of());
 
         return ResponseEntity.ok(pagingOrders);
     }
+
+//    @ApiOperation(value = "주문내역 조회")
+//    @GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<PageImpl<OrderItemData>> getOrders(@CurrentCustomer Customer customer, CustomPageRequest pageRequest) {
+//        PageImpl<OrderItemData> pagingOrders = orderService.getOrderByCustomer(customer, pageRequest.of());
+//
+//        return ResponseEntity.ok(pagingOrders);
+//    }
 
     @ApiOperation(value = "카카오 주문 준비")
     @PostMapping(value = "/kakao/ready")

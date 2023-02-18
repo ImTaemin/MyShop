@@ -23,6 +23,9 @@ public class ItemData {
         @ApiModelProperty(value = ApiValueUtils.Item.ID)
         private Long id;
 
+        @ApiModelProperty(value = ApiValueUtils.Item.CODE)
+        private String code;
+
         @ApiModelProperty(value = ApiValueUtils.Item.NAME)
         private String name;
 
@@ -37,6 +40,7 @@ public class ItemData {
 
         public ItemSimple(com.myshop.api.domain.entity.Item item) {
             this.id = item.getId();
+            this.code = item.getCode();
             this.name = item.getName();
             this.brandName = item.getBrandName();
             this.price = item.getPrice();
@@ -49,9 +53,6 @@ public class ItemData {
     @Data
     @NoArgsConstructor
     public static class Item extends ItemSimple {
-
-        @ApiModelProperty(value = ApiValueUtils.Item.CODE)
-        private String code;
 
         @ApiModelProperty(value = ApiValueUtils.Item.QUANTITY)
         private int quantity;
@@ -74,7 +75,6 @@ public class ItemData {
 
         public Item(com.myshop.api.domain.entity.Item item) {
             super(item);
-            this.code = item.getCode();
             this.quantity = item.getQuantity();
             this.content = item.getContent();
             this.itemType = item.getItemType();

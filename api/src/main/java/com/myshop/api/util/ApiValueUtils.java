@@ -87,7 +87,7 @@ public class ApiValueUtils {
    }
    
    public static class OrderItem {
-        public static final String ID = "주문 상품 고유번호";
+        public static final String CNT = "주문번호 순서";
         public static final String QUANTITY = "주문 수량";
         public static final String PAYMENT = "주문 금액(상품금액 - 할인금액)";
         public static final String COUPON = "사용 쿠폰";

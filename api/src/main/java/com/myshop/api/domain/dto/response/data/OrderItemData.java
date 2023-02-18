@@ -15,6 +15,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class OrderItemData {
 
+    @ApiModelProperty(value = ApiValueUtils.OrderItem.CNT)
+    private int cnt;
+
     @ApiModelProperty(value = ApiValueUtils.Order.ID)
     private String orderNo;
 

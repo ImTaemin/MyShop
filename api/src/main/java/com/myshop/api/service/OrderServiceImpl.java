@@ -1,23 +1,27 @@
 package com.myshop.api.service;
 
+import com.myshop.api.domain.dto.account.CustomerAccount;
+import com.myshop.api.domain.dto.account.ProviderAccount;
 import com.myshop.api.domain.dto.pay.kakao.ReadyResponse;
-import com.myshop.api.domain.dto.request.CustomPageRequest;
 import com.myshop.api.domain.dto.request.OrderRequest;
 import com.myshop.api.domain.dto.response.data.OrderItemData;
 import com.myshop.api.domain.entity.Customer;
-import com.myshop.api.domain.entity.OrderItem;
 import com.myshop.api.domain.entity.Orders;
+import com.myshop.api.domain.entity.Provider;
+import com.myshop.api.enumeration.OrderStatus;
+import com.myshop.api.exception.UserNotFoundException;
 import com.myshop.api.repository.OrderRepository;
-import com.querydsl.core.Tuple;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -30,10 +34,24 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional
     @Override
-    public PageImpl<OrderItemData> getOrderByCustomer(Customer customer, Pageable pageable) {
-        List<OrderItemData> orderItemList = orderRepository.selectByCustom(customer, pageable);
+    public PageImpl<OrderItemData> getOrdersByCustomer(Customer customer, Pageable pageable) {
+        List<OrderItemData> orderItemList = orderRepository.selectByCustomer(customer, pageable);
 
         return new PageImpl<>(orderItemList, pageable, orderItemList.size());
+    }
+
+    @Transactional
+    @Override
+    public PageImpl<OrderItemData> getOrdersByProvider(Provider provider, Pageable pageable , OrderStatus orderStatus) {
+        List<OrderItemData> orderItemList = orderRepository.selectByProvider(provider, pageable, orderStatus);
+
+        return new PageImpl<>(orderItemList, pageable, orderItemList.size());
+    }
+
+    @Transactional
+    @Override
+    public void changeOrders(List<String> orderNoList, OrderStatus orderStatus) {
+        orderRepository.changeOrders(orderNoList, orderStatus);
     }
 
     @Transactional

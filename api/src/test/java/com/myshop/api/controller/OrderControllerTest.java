@@ -20,6 +20,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -40,7 +41,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
-@WebMvcTest(controllers = OrderController.class)
+@WebMvcTest(controllers = CustomerOrderController.class)
 class OrderControllerTest {
 
     @SuppressWarnings("all")
@@ -99,7 +100,7 @@ class OrderControllerTest {
     @DisplayName("구매자 주문 목록 페이징")
     public void getOrdersTest() throws Exception {
         //given
-        given(orderService.getOrderByCustomer(any(Customer.class), any(PageRequest.class)))
+        given(orderService.getOrdersByCustomer(any(Customer.class), any(PageRequest.class)))
                 .willReturn(pagingOrderItem);
 
         String content = objectMapper.writeValueAsString(pageRequest);
@@ -130,7 +131,7 @@ class OrderControllerTest {
                 .andDo(print());
 
         //then
-        verify(orderService).getOrderByCustomer(any(Customer.class), any(PageRequest.class));
+        verify(orderService).getOrdersByCustomer(any(Customer.class), any(PageRequest.class));
 
     }
 

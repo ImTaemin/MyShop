@@ -94,15 +94,15 @@ public class OrderServiceTest {
     @DisplayName("구매자 주문 목록 페이징")
     public void getOrderByCustomerTest() throws Exception {
         //given
-        given(orderRepository.selectByCustom(any(Customer.class), any(Pageable.class)))
+        given(orderRepository.selectByCustomer(any(Customer.class), any(Pageable.class)))
                 .willReturn(orderItemList);
 
         //when
-        List<OrderItemData> orderItemList = orderRepository.selectByCustom(customer, new CustomPageRequest().of());
+        List<OrderItemData> orderItemList = orderRepository.selectByCustomer(customer, new CustomPageRequest().of());
 
         //then
         Assertions.assertEquals(orderItemList.size(), 2);
-        verify(orderRepository).selectByCustom(any(Customer.class), any(Pageable.class));
+        verify(orderRepository).selectByCustomer(any(Customer.class), any(Pageable.class));
 
     }
 
