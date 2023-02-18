@@ -1,26 +1,26 @@
-import "../scss/Header.scss";
-import {Nav} from "react-bootstrap";
+import "../../scss/Header.scss";
+import {Nav, NavbarBrand} from "react-bootstrap";
 import {BiClipboard, BiGridAlt, BiPurchaseTagAlt, BiHomeAlt} from "react-icons/bi";
-import {useLocation} from "react-router";
+import {useLocation, Link} from "react-router-dom";
 
 const navigation = [
   {
-    title: "주문 정보",
+    title: "주문 관리",
     href: "/orders",
     icon: <BiClipboard className="icon"/>
   },
   {
-    title: "상품 정보",
+    title: "상품 관리",
     href: "/items",
     icon: <BiGridAlt className="icon"/>
   },
   {
-    title: "쿠폰 정보",
+    title: "쿠폰 관리",
     href: "/coupons",
     icon: <BiPurchaseTagAlt className="icon"/>
   },
   {
-    title: "상점 정보",
+    title: "상점 관리",
     href: "/info",
     icon: <BiHomeAlt className="icon"/>
   },
@@ -28,23 +28,21 @@ const navigation = [
 
 const Header = () => {
 
-  const loaction = useLocation();
+  const location = useLocation();
 
   return (
     <Nav id="header">
       <div className="nav-item-wrapper">
-        {navigation.map(nav => (
-          <Nav.Item className={
-            loaction.pathname === nav.href
-              ? "active"
-              : "non-active"
-          }>
-            <Nav.Link href={nav.href} className="nav-link">
-              <div className="nav-item">
-                {nav.icon}
-                <div className="header-title">{nav.title}</div>
-              </div>
-            </Nav.Link>
+        {navigation.map((nav, index) => (
+          <Nav.Item key={index}>
+            <Link to={nav.href} className={
+              location.pathname === nav.href
+                ? "active"
+                : ""
+            }>
+              {nav.icon}
+              <div className="header-title">{nav.title}</div>
+            </Link>
           </Nav.Item>
         ))}
       </div>

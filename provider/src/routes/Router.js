@@ -1,6 +1,5 @@
 import {lazy} from "react";
-import {Navigate} from "react-router";
-import {useSelector} from "react-redux";
+import {Navigate} from "react-router-dom";
 
 // 페이지
 const MainPage = lazy(() => import("../pages/MainPage.js"));

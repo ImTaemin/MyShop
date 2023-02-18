@@ -1,20 +1,19 @@
 import React from "react";
-import {Outlet} from "react-router";
-import Header from "../components/Header";
-import styled from 'styled-components';
+import {Outlet} from "react-router-dom";
+import Header from "../components/common/Header";
 import '../scss/Main.scss';
-import {Container} from "react-bootstrap";
+
 
 const MainPage = () => {
   return (
-    <main>
+    <main style={{minWidth: "762px"}}>
       <div className="main-container">
-        <Header className="header"/>
-        <Container className="content-container">
+        <Header/>
+        <div className="content-container">
           <div className="content">
             <Outlet />
           </div>
-        </Container>
+        </div>
       </div>
     </main>
   )
