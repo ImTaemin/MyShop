@@ -1,11 +1,11 @@
 package com.myshop.api.config.security;
 
+import com.myshop.api.enumeration.RoleType;
+import com.myshop.api.enumeration.TokenType;
+import com.myshop.api.exception.UserNotFoundException;
 import com.myshop.api.service.CustomerService;
 import com.myshop.api.service.ProviderService;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,14 +14,15 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.LinkedHashMap;
 
 @Component
 @RequiredArgsConstructor
@@ -32,9 +33,10 @@ public class JwtTokenProvider {
 
     private final Logger LOGGER = LoggerFactory.getLogger(JwtTokenProvider.class);
 
-    @Value("spring.jwt.secretkey")
+    @Value("myshop.jwt.secretkey")
     private String secretKey;
-    private final long tokenValidMillisecond = 1000L * 60 * 60; // 1시간
+    private final long ACCESS_TOKEN_VALID_MS = 1000 * 60 * 60; // 1시간
+    private final long REFRESH_TOKEN_VALID_MS = 1000 * 60 * 60 * 24 * 30; // 30일
 
     // 빈 객체로 주입된 이후 수행되는 메서드
     @PostConstruct
@@ -43,39 +45,58 @@ public class JwtTokenProvider {
     }
 
     // 토큰 생성
-    public String createToken(String userId, Set<String> roles) {
-        Claims claims = Jwts.claims().setSubject(userId);
-        claims.put("roles", roles);
+    public String createAccessToken(UserDetails userDetails) {
+        Claims claims = Jwts.claims().setSubject(userDetails.getUsername());
+        claims.put("roles", userDetails.getAuthorities());
+        claims.put("type", TokenType.ACCESS.toString());
 
         Date now = new Date();
-        String token = Jwts.builder()
+        Date expiryDate = new Date(now.getTime() + ACCESS_TOKEN_VALID_MS);
+
+        return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime() + tokenValidMillisecond))
+                .setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
+    }
 
-        return token;
+    public String createRefreshToken(UserDetails userDetails) {
+        Claims claims = Jwts.claims().setSubject(userDetails.getUsername());
+        claims.put("roles", userDetails.getAuthorities());
+        claims.put("type", TokenType.REFRESH.toString());
+
+        Date now = new Date();
+        Date expiryDate = new Date(now.getTime() + REFRESH_TOKEN_VALID_MS);
+
+        return Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(new Date())
+                .setExpiration(expiryDate)
+                .signWith(SignatureAlgorithm.HS512, secretKey)
+                .compact();
     }
 
     // 인증이 성공했을 때 SecurityContextHolder에 저장할 Authentication을 생성하는 역할
     // 토큰 인증 정보 조회
     public Authentication getAuthentication(String token) {
-        // 판매자 구매자 구분
-        char role = getRole(token);
+        String role = getRole(token);
         String userId = getUserId(token);
 
-        UserDetails userDetails;
-        if(role == 'P') {
+        UserDetails userDetails = null;
+        if(role.equals(RoleType.PROVIDER.toString())) {
             // 판매자
             userDetails = providerService.getProviderByUserId(userId);
-        } else {
+        } else if(role.equals(RoleType.CUSTOMER.toString())) {
             // 구매자
             userDetails = customerService.getCustomerByUserId(userId);
         }
 
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+        if (userDetails == null) {
+            throw new UserNotFoundException();
+        }
 
+        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
     // 토큰 기반 회원 구별 정보 조회
@@ -91,32 +112,68 @@ public class JwtTokenProvider {
         return userId;
     }
 
-    private char getRole(String token) {
-        String roles = Jwts.parser()
+    private String getRole(String token) {
+        ArrayList<LinkedHashMap<String, String>> roles = (ArrayList<LinkedHashMap<String, String>>) Jwts.parser()
                 .setSigningKey(secretKey)
                 .parseClaimsJws(token)
                 .getBody()
-                .get("roles")
-                .toString();
+                .get("roles");
 
         LOGGER.info("권한 정보 : " + roles);
 
-        // [PROVIDER, CUSTOMER] 이런 형식 중 앞 글자만
-        return roles.charAt(1);
+        return roles.get(0).get("authority");
+    }
+
+    private TokenType getTokenType(String token) {
+        TokenType tokenType = TokenType.valueOf(((String) Jwts.parser()
+                .setSigningKey(secretKey)
+                .parseClaimsJws(token)
+                .getBody()
+                .get("type")));
+
+        LOGGER.info("토큰 타입 : {}", tokenType);
+
+        return tokenType;
     }
 
     // HTTP 헤더에서 토큰 값 조회
     public String resolveToken(HttpServletRequest request) {
-        return request.getHeader("X-AUTH-TOKEN");
+        String token = request.getHeader("X-AUTH-TOKEN");
+        if (StringUtils.hasText(token) && token.startsWith("Bearer ")) {
+            return token.substring(7);
+        }
+
+        return null;
     }
 
-    // 토큰 유효기간 체크
-    public boolean validateToken(String token) {
+    // 엑세스 토큰 유효성 검사
+    public boolean validateAccessToken(String accessToken) {
         try {
-            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
-            return !claims.getBody().getExpiration().before(new Date());
-        } catch (Exception e) {
-            return false;
+            // 만료된 토큰이면 여기서 에러발생
+            Jwts.parser().setSigningKey(secretKey).parseClaimsJws(accessToken);
+            
+            if(getTokenType(accessToken) == TokenType.ACCESS) {
+                return true;
+            }
+        } catch (JwtException | IllegalArgumentException e) {
+            throw e;
         }
+
+        return false;
     }
+
+    // 리프레시 토큰 유효성 검사
+    public boolean validateRefreshToken(String refreshToken) {
+        try {
+            Jwts.parser().setSigningKey(secretKey).parseClaimsJws(refreshToken);
+            if(getTokenType(refreshToken) == TokenType.REFRESH) {
+                return true;
+            }
+        } catch (JwtException | IllegalArgumentException e) {
+            throw e;
+        }
+
+        return false;
+    }
+
 }

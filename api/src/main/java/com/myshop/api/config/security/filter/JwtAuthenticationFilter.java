@@ -1,5 +1,7 @@
-package com.myshop.api.config.security;
+package com.myshop.api.config.security.filter;
 
+import com.myshop.api.config.security.JwtTokenProvider;
+import io.jsonwebtoken.JwtException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
@@ -34,13 +36,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String token = jwtTokenProvider.resolveToken(request);
-        LOGGER.info("token 값 추출 완료 : {}", token);
+        try {
+            String token = jwtTokenProvider.resolveToken(request);
+            LOGGER.info("token 값 추출 완료 : {}", token);
 
-        // 토큰 값 유효성 검사
-        if(token != null && jwtTokenProvider.validateToken(token)) {
-            Authentication authentication = jwtTokenProvider.getAuthentication(token);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+            // 유효성 검사
+            if(token != null && jwtTokenProvider.validateAccessToken(token)) {
+                LOGGER.info("access token 검증 완료");
+                Authentication authentication = jwtTokenProvider.getAuthentication(token);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
+        } catch (JwtException | IllegalArgumentException e) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "토큰이 유효하지 않습니다.");
+            return;
         }
 
         filterChain.doFilter(request, response);

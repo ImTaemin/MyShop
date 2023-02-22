@@ -9,7 +9,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithSecurityContextFactory;
 
-import java.util.Set;
+import java.util.List;
 
 public class WithMockProviderSecurityContextFactory implements WithSecurityContextFactory<WithMockProvider> {
 
@@ -22,7 +22,7 @@ public class WithMockProviderSecurityContextFactory implements WithSecurityConte
                 .password("1234")
                 .phone("010-1234-5678")
                 .brandName("브랜드명")
-                .roles(Set.of(UserRole.PROVIDER.toString()))
+                .roles(List.of(UserRole.PROVIDER.toString()))
                 .build();
         ProviderAccount providerAccount = new ProviderAccount(provider);
 

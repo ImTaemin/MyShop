@@ -1,5 +1,7 @@
 package com.myshop.api.config.security;
 
+import com.myshop.api.config.security.filter.JwtAuthenticationFilter;
+import com.myshop.api.config.security.filter.JwtRefreshTokenFilter;
 import com.myshop.api.enumeration.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -13,7 +15,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Collections;
 import java.util.List;
 
 @Configuration
@@ -70,7 +71,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
-                        UsernamePasswordAuthenticationFilter.class);
+                        UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtRefreshTokenFilter(jwtTokenProvider),
+                        JwtAuthenticationFilter.class);
     }
 
 }

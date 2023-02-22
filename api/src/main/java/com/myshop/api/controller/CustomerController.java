@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.security.auth.login.AccountNotFoundException;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @Api(tags = {"구매자 REST API"})
@@ -53,6 +54,14 @@ public class CustomerController {
         return ResponseEntity.ok(signInResponse);
     }
 
+    @ApiOperation(value = "구매자 토큰 재발행")
+    @PostMapping(value = "/reissue", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<SignData.SignInResponse> reissue(@RequestHeader(value="X-AUTH-TOKEN") String refreshToken) {
+        SignData.SignInResponse reissueResponse = signService.reissueAccessToken(refreshToken);
+
+        return ResponseEntity.ok(reissueResponse);
+    }
+    
     @ApiOperation(value = "구매자 아이디 중복 확인")
     @GetMapping("/exists/id/{userId}")
         public ResponseEntity<BaseResponse> checkUserId(@PathVariable String userId) {

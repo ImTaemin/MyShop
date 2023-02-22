@@ -9,8 +9,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Pattern;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @ApiModel
 @Builder
@@ -33,6 +33,6 @@ public class ProviderRequest implements UserDto{
     private String brandName;
 
     @ApiModelProperty(value = ApiValueUtils.User.USER_ROLE, hidden = true)
-    private Set<String> roles = new HashSet<>();
+    private List<String> roles = new ArrayList<>();
 
 }

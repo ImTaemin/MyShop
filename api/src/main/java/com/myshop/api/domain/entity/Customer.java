@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -12,7 +13,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /*
@@ -33,10 +36,12 @@ public class Customer implements UserDetails {
     @Column(unique = true, nullable = false)
     private String userId;
 
+    @Setter
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(nullable = false)
     private String password;
 
+    @Setter
     @Column(nullable = false)
     private String phone;
 
@@ -49,7 +54,7 @@ public class Customer implements UserDetails {
     private LocalDateTime createDate;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    private Set<String> roles = new HashSet<>();
+    private List<String> roles = new ArrayList<>();
 
     @OneToMany(mappedBy = "customer")
     private List<Orders> orderList = new ArrayList<>();
@@ -60,17 +65,13 @@ public class Customer implements UserDetails {
     @OneToMany(mappedBy = "customer")
     private List<Coupon> usedCouponList = new ArrayList<>();
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
+    @Setter
+    @Column
+    private String refreshToken;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toSet());
+        return this.roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
     }
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -110,8 +111,7 @@ public class Customer implements UserDetails {
      * 따라서 생성자에 Builder 어노테이션을 작성
      */
     @Builder
-
-    public Customer(Long id, String userId, String password, String phone, String name, LocalDateTime createDate, Set<String> roles, List<Orders> orderList, List<Cart> cartList, List<Coupon> usedCouponList) {
+    public Customer(Long id, String userId, String password, String phone, String name, LocalDateTime createDate, List<String> roles, List<Orders> orderList, List<Cart> cartList, List<Coupon> usedCouponList) {
         this.id = id;
         this.userId = userId;
         this.password = password;

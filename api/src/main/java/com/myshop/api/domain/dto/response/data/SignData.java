@@ -28,12 +28,16 @@ public class SignData {
     @Data
     @NoArgsConstructor
     public static class SignInResponse extends SignUpResponse {
-        @ApiModelProperty(value = ApiValueUtils.Sign.TOKEN)
-        private String token;
+        @ApiModelProperty(value = ApiValueUtils.Sign.ACCESS_TOKEN)
+        private String accessToken;
 
-        public SignInResponse(boolean status, String msg, String token) {
+        @ApiModelProperty(value = ApiValueUtils.Sign.REFRESH_TOKEN)
+        private String refreshToken;
+
+        public SignInResponse(boolean status, String msg, String accessToken, String refreshToken) {
             super(status, msg);
-            this.token = token;
+            this.accessToken = accessToken;
+            this.refreshToken = refreshToken;
         }
     }
 

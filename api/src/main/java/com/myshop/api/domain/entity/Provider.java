@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -12,7 +13,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
@@ -34,10 +37,12 @@ public class Provider implements UserDetails {
     @Column(unique = true, nullable = false)
     private String userId;
 
+    @Setter
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(nullable = false)
     private String password;
 
+    @Setter
     @Column(nullable = false)
     private String phone;
 
@@ -54,20 +59,16 @@ public class Provider implements UserDetails {
     @OneToMany(mappedBy = "provider")
     private List<Coupon> coupons = new ArrayList<>();
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
+    @Setter
+    @Column
+    private String refreshToken;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    private Set<String> roles = new HashSet<>();
+    private List<String> roles = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toSet());
+        return this.roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
     }
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -101,7 +102,7 @@ public class Provider implements UserDetails {
     }
 
     @Builder
-    public Provider(Long id, String cid, String userId, String password, String phone, String brandName, LocalDateTime createDate, List<Item> items, List<Coupon> coupons, Set<String> roles) {
+    public Provider(Long id, String cid, String userId, String password, String phone, String brandName, LocalDateTime createDate, List<Item> items, List<Coupon> coupons, List<String> roles) {
         this.id = id;
         this.cid = cid;
         this.userId = userId;

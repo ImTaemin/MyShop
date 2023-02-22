@@ -21,10 +21,8 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -63,14 +61,15 @@ public class ProviderControllerTest {
 
         signInResponse.setStatus(CommonResponse.SUCCESS.getStatus());
         signInResponse.setMsg(CommonResponse.SUCCESS.getMsg());
-        signInResponse.setToken("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0YWVtaW4iLCJpYXQiOjE2NzE0NDA0NzAsImV4cCI6MTY3MTQ0NDA3MH0.AFvbCHzDXowGpBqfjBbcWfphe0Bv0o-UMijgOA2jnnQ");
+        signInResponse.setAccessToken("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0YWVtaW4iLCJpYXQiOjE2NzE0NDA0NzAsImV4cCI6MTY3MTQ0NDA3MH0.AFvbCHzDXowGpBqfjBbcWfphe0Bv0o-UMijgOA2jnnQ");
+        signInResponse.setRefreshToken("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0YWVtaW4iLCJpYXQiOjE2NzE0NDA0NzAsImV4cCI6MTY3MTQ0NDA3MH0.AFvbCHzDXowGpBqfjBbcWfphe0Bv0o-UMijgOA2jnnQ");
 
         providerRequest = ProviderRequest.builder()
                 .userId("taemin")
                 .password("1234")
                 .phone("010-1234-5678")
                 .brandName("브랜드명")
-                .roles(Collections.singleton(UserRole.PROVIDER.toString()))
+                .roles(List.of(UserRole.PROVIDER.toString()))
                 .build();
     }
 

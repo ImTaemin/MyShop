@@ -9,5 +9,6 @@ public interface SignService {
     SignData.SignUpResponse signUp(UserDto signUpParam);
     SignData.SignInResponse signInProvider(String userId, String password) throws AccountNotFoundException;
     SignData.SignInResponse signInCustomer(String userId, String password) throws AccountNotFoundException;
+    SignData.SignInResponse reissueAccessToken(String refreshToken) ;
 
 }
