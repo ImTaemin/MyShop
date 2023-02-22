@@ -45,7 +45,7 @@ public class CouponServiceTest {
                 .password("1234")
                 .phone("010-1234-5678")
                 .brandName("브랜드명")
-                .roles(Set.of(UserRole.PROVIDER.toString()))
+                .roles(List.of(UserRole.PROVIDER.toString()))
                 .build();
 
         coupon = Coupon.builder()

@@ -14,8 +14,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -41,7 +41,7 @@ class ProviderServiceTest {
                 .password("$2a$12$Liq1iPQn58mqSt8Efe.mn.bQt7W4uuVNypg8N2IAHG.cEPqLqyMZ6")
                 .phone("010-1234-5678")
                 .brandName("브랜드명")
-                .roles(Set.of(UserRole.PROVIDER.toString()))
+                .roles(List.of(UserRole.PROVIDER.toString()))
                 .build();
     }
 

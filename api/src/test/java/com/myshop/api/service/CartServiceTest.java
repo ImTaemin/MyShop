@@ -52,7 +52,7 @@ public class CartServiceTest {
                 .password("$2a$12$Liq1iPQn58mqSt8Efe.mn.bQt7W4uuVNypg8N2IAHG.cEPqLqyMZ6")
                 .phone("010-1234-5678")
                 .name("김태민")
-                .roles(Set.of(UserRole.CUSTOMER.toString()))
+                .roles(List.of(UserRole.CUSTOMER.toString()))
                 .build();
 
         item = Item.builder()

@@ -1,7 +1,7 @@
 package com.myshop.api.service;
 
-import com.myshop.api.domain.entity.Customer;
 import com.myshop.api.domain.dto.request.UserUpdateRequest;
+import com.myshop.api.domain.entity.Customer;
 import com.myshop.api.enumeration.UserRole;
 import com.myshop.api.repository.CustomerRepository;
 import com.myshop.api.repository.ItemRepository;
@@ -15,8 +15,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -45,7 +45,7 @@ public class CustomerServiceTest {
                 .password("$2a$12$Liq1iPQn58mqSt8Efe.mn.bQt7W4uuVNypg8N2IAHG.cEPqLqyMZ6")
                 .phone("010-1234-5678")
                 .name("김태민")
-                .roles(Set.of(UserRole.CUSTOMER.toString()))
+                .roles(List.of(UserRole.CUSTOMER.toString()))
                 .build();
     }
 

@@ -61,7 +61,8 @@ public class ApiValueUtils {
         public static final String SUCCESS = "가입 성공 여부. true - 성공";
         public static final String STATUS = "가입 성공 코드. 0 - 성공";
         public static final String MSG = "가입 성공 메세지. Success - 성공";
-        public static final String TOKEN = "로그인에 성공했을 때 받는 토큰";
+        public static final String ACCESS_TOKEN = "ACCESS 토큰";
+        public static final String REFRESH_TOKEN = "REFRESH 토큰";
     }
 
     public static class Order {
