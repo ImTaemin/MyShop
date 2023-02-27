@@ -56,7 +56,7 @@ public class ProviderController {
 
     @ApiOperation(value = "판매자 토큰 재발행")
     @PostMapping(value = "/reissue", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<SignData.SignInResponse> reissue(@RequestHeader(value="X-AUTH-TOKEN") String refreshToken) {
+    public ResponseEntity<SignData.SignInResponse> reissue(@RequestHeader(name = "X-AUTH-TOKEN") String refreshToken) {
         SignData.SignInResponse reissueResponse = signService.reissueAccessToken(refreshToken);
 
         return ResponseEntity.ok(reissueResponse);

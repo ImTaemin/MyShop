@@ -32,6 +32,4 @@ public class CustomerRequest implements UserDto{
     @ApiModelProperty(value = ApiValueUtils.User.Customer.NAME, required = true)
     private String name;
 
-    @ApiModelProperty(value = ApiValueUtils.User.USER_ROLE, hidden = true)
-    private List<String> roles = new ArrayList<>();
 }

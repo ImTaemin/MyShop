@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class JwtRefreshTokenFilter extends OncePerRequestFilter {
@@ -32,6 +31,11 @@ public class JwtRefreshTokenFilter extends OncePerRequestFilter {
             String token = jwtTokenProvider.resolveToken(request);
             LOGGER.info("token 값 추출 완료 : {}", token);
 
+            if(token == null) {
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "토큰이 유효하지 않습니다.");
+                return;
+            }
+
             List<String> allowUrl = new ArrayList<>();
             allowUrl.add("/provider/reissue");
             allowUrl.add("/customer/reissue");
@@ -42,11 +46,13 @@ public class JwtRefreshTokenFilter extends OncePerRequestFilter {
             }
 
             // 유효성 검사. 리프레시 토큰은 "/provider/reissue" or "/customer/reissue" 에서만 사용 가능
-            if(token != null && jwtTokenProvider.validateRefreshToken(token)) {
+            if(jwtTokenProvider.validateRefreshToken(token)) {
                 LOGGER.info("refresh token 검증 완료");
                 Authentication authentication = jwtTokenProvider.getAuthentication(token);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
+
+
         } catch (JwtException | IllegalArgumentException e) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "토큰이 유효하지 않습니다.");
             return;

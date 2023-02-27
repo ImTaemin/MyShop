@@ -1,8 +1,8 @@
 package com.myshop.api.controller;
 
 import com.myshop.api.annotation.CurrentProvider;
-import com.myshop.api.domain.dto.request.ChangeOrderRequest;
 import com.myshop.api.domain.dto.request.CustomPageRequest;
+import com.myshop.api.domain.dto.request.OrderRequest;
 import com.myshop.api.domain.dto.response.BaseResponse;
 import com.myshop.api.domain.dto.response.data.OrderItemData;
 import com.myshop.api.domain.entity.Provider;
@@ -15,8 +15,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Api(tags = {"판매자 주문 REST API"})
 @RequiredArgsConstructor
@@ -36,8 +34,8 @@ public class ProviderOrderController {
     
     @ApiOperation(value = "선택한 주문 상태 변경")
     @PutMapping(value = {"/",""}, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<BaseResponse> changeOrders(@RequestBody ChangeOrderRequest changeOrderRequest) {
-        orderService.changeOrders(changeOrderRequest.getOrderNoList(), changeOrderRequest.getOrderStatus());
+    public ResponseEntity<BaseResponse> changeOrders(@RequestBody OrderRequest.OrderChange orderChangeRequest) {
+        orderService.changeOrders(orderChangeRequest);
 
         return BaseResponse.ok();
     }

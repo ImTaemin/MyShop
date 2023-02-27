@@ -22,6 +22,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class SignServiceImpl implements SignService {
@@ -76,7 +78,7 @@ public class SignServiceImpl implements SignService {
                     .password(customerRequest.getPassword())
                     .phone(customerRequest.getPhone())
                     .name(customerRequest.getName())
-                    .roles(customerRequest.getRoles())
+                    .roles(List.of("CUSTOMER"))
                     .build();
 
             return customerRepository.save(signUpCustomer);
@@ -91,7 +93,7 @@ public class SignServiceImpl implements SignService {
                 .password(providerRequest.getPassword())
                 .phone(providerRequest.getPhone())
                 .brandName(providerRequest.getBrandName())
-                .roles(providerRequest.getRoles())
+                .roles(List.of("PROVIDER"))
                 .build();
 
         return providerRepository.save(signUpProvider);
@@ -106,8 +108,8 @@ public class SignServiceImpl implements SignService {
 
         // === DB에 사용자가 있고 패스워드도 일치한 상태 ===
 
-        String accessToken = "Bearer " + jwtTokenProvider.createAccessToken(userDetails);
-        String refreshToken = "Bearer " + jwtTokenProvider.createRefreshToken(userDetails);
+        String accessToken = jwtTokenProvider.createAccessToken(userDetails);
+        String refreshToken = jwtTokenProvider.createRefreshToken(userDetails);
 
         SignData.SignInResponse signInResponse = new SignData.SignInResponse();
         setSuccessResult(signInResponse);

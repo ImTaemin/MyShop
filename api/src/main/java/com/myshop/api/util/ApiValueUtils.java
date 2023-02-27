@@ -14,7 +14,6 @@ public class ApiValueUtils {
         public static final String MODIFY_PASSWORD = "변경 비밀번호";
         public static final String PHONE = "휴대폰 번호";
         public static final String CREATE_DATE = "가입일";
-        public static final String USER_ROLE = "사용자 권한";
         public static final String GENDER_TYPE = "MEN, WOMEN";
 
         public static class Provider {
@@ -67,6 +66,7 @@ public class ApiValueUtils {
 
     public static class Order {
         public static final String ID = "주문 번호";
+        public static final String CNT = "주문 번호의 고유번호";
         public static final String TID = "거래 번호";
         public static final String TOTAL_PAYMENT = "총 결제 금액";
         public static final String ORDER_DATE = "주문일";

@@ -19,6 +19,8 @@ import org.springframework.util.StringUtils;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
@@ -36,7 +38,7 @@ public class JwtTokenProvider {
     @Value("myshop.jwt.secretkey")
     private String secretKey;
     private final long ACCESS_TOKEN_VALID_MS = 1000 * 60 * 60; // 1시간
-    private final long REFRESH_TOKEN_VALID_MS = 1000 * 60 * 60 * 24 * 30; // 30일
+    private final int REFRESH_TOKEN_VALID_DAY = 30; // 30일
 
     // 빈 객체로 주입된 이후 수행되는 메서드
     @PostConstruct
@@ -53,7 +55,7 @@ public class JwtTokenProvider {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + ACCESS_TOKEN_VALID_MS);
 
-        return Jwts.builder()
+        return "Bearer " + Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
@@ -66,13 +68,13 @@ public class JwtTokenProvider {
         claims.put("roles", userDetails.getAuthorities());
         claims.put("type", TokenType.REFRESH.toString());
 
-        Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + REFRESH_TOKEN_VALID_MS);
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime expiryDate = now.plusDays(30);
 
-        return Jwts.builder()
+        return "Bearer " + Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(new Date())
-                .setExpiration(expiryDate)
+                .setExpiration(Date.from(expiryDate.atZone(ZoneId.systemDefault()).toInstant()))
                 .signWith(SignatureAlgorithm.HS512, secretKey)
                 .compact();
     }

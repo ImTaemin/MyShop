@@ -25,14 +25,11 @@ public class ProviderRequest implements UserDto{
     @ApiModelProperty(value = ApiValueUtils.User.PASSWORD, required = true)
     private String password;
 
-    @Pattern(regexp = "^\\d{3}-\\d{4}-\\d{4}$")
+    @Pattern(regexp = "^\\d{2,3}-\\d{3,4}-\\d{4}$")
     @ApiModelProperty(value = ApiValueUtils.User.PHONE, required = true)
     private String phone;
 
     @ApiModelProperty(value = ApiValueUtils.User.Provider.BRAND_NAME, required = true)
     private String brandName;
-
-    @ApiModelProperty(value = ApiValueUtils.User.USER_ROLE, hidden = true)
-    private List<String> roles = new ArrayList<>();
 
 }

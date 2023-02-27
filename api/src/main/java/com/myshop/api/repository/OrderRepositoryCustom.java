@@ -1,5 +1,6 @@
 package com.myshop.api.repository;
 
+import com.myshop.api.domain.dto.request.OrderRequest;
 import com.myshop.api.domain.dto.response.data.OrderItemData;
 import com.myshop.api.domain.entity.Customer;
 import com.myshop.api.domain.entity.Orders;
@@ -12,7 +13,7 @@ import java.util.List;
 public interface OrderRepositoryCustom {
     List<OrderItemData> selectByCustomer(Customer customer, Pageable pageable);
     List<OrderItemData> selectByProvider(Provider provider, Pageable pageable, OrderStatus orderStatus);
-    void changeOrders(List<String> orderNoList, OrderStatus orderStatus);
+    void changeOrders(List<OrderRequest.OrderNoCnt> orderNoCntList, OrderStatus orderStatus);
     String findLastOrderIdByPrefix(String orderPrefix);
     Orders findOrderWithOrderItem(String orderId);
     void deleteOrderById(String orderId);

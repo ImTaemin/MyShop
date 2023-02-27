@@ -20,9 +20,9 @@ public class WebConfig implements WebMvcConfigurer{
         return new InternalResourceViewResolver();
     }
 
-    @Override
-    public void addFormatters(FormatterRegistry registry) {
-        WebMvcConfigurer.super.addFormatters(registry);
-        registry.addConverter(new OrderStatusConverter());
-    }
+//    @Override
+//    public void addFormatters(FormatterRegistry registry) {
+//        WebMvcConfigurer.super.addFormatters(registry);
+//        registry.addConverter(new OrderStatusConverter());
+//    }
 }
