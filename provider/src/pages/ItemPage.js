@@ -16,7 +16,7 @@ const ItemPage = () => {
         <Table hover="true">
           <thead>
           <tr align="center">
-            <th width="2%"></th>
+            <th width="2%">　</th>
             <th width="5%">상품</th>
             <th width="20%">상품명 / 상품코드</th>
             <th width="6%">가격</th>
@@ -25,7 +25,6 @@ const ItemPage = () => {
           </thead>
 
           <tbody>
-          {/*<tr align="center" style={{verticalAlign: "middle"}}>*/}
           <tr align="center">
             <td>
               <FormCheck

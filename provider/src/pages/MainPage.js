@@ -3,8 +3,8 @@ import {Outlet} from "react-router-dom";
 import Header from "../components/common/Header";
 import '../scss/Main.scss';
 
-
 const MainPage = () => {
+
   return (
     <main style={{minWidth: "762px"}}>
       <div className="main-container">

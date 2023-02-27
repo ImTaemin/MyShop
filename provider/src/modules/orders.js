@@ -49,17 +49,30 @@ const orders = handleActions(
       error: error.response.data,
     }),
 
-    [CHECK_ORDERS] : (state, {payload: id}) => ({
+    [CHECK_ORDERS] : (state, {payload: {cnt, orderNo}}) => ({
       ...state,
-      checkOrders: state.checkOrders.includes(id)
-        ? state.checkOrders.filter((selectedId) => selectedId !== id)
-        : state.checkOrders.concat(id)
+      checkOrders: state.checkOrders.some(
+        order => order.cnt === cnt && order.orderNo === orderNo
+      )
+        ? state.checkOrders.filter(order => {
+          return !(order.cnt === cnt && order.orderNo === orderNo)
+        })
+        : state.checkOrders.concat({cnt, orderNo})
     }),
 
-    [CHANGE_ORDERS] : () => initialState,
+    [CHANGE_ORDERS] : (state, {payload: {checkOrderList}}) => ({
+      ...state,
+      orders: state.orders.filter(order =>
+        !checkOrderList.some(checkOrder =>
+            checkOrder.cnt === order.cnt
+            && checkOrder.orderNo === order.orderNo)
+      ),
+      checkOrders: []
+    }),
 
     [UNLOAD_ORDERS] : () => initialState,
-},
+  },
+
   initialState
 );
 

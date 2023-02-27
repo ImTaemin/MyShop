@@ -1,5 +1,8 @@
 import styled from "styled-components";
 import {getNameByValue} from "../../pages/OrderPage";
+import {useCallback, useState} from "react";
+import {useDispatch} from "react-redux";
+import {checkOrders} from "../../modules/orders";
 
 const ImgNameWrap = styled.div`
   padding: 0 0% 0 20%;
@@ -23,17 +26,27 @@ const ItemNameDiv = styled.div`
   word-break:break-all;
 `;
 
-const OrderListItem = ({order, onCheckOrder}) => {
-  const { cnt, orderNo, quantity, payment, orderStatus, orderDate, item} = order;
+const OrderListItem = ({order, checked}) => {
+  const dispatch = useDispatch();
+  const {cnt, orderNo, quantity, payment, orderStatus, orderDate, item} = order;
+
+  // 체크박스 체크
+  const onCheckOrder = useCallback(
+    (cnt, orderNo) => {
+      dispatch(checkOrders({cnt, orderNo}))
+    },
+    [dispatch]
+  );
 
   const onCheck = (e) => {
-    onCheckOrder(e.target.id);
-  }
+    onCheckOrder(cnt, orderNo);
+  };
 
   return (
-    <tr align="center">
+    <tr align="center" onClick={onCheck}>
       <td>
-        <CustomCheckBox type="checkbox" id={orderNo.concat("-",cnt)} onChange={onCheck} />
+        <CustomCheckBox type="checkbox" checked={checked} onChange={() => {
+        }}/>
       </td>
       <td>{orderNo}-{cnt}</td>
       <td>
