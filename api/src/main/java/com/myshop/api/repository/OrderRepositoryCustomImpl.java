@@ -1,20 +1,17 @@
 package com.myshop.api.repository;
 
-import com.myshop.api.domain.dto.request.CustomPageRequest;
+import com.myshop.api.domain.dto.request.OrderRequest;
 import com.myshop.api.domain.dto.response.data.ItemData;
 import com.myshop.api.domain.dto.response.data.OrderItemData;
 import com.myshop.api.domain.entity.*;
 import com.myshop.api.enumeration.OrderStatus;
-import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 
 @Component
 public class OrderRepositoryCustomImpl extends QuerydslRepositorySupport implements OrderRepositoryCustom{
@@ -93,15 +90,12 @@ public class OrderRepositoryCustomImpl extends QuerydslRepositorySupport impleme
     }
 
     @Override
-    public void changeOrders(List<String> orderNoList, OrderStatus orderStatus) {
-        // 주문 상품의 기본키가 [주문번호, 순서]라 in 사용x (업체별 주문 상태 변경 가능)
-        for (String orderNoAndCnt: orderNoList) {
-            String[] orderCntArr = orderNoAndCnt.split("-");
-
+    public void changeOrders(List<OrderRequest.OrderNoCnt> orderNoCntList, OrderStatus orderStatus) {
+        for (OrderRequest.OrderNoCnt orderNoCnt: orderNoCntList) {
             jpaQueryFactory.update(qOrderItem)
                     .set(qOrderItem.orderStatus, orderStatus)
-                    .where(qOrderItem.orders().id.eq(orderCntArr[0])
-                            .and(qOrderItem.cnt.eq(Integer.valueOf(orderCntArr[1]))))
+                    .where(qOrderItem.orders().id.eq(orderNoCnt.getOrderNo())
+                            .and(qOrderItem.cnt.eq(orderNoCnt.getCnt())))
                     .execute();
         }
     }

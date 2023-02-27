@@ -74,7 +74,6 @@ class CustomerControllerTest {
                 .password("1234")
                 .phone("010-1234-5678")
                 .name("김태민")
-                .roles(List.of(UserRole.CUSTOMER.toString()))
                 .build();
     }
 

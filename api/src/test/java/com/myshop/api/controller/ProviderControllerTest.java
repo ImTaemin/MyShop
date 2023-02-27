@@ -69,7 +69,6 @@ public class ProviderControllerTest {
                 .password("1234")
                 .phone("010-1234-5678")
                 .brandName("브랜드명")
-                .roles(List.of(UserRole.PROVIDER.toString()))
                 .build();
     }
 

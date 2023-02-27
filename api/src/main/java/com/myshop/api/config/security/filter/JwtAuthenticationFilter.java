@@ -40,8 +40,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String token = jwtTokenProvider.resolveToken(request);
             LOGGER.info("token 값 추출 완료 : {}", token);
 
+            if(token == null) {
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "토큰이 유효하지 않습니다.");
+                return;
+            }
+
             // 유효성 검사
-            if(token != null && jwtTokenProvider.validateAccessToken(token)) {
+            if(jwtTokenProvider.validateAccessToken(token)) {
                 LOGGER.info("access token 검증 완료");
                 Authentication authentication = jwtTokenProvider.getAuthentication(token);
                 SecurityContextHolder.getContext().setAuthentication(authentication);

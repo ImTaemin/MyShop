@@ -1,9 +1,11 @@
 package com.myshop.api.domain.dto.request;
 
+import com.myshop.api.enumeration.OrderStatus;
 import com.myshop.api.enumeration.PayMethod;
 import com.myshop.api.util.ApiValueUtils;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -48,4 +50,28 @@ public class OrderRequest {
         @ApiModelProperty(value = ApiValueUtils.OrderItem.COUPON)
         private String couponCode;
     }
+
+
+    @ApiModel
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class OrderNoCnt {
+        @ApiModelProperty(value = ApiValueUtils.Order.ID, required = true)
+        private String orderNo;
+
+        @ApiModelProperty(value = ApiValueUtils.Order.CNT, required = true)
+        private int cnt;
+    }
+
+    @ApiModel
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class OrderChange {
+        private List<OrderNoCnt> orderNoCntList;
+        @ApiModelProperty(value = ApiValueUtils.OrderItem.ORDER_STATUS, required = true)
+        private OrderStatus orderStatus;
+    }
+
 }

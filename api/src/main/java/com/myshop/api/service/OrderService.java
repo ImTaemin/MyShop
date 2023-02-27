@@ -9,12 +9,10 @@ import com.myshop.api.enumeration.OrderStatus;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
-import java.util.List;
-
 public interface OrderService {
     PageImpl<OrderItemData> getOrdersByCustomer(Customer customer, Pageable pageable);
     PageImpl<OrderItemData> getOrdersByProvider(Provider provider, Pageable pageable, OrderStatus orderStatus);
-    void changeOrders(List<String> orderNoList, OrderStatus orderStatus);
+    void changeOrders(OrderRequest.OrderChange orderChangeRequest);
     ReadyResponse readyToKakaoPay(Customer customer, OrderRequest.Order orderRequest);
     void approveToKakaoPay(String pgToken, String orderId);
     void cancelToKakaoPay(String orderId);
