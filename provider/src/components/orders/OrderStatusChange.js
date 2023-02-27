@@ -1,8 +1,24 @@
 import {ButtonGroup, DropdownButton} from "react-bootstrap";
 import DropdownItem from "react-bootstrap/DropdownItem";
-import React from "react";
+import React, {useCallback} from "react";
+import {changeOrders} from "../../modules/orders";
+import {useDispatch, useSelector} from "react-redux";
 
-const OrderStatusChange = ({onChangeOrders}) => {
+const OrderStatusChange = () => {
+
+  const dispatch = useDispatch();
+
+  const {checkOrderList} = useSelector(({orders}) => ({
+    checkOrderList: orders.checkOrders
+  }));
+
+  // 체크한 주문 상태 변경
+  const onChangeOrders = useCallback(
+    (orderStatus) => {
+      dispatch(changeOrders({checkOrderList, orderStatus}));
+    },
+    [checkOrderList, dispatch]
+  );
 
   return (
     <DropdownButton as={ButtonGroup} title="상태 변경" onSelect={onChangeOrders}>

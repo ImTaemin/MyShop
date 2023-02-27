@@ -1,7 +1,8 @@
 import "../../scss/Header.scss";
-import {Nav, NavbarBrand} from "react-bootstrap";
-import {BiClipboard, BiGridAlt, BiPurchaseTagAlt, BiHomeAlt} from "react-icons/bi";
-import {useLocation, Link} from "react-router-dom";
+import {Nav} from "react-bootstrap";
+import {BiClipboard, BiGridAlt, BiHomeAlt, BiPurchaseTagAlt} from "react-icons/bi";
+import {Link, useLocation, useNavigate} from "react-router-dom";
+import {signOut} from "../../lib/api/auth";
 
 const navigation = [
   {
@@ -27,8 +28,13 @@ const navigation = [
 ]
 
 const Header = () => {
-
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const onSignOut = () => {
+    signOut();
+    navigate("auth");
+  }
 
   return (
     <Nav id="header">
@@ -47,8 +53,8 @@ const Header = () => {
         ))}
       </div>
       {/* 우측 */}
-      <div className="nav-info">
-        넣을 거 있으면 넣기
+      <div className="nav-info" onClick={onSignOut}>
+        로그아웃
       </div>
     </Nav>
   )

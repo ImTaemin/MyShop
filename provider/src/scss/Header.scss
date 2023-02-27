@@ -1,12 +1,12 @@
 $black: #1E2A35;
 
 #header {
-  font-size: 1.1em;
+  font-size: 1em;
   justify-content: space-between;
   display: flex;
   align-items: center;
   height: 10vh;
-  min-height: 50px;
+  min-height: 55px;
 
   .nav-item-wrapper {
     user-select:none;
@@ -43,5 +43,6 @@ $black: #1E2A35;
   .nav-info {
     display: flex;
     padding-right: 1em;
+    cursor: pointer;
   }
 }

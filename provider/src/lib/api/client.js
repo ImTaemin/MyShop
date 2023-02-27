@@ -1,22 +1,46 @@
 import axios from 'axios';
+import {getCookie, setCookie} from "../cookie";
 
-const client = axios.create();
+const client = axios.create({
+  baseURL: process.env.REACT_APP_API_MYSHOP,
+});
 
-  client.defaults.baseURL = process.env.REACT_APP_API_MYSHOP;
+// 응답 인터셉터
+client.interceptors.response.use(
+  response => {
+    // 요청 성공 시 특정 작업 수행
+    return response;
+  },
+  async (error) => {
+    /**
+     *  accessToken 401 에러면 refreshToken으로 토큰 재발급 후 재요청(이전)
+     * */
+    if(error.response.status === 401){
+      const refreshToken = getCookie("refreshToken");
+      await axios.post(`${process.env.REACT_APP_API_MYSHOP}/provider/reissue`, {},{
+        headers: {
+          "X-AUTH-TOKEN": refreshToken
+        }
+      }).then((response) => {
+        if(response.status === 200){
+          const {accessToken, refreshToken} = response.data;
+          localStorage.setItem("accessToken", accessToken);
+          setCookie("refreshToken", refreshToken);
 
-  // 헤더 설정
-  client.defaults.headers.common['X-AUTH-TOKEN'] = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0YWVtaW4iLCJyb2xlcyI6WyJQUk9WSURFUiJdLCJpYXQiOjE2NzY3MjY3OTUsImV4cCI6MTY3NjczMDM5NX0.0cnyHTJU7zOb-zF5mG_SCpVDKbAt3wiBPDkQBrY52bs';
-
-  // 인터셉터 설정
-  axios.interceptors.response.use(
-    response => {
-      // 요청 성공 시 특정 작업 수행
-      return response;
-    },
-    error => {
-// 요청 실패 시 특정 작업 수행
-      return Promise.reject(error);
+          /**
+           * TODO: 토큰을 저장하긴 하는데 이전 요청 후 리렌더링이 되지 않음
+           * 나중에 찾아볼 예정
+           */
+          error.config.headers["X-AUTH-TOKEN"] = accessToken;
+          return client(error.config);
+        }
+      }).catch((error) => {
+        console.log(error);
+      });
     }
-  )
+    // 요청 실패 시 특정 작업 수행
+    return Promise.reject(error);
+  }
+)
 
 export default client;

@@ -1,12 +1,9 @@
 import {ButtonGroup, Card, ToggleButton} from "react-bootstrap";
-import React, {useCallback, useEffect, useState} from "react";
+import React, {useState} from "react";
 import {BiClipboard} from "react-icons/bi";
 import "../scss/Order.scss";
 import {TableHeader, TableNav, TableTitle} from "../components/common/Table";
 import OrderList from "../components/orders/OrderList";
-import {useDispatch, useSelector} from "react-redux";
-import {changeOrders, checkOrders, listOrders, unLoadOrders} from "../modules/orders";
-import Loader from "../components/loader/Loader";
 import OrderStatusChange from "../components/orders/OrderStatusChange";
 
 const status = [
@@ -24,36 +21,8 @@ export const getNameByValue = (value) => {
 }
 
 const OrderPage = () => {
-  const dispatch = useDispatch();
 
-  const [orderStatus, setOrderStatus] = useState('PAY_SUCCESS');
-
-  const {orders, error, page, checkOrderList, loading} = useSelector(({orders, loading}) => ({
-    orders: orders.orders,
-    error: orders.error,
-    page: orders.page,
-    checkOrderList: orders.checkOrders,
-    loading: loading['orders/LIST_ORDERS'],
-  }));
-
-  // 주문내역 불러오기
-  useEffect(() => {
-    dispatch(listOrders({page, orderStatus}));
-    return () => {
-      dispatch(unLoadOrders())
-    }
-  }, [dispatch, orderStatus]);
-
-  // 체크박스 체크
-  const onCheckOrder = useCallback(
-    (id) => dispatch(checkOrders(id)),
-    [dispatch]
-  );
-
-  // 주문 상태 변경
-  const onChangeOrders = (orderStatus) => {
-    dispatch(changeOrders({checkOrderList, orderStatus}));
-  }
+  const [orderStatus, setOrderStatus] = useState('RECEIVED');
 
   return (
     <Card style={{height: "100%"}}>
@@ -81,19 +50,11 @@ const OrderPage = () => {
       </TableHeader>
 
       <Card.Body>
-        {loading && (
-          <Loader />
-        )}
-        {error && (
-          <>{error.msg}</>
-        )}
-        {!loading && orders && (
-          <OrderList orders={orders} loading={loading} onCheckOrder={onCheckOrder} />
-        )}
+        <OrderList orderStatus={orderStatus} />
       </Card.Body>
       
       <Card.Footer>
-        <OrderStatusChange onChangeOrders={onChangeOrders} />
+        <OrderStatusChange />
       </Card.Footer>
 
     </Card>
