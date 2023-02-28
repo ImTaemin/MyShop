@@ -5,16 +5,17 @@ import SignUp from "../components/auth/SignUp";
 
 const AuthPage = () => {
   const [authMode, setAuthMode] = useState(false);
+  const [isRegistered, setIsRegistered] = useState(false);
 
   const changeAuthMode = () => {
     setAuthMode(!authMode);
   };
 
   return (
-    <div className="auth-container" style={{}}>
+    <div className="auth-container">
       {authMode
-        ? <SignUp changeAuthMode={changeAuthMode} />
-        : <SignIn changeAuthMode={changeAuthMode} />}
+        ? <SignUp changeAuthMode={changeAuthMode} setIsRegistered={setIsRegistered} />
+        : <SignIn changeAuthMode={changeAuthMode} isRegistered={isRegistered} setIsRegistered={setIsRegistered} />}
     </div>
   );
 }

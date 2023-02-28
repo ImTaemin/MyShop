@@ -50,7 +50,10 @@
       .form-dup-wrap {
         display: -webkit-box;
 
-        .form-dup-loader {
+        .form-dup {
+          font-size: 1.5em;
+          margin-left: 2%;
+          color: #0b5ed7;
           display: flex;
           align-items: center;
         }
@@ -66,6 +69,7 @@
   font-size: 0.8em;
 }
 
-.auth-container {
+// has로 부모에게 배경 색 설정
+:has(.auth-container) {
   background: rgb(236,255,223);
 }

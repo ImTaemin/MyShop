@@ -5,7 +5,7 @@ import {Alert} from "react-bootstrap";
 import {useNavigate} from "react-router-dom";
 import {removeCookie, setCookie} from "../../lib/cookie";
 
-const SignIn = ({changeAuthMode}) => {
+const SignIn = ({changeAuthMode, isRegistered, setIsRegistered}) => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -16,7 +16,7 @@ const SignIn = ({changeAuthMode}) => {
   const {id, password} = formData;
   const [error, setError] = useState('');
 
-  const signInHandler = (e) => {
+  const inputHandler = (e) => {
     const {name, value} = e.target;
 
     setFormData({
@@ -46,12 +46,19 @@ const SignIn = ({changeAuthMode}) => {
         setError(response.msg);
       }
     } catch (error) {
-      console.log(error);
+      setError(error.msg);
     }
   }
 
   return (
     <>
+      {isRegistered && (
+        <div className="alert-box">
+          <Alert variant="info" onClose={() => setIsRegistered(false)} dismissible>
+            <Alert.Heading>등록되었습니다.</Alert.Heading>
+          </Alert>
+        </div>
+      )}
       {error && (
         <div className="alert-box">
           <Alert variant="danger" onClose={() => setError('')} dismissible>
@@ -80,7 +87,7 @@ const SignIn = ({changeAuthMode}) => {
                 value={id}
                 className="form-control mt-1"
                 placeholder="아이디를 입력해주세요"
-                onChange={signInHandler}
+                onChange={inputHandler}
                 required
               />
             </div>
@@ -92,7 +99,7 @@ const SignIn = ({changeAuthMode}) => {
                 value={password}
                 className="form-control mt-1"
                 placeholder="비밀번호를 입력해주세요"
-                onChange={signInHandler}
+                onChange={inputHandler}
                 required
               />
             </div>
