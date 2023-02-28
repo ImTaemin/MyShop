@@ -2,12 +2,20 @@ import axios from "axios";
 import client from "./client";
 import {removeCookie} from "../cookie";
 
-export const signUp = ((e) => {
-  console.log(e.target.value);
-  // return axios.post(
-  //   process.env.REACT_APP_API_MYSHOP + "/provider/sign-up",
-  //   signUpParam);
-});
+export const signUp = async ({userId, password, phone, brandName }) => {
+
+  try {
+    const response = await axios.post(
+      process.env.REACT_APP_API_MYSHOP + "/provider/sign-up",
+      {userId, password, phone, brandName}
+    );
+
+    return response.data;
+  } catch (e) {
+    return e.response.data;
+  }
+
+};
 
 export const signIn = async ({id, password}) => {
   try {

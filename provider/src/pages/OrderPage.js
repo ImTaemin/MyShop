@@ -22,7 +22,7 @@ export const getNameByValue = (value) => {
 
 const OrderPage = () => {
 
-  const [orderStatus, setOrderStatus] = useState('RECEIVED');
+  const [orderStatus, setOrderStatus] = useState('PAY_SUCCESS');
 
   return (
     <Card style={{height: "100%"}}>

@@ -31,7 +31,11 @@ public class Provider implements UserDetails {
     @Column(name = "provider_id")
     private Long id;
 
-    @Column(unique = true, nullable = false)
+    /**
+     * 원래라면 true 여야함 (카카오 페이에서 사용)
+     */
+//    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String cid = "TC0ONETIME";
 
     @Column(unique = true, nullable = false)
