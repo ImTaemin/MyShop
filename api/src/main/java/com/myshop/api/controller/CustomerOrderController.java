@@ -32,14 +32,6 @@ public class CustomerOrderController {
         return ResponseEntity.ok(pagingOrders);
     }
 
-//    @ApiOperation(value = "주문내역 조회")
-//    @GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseEntity<PageImpl<OrderItemData>> getOrders(@CurrentCustomer Customer customer, CustomPageRequest pageRequest) {
-//        PageImpl<OrderItemData> pagingOrders = orderService.getOrderByCustomer(customer, pageRequest.of());
-//
-//        return ResponseEntity.ok(pagingOrders);
-//    }
-
     @ApiOperation(value = "카카오 주문 준비")
     @PostMapping(value = "/kakao/ready")
     public ResponseEntity<BaseResponse> readyToKakaoPay(@CurrentCustomer Customer customer, @RequestBody OrderRequest.Order orderRequest) {
