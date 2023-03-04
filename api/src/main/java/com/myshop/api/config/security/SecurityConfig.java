@@ -49,7 +49,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers(Constant.permitAllArray);
+        web.ignoring()
+                .antMatchers(Constant.permitAllArray)
+                .antMatchers(Constant.ignoreArray);
     }
 
     @Override
@@ -57,15 +59,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.httpBasic().disable()
                 .csrf().disable()
                 .cors()
+
                 .and()
                 .authorizeRequests()
-                // TODO 적용 했는데 권한이 없어도 접근이 된다... UI 완료 후 확인
-                .antMatchers(Constant.permitAllArray).permitAll() //부분 허용
-                .antMatchers(HttpMethod.POST, "/item").hasRole(UserRole.PROVIDER.toString())
-                .antMatchers(HttpMethod.GET, "/provider").hasRole(UserRole.PROVIDER.toString())
-                .antMatchers(HttpMethod.GET, "/customer").hasRole(UserRole.CUSTOMER.toString())
-                .antMatchers(HttpMethod.GET, "/**").permitAll() //GET 모두 허용
-                .antMatchers("**exception**").permitAll()
+                .antMatchers(HttpMethod.POST, "/item/**").hasAuthority(UserRole.PROVIDER.toString())
+                .antMatchers(HttpMethod.GET, "/provider/**").hasAuthority(UserRole.PROVIDER.toString())
+                .antMatchers(HttpMethod.GET, "/customer/**").hasAuthority(UserRole.CUSTOMER.toString())
+                .antMatchers(HttpMethod.GET).permitAll() //GET 모두 허용
 
                 .and()
                 .sessionManagement()

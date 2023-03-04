@@ -7,6 +7,9 @@ public final class Constant {
             "/*/sign-up",
             "/*/sign-in",
             "/*/exists/**",
+            "/customer/order/kakao/approval",
+            "/customer/order/kakao/cancel",
+            "/customer/order/kakao/fail"
     };
     
     // 인증, 인가 예외
