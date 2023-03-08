@@ -79,7 +79,6 @@ class ItemControllerTest {
         resItem.setPrice(30000);
         resItem.setQuantity(1000);
         resItem.setMainImage("");
-        resItem.setContent("내용내용내용");
         resItem.setItemType(ItemType.BAG);
         resItem.setGenderType(GenderType.MEN);
         resItem.setImageDetailList(mock(ArrayList.class));
@@ -117,7 +116,6 @@ class ItemControllerTest {
                 .andExpect(jsonPath("$.price").exists())
                 .andExpect(jsonPath("$.quantity").exists())
                 .andExpect(jsonPath("$.mainImage").exists())
-                .andExpect(jsonPath("$.content").exists())
                 .andExpect(jsonPath("$.itemType").exists())
                 .andExpect(jsonPath("$.genderType").exists())
                 .andExpect(jsonPath("$.imageDetailList").exists())

@@ -1,11 +1,10 @@
 package com.myshop.api.repository;
 
 import com.myshop.api.domain.dto.request.ItemRequest;
-import com.myshop.api.domain.entity.Item;
-import com.myshop.api.domain.entity.ItemImage;
-import com.myshop.api.domain.entity.Provider;
-import com.myshop.api.domain.entity.QItem;
-import com.querydsl.core.Tuple;
+import com.myshop.api.domain.dto.response.data.ItemData;
+import com.myshop.api.domain.dto.response.data.ItemImageData;
+import com.myshop.api.domain.entity.*;
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
@@ -25,6 +24,7 @@ public class ItemRepositoryCustomImpl extends QuerydslRepositorySupport implemen
     EntityManager entityManager;
 
     QItem qItem = QItem.item;
+    QProvider qProvider = QProvider.provider;
 
     public ItemRepositoryCustomImpl(JPAQueryFactory jpaQueryFactory) {
         super(Item.class);
@@ -32,13 +32,44 @@ public class ItemRepositoryCustomImpl extends QuerydslRepositorySupport implemen
     }
 
     @Override
-    public List<Item> selectByBrandName(String brandName, Pageable pageable) {
+    public List<ItemData.ItemSimple> selectByBrandName(String brandName, Pageable pageable) {
 
-        return jpaQueryFactory.select(qItem)
+        return jpaQueryFactory.select(
+                Projections.bean(ItemData.ItemSimple.class,
+                                qItem.id,
+                                qItem.code,
+                                qItem.name,
+                                qItem.brandName,
+                                qItem.price,
+                                qItem.mainImage))
                 .from(qItem)
                 .where(qItem.provider().brandName.eq(brandName))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
+                .orderBy(qItem.createDate.desc())
+                .fetch();
+    }
+
+    @Override
+    public List<ItemData.Item> selectByProvider(Provider provider, Pageable pageable) {
+
+        return jpaQueryFactory.select(
+                Projections.bean(ItemData.Item.class,
+                        qItem.id,
+                        qItem.code,
+                        qItem.name,
+                        qItem.brandName,
+                        qItem.price,
+                        qItem.mainImage,
+                        qItem.quantity,
+                        qItem.itemType,
+                        qItem.genderType,
+                        qItem.createDate))
+                .from(qItem)
+                .where(qProvider.id.eq(provider.getId()))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(qItem.createDate.desc())
                 .fetch();
     }
 
@@ -50,7 +81,6 @@ public class ItemRepositoryCustomImpl extends QuerydslRepositorySupport implemen
                 .set(qItem.name, item.getName())
                 .set(qItem.price, item.getPrice())
                 .set(qItem.quantity, item.getQuantity())
-                .set(qItem.content, item.getContent())
                 .set(qItem.itemType, item.getItemType())
                 .set(qItem.genderType, item.getGenderType())
                 .where(qItem.provider().id.eq(provider.getId())
@@ -78,4 +108,14 @@ public class ItemRepositoryCustomImpl extends QuerydslRepositorySupport implemen
                 .execute();
     }
 
+    @Override
+    public Boolean existsByItemCode(String brandName, String itemCode) {
+        String findItemCode = jpaQueryFactory.select(qItem.code)
+                .from(qItem)
+                .where(qItem.code.eq(itemCode)
+                        .and(qItem.brandName.eq(brandName)))
+                .fetchFirst();
+
+        return findItemCode != null;
+    }
 }

@@ -63,7 +63,6 @@ public class CartServiceTest {
                 .price(3500)
                 .mainImage("메인 이미지 경로")
                 .quantity(1000)
-                .content("브랜드명 코트")
                 .itemType(ItemType.OUTER)
                 .genderType(GenderType.MEN)
                 .createDate(LocalDate.now())

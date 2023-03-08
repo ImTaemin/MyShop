@@ -13,9 +13,12 @@ public interface ItemService {
 
     ItemData.Item getItem(Long itemCode);
     PageImpl<ItemData.ItemSimple> getItemsByBrandName(String brandName, Pageable pageable);
+    PageImpl<ItemData.Item> getItemsByProvider(Provider provider, Pageable pageable);
+    Boolean insertItem(Provider provider, ItemRequest.Item requestItem);
     Boolean insertItems(Provider provider, List<ItemRequest.Item> itemUploadParam);
     Long modifyItems(Provider provider, List<ItemRequest.Item> itemRequest);
     Long modifyPriceAndQuantityItems(Provider provider, List<ItemRequest.PriceAndQuantity> priceAndQuantityList);
     Long deleteItems(Provider provider, List<Long> itemIds);
+    Boolean checkItemCode(String brandName, String itemCode);
 
 }

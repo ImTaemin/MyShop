@@ -57,16 +57,13 @@ public class ItemData {
         @ApiModelProperty(value = ApiValueUtils.Item.QUANTITY)
         private int quantity;
 
-        @ApiModelProperty(value = ApiValueUtils.Item.CONTENT)
-        private String content;
-
         @ApiModelProperty(value = ApiValueUtils.Item.ITEM_TYPE, allowableValues = ApiValueUtils.Item.ITEM_TYPE_ENUM)
         private ItemType itemType;
 
         @ApiModelProperty(value = ApiValueUtils.Item.GENDER_TYPE, allowableValues = ApiValueUtils.User.GENDER_TYPE)
         private GenderType genderType;
 
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.dd HH:mm", timezone = "Asia/Seoul")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.dd", timezone = "Asia/Seoul")
         @ApiModelProperty(value = ApiValueUtils.Item.CREATE_DATE)
         private LocalDate createDate;
 
@@ -76,7 +73,6 @@ public class ItemData {
         public Item(com.myshop.api.domain.entity.Item item) {
             super(item);
             this.quantity = item.getQuantity();
-            this.content = item.getContent();
             this.itemType = item.getItemType();
             this.genderType = item.getGenderType();
             this.createDate = item.getCreateDate();

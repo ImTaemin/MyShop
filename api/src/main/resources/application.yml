@@ -13,6 +13,12 @@ spring:
       credentials:
         location: classpath:myshop-373122-5a778e754845.json
 
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 100MB
+      file-size-threshold: 2KB
+
 server:
   servlet:
     encoding:
