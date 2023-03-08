@@ -47,10 +47,6 @@ public class Item {
     @Column
     private String mainImage;
 
-    @Lob
-    @Column(nullable = false)
-    private String content;
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ItemType itemType;
@@ -87,7 +83,7 @@ public class Item {
     private Customer customer;
 
     @Builder
-    public Item(Long id, String code, String name, String brandName, int price, int quantity, String mainImage, String content, ItemType itemType, GenderType genderType, LocalDate createDate, List<ItemImage> itemImageList, Provider provider, List<Cart> cartList, Customer customer) {
+    public Item(Long id, String code, String name, String brandName, int price, int quantity, String mainImage, ItemType itemType, GenderType genderType, LocalDate createDate, List<ItemImage> itemImageList, Provider provider, List<Cart> cartList, Customer customer) {
         this.id = id;
         this.code = code;
         this.name = name;
@@ -95,7 +91,6 @@ public class Item {
         this.price = price;
         this.quantity = quantity;
         this.mainImage = mainImage;
-        this.content = content;
         this.itemType = itemType;
         this.genderType = genderType;
         this.createDate = createDate;

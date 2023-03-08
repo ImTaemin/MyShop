@@ -60,9 +60,6 @@ public class ItemRequest {
         @ApiModelProperty(value = ApiValueUtils.Item.QUANTITY, required = true, example = "5")
         private int quantity;
 
-        @ApiModelProperty(value = ApiValueUtils.Item.CONTENT, required = true)
-        private String content;
-
         @ApiModelProperty(
                 value = ApiValueUtils.Item.ITEM_TYPE,
                 required = true,
@@ -85,7 +82,7 @@ public class ItemRequest {
     @AllArgsConstructor
     public static class ItemList {
         @ApiModelProperty(value = ApiValueUtils.Item.ITEM_LIST)
-        List<Item> itemRequestList;
+        List<Item> itemList;
     }
 
     @ApiModel

@@ -64,7 +64,7 @@ public class CustomerController {
     
     @ApiOperation(value = "구매자 아이디 중복 확인")
     @GetMapping("/exists/id/{userId}")
-        public ResponseEntity<BaseResponse> checkUserId(@PathVariable String userId) {
+    public ResponseEntity<BaseResponse> checkUserId(@PathVariable String userId) {
         return customerService.checkUserId(userId)
                 ? BaseResponse.ok("사용 가능")
                 : BaseResponse.fail("사용 불가");

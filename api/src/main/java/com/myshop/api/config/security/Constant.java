@@ -6,7 +6,8 @@ public final class Constant {
     public static final String[] permitAllArray = new String[] {
             "/*/sign-up",
             "/*/sign-in",
-            "/*/exists/**",
+            "/customer/exists/**",
+            "/provider/exists/**",
             "/customer/order/kakao/approval",
             "/customer/order/kakao/cancel",
             "/customer/order/kakao/fail"

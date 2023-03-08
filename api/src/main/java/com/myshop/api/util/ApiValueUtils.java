@@ -32,7 +32,6 @@ public class ApiValueUtils {
         public static final String NAME = "상품명";
         public static final String BRAND_NAME = "브랜드명";
         public static final String PRICE = "상품 가격";
-        public static final String CONTENT = "상품 내용";
         public static final String ITEM_TYPE = "상품 타입";
         public static final String QUANTITY = "상품 재고";
         public static final String GENDER_TYPE = "상품 성별";

@@ -45,15 +45,53 @@ public class ItemServiceImpl implements ItemService {
     @Transactional
     @Override
     public PageImpl<ItemData.ItemSimple> getItemsByBrandName(String brandName, Pageable pageable) {
-        List<ItemData.ItemSimple> simpleItemList = itemRepository.selectByBrandName(brandName, pageable)
-                .stream()
-                .map(ItemData.ItemSimple::new)
-                .collect(Collectors.toList());
+        List<ItemData.ItemSimple> simpleItemList = itemRepository.selectByBrandName(brandName, pageable);
 
         LOGGER.info("브랜드 상품 페이징 조회 완료");
 
         return new PageImpl<>(simpleItemList, pageable, simpleItemList.size());
     }
+
+    public PageImpl<ItemData.Item> getItemsByProvider(Provider provider, Pageable pageable) {
+        List<ItemData.Item> providerItemList = itemRepository.selectByProvider(provider, pageable);
+
+        LOGGER.info("판매자 상품 페이징 조회 완료");
+
+        return new PageImpl<>(providerItemList, pageable, providerItemList.size());
+    }
+
+    @Transactional
+    @Override
+    public Boolean insertItem(Provider provider, ItemRequest.Item requestItem) {
+        try {
+            Item item = Item.builder()
+                    .id(requestItem.getId())
+                    .code(requestItem.getCode())
+                    .name(requestItem.getName())
+                    .brandName(provider.getBrandName())
+                    .price(requestItem.getPrice())
+                    .quantity(requestItem.getQuantity())
+                    .itemType(requestItem.getItemType())
+                    .genderType(requestItem.getGenderType())
+                    .provider(provider)
+                    .itemImageList(new ArrayList<>())
+                    .build();
+
+            // save() 후에 이미지에 사용할 id를 알 수 있음
+            itemRepository.save(item);
+
+            List<ItemImage> itemImageList = gcpStorageService.uploadImages(requestItem.getImageList(), item);
+
+            itemImageRepository.saveAll(itemImageList);
+            itemRepository.save(item);
+            LOGGER.info("상품 등록 완료");
+
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
 
     @Transactional
     @Override
@@ -65,12 +103,11 @@ public class ItemServiceImpl implements ItemService {
         itemUploadParam.parallelStream().forEach(reqItem -> {
             Item item = Item.builder()
                     .id(reqItem.getId())
-                    .code(reqItem.getCode())
+                    .code(reqItem.getCode().toUpperCase())
                     .name(reqItem.getName())
                     .brandName(reqItem.getBrandName())
                     .price(reqItem.getPrice())
                     .quantity(reqItem.getQuantity())
-                    .content(reqItem.getContent())
                     .itemType(reqItem.getItemType())
                     .genderType(reqItem.getGenderType())
                     .provider(provider)
@@ -82,8 +119,6 @@ public class ItemServiceImpl implements ItemService {
 
             List<ItemImage> itemImageList = gcpStorageService.uploadImages(reqItem.getImageList(), item);
 
-            item.setMainImage(itemImageList.get(0).getPath());
-
             itemImageRepository.saveAll(itemImageList);
             itemList.add(item);
         });
@@ -91,7 +126,7 @@ public class ItemServiceImpl implements ItemService {
         itemRepository.saveAll(itemList);
         LOGGER.info("상품 등록 완료");
 
-        return true;
+        return itemList.size() > 0;
     }
 
     @Transactional
@@ -150,4 +185,10 @@ public class ItemServiceImpl implements ItemService {
         return itemRepository.deleteByProviderItems(provider.getId(), itemIds);
     }
 
+    @Transactional
+    @Override
+    public Boolean checkItemCode(String brandName, String itemCode) {
+        // 존재하지 않으면 true 반환 (사용 가능)
+        return !itemRepository.existsByItemCode(brandName, itemCode);
+    }
 }

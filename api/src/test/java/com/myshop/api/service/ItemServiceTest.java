@@ -82,7 +82,6 @@ public class ItemServiceTest {
                 .price(3500)
                 .mainImage("메인 이미지 경로")
                 .quantity(1000)
-                .content("브랜드명 코트")
                 .itemType(ItemType.OUTER)
                 .genderType(GenderType.MEN)
                 .createDate(LocalDate.now())
@@ -109,7 +108,6 @@ public class ItemServiceTest {
         reqItem.setPrice(3500);
         reqItem.setCode("AAA_BK");
         reqItem.setQuantity(1000);
-        reqItem.setContent("브랜드명 코트");
         reqItem.setItemType(ItemType.OUTER);
         reqItem.setGenderType(GenderType.MEN);
         reqItem.setImageList(List.of(mock(MultipartFile.class)));
@@ -130,7 +128,6 @@ public class ItemServiceTest {
         resItem.setMainImage("메인 이미지 경로");
         resItem.setCode("AAA_BK");
         resItem.setQuantity(1000);
-        resItem.setContent("브랜드명 코트");
         resItem.setItemType(ItemType.OUTER);
         resItem.setGenderType(GenderType.MEN);
         resItem.setCreateDate(LocalDate.now());
@@ -162,7 +159,6 @@ public class ItemServiceTest {
         Assertions.assertNotNull(resItem.getMainImage());
         Assertions.assertNotNull(resItem.getCode());
         Assertions.assertNotNull(resItem.getQuantity());
-        Assertions.assertNotNull(resItem.getContent());
         Assertions.assertNotNull(resItem.getItemType());
         Assertions.assertNotNull(resItem.getGenderType());
         Assertions.assertNotNull(resItem.getCreateDate());
@@ -173,9 +169,9 @@ public class ItemServiceTest {
     @DisplayName("브랜드명으로 상품 목록 조회")
     public void getItemsByBrandNameTest() throws Exception {
         //given
-        List<Item> itemList = new ArrayList<>();
+        List<ItemData.ItemSimple> itemList = new ArrayList<>();
         for(int i=0; i<100; i++) {
-            itemList.add(Item.builder().build());
+            itemList.add(new ItemData.ItemSimple());
         }
         given(itemRepository.selectByBrandName(anyString(), any(Pageable.class))).willReturn(itemList);
 
