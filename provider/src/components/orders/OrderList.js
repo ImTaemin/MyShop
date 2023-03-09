@@ -42,9 +42,7 @@ const OrderList = ({orderStatus}) => {
           <th width="10%">상태</th>
         </tr>
         </thead>
-        {error && (
-          <>{error.msg}</>
-        )}
+
         <tbody>
         {
           !loading && orders && (
@@ -59,12 +57,12 @@ const OrderList = ({orderStatus}) => {
             ))
           )}
         </tbody>
-        <tfoot>
-
-        </tfoot>
       </Table>
       {loading && (
         <Loader />
+      )}
+      {error && (
+        <div>{error.msg}</div>
       )}
     </>
   )

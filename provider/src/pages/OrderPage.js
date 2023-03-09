@@ -1,10 +1,9 @@
 import {ButtonGroup, Card, ToggleButton} from "react-bootstrap";
 import React, {useState} from "react";
 import {BiClipboard} from "react-icons/bi";
-import "../scss/Order.scss";
 import {TableHeader, TableNav, TableTitle} from "../components/common/Table";
 import OrderList from "../components/orders/OrderList";
-import OrderStatusChange from "../components/orders/OrderStatusChange";
+import OrderStatusButtons from "../components/orders/OrderStatusButtons";
 
 const status = [
   { name: '주문 요청', value: 'REQUESTED', variant: 'outline-secondary' },
@@ -54,7 +53,7 @@ const OrderPage = () => {
       </Card.Body>
       
       <Card.Footer>
-        <OrderStatusChange />
+        <OrderStatusButtons />
       </Card.Footer>
 
     </Card>

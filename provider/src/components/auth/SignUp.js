@@ -4,6 +4,7 @@ import axios from "axios";
 import {debounce} from "lodash";
 import {FaTimesCircle, FaCheck} from "react-icons/fa";
 import {signUp} from "../../lib/api/auth";
+import {Alert} from "react-bootstrap";
 
 const SignUp = ({changeAuthMode, setIsRegistered}) => {
   const [formData, setFormData] = useState({
@@ -71,10 +72,15 @@ const SignUp = ({changeAuthMode, setIsRegistered}) => {
 
   useEffect(() => {
     setIsPasswordEqual(password === checkPassword && password !== '');
-  }, [formData.password, formData.checkPassword])
+  }, [formData.password, formData.checkPassword, error])
 
   const submitHandler = async (e) => {
     e.preventDefault();
+
+    if(!isCheckId || !isBrandName || !isPasswordEqual) {
+      setError("모든 항목을 만족해야합니다.");
+      return;
+    }
 
     setFormData({
       userId: '',
@@ -103,6 +109,14 @@ const SignUp = ({changeAuthMode, setIsRegistered}) => {
   }
 
   return (
+    <>
+    {error && (
+      <div className="alert-box">
+        <Alert variant="danger" onClose={() => setError('')} dismissible>
+          <Alert.Heading>{error}</Alert.Heading>
+        </Alert>
+      </div>
+    )}
     <div className="auth-form-container">
       <form className="auth-form" onSubmit={submitHandler}>
         <div className="auth-logo-wrap">
@@ -118,17 +132,18 @@ const SignUp = ({changeAuthMode, setIsRegistered}) => {
           </div>
           <div className="form-group mt-3">
             <label>아이디</label>
-            <div className="form-dup-wrap">
+            <div className="debounce-container">
               <input
                 name={"userId"}
                 type="text"
                 value={userId}
                 className="form-control mt-1"
+                autoComplete='off'
                 placeholder="아이디를 입력해주세요"
                 onChange={inputHandler}
                 required
               />
-              <div className="form-dup">
+              <div className="debounce-wrap">
                 {isCheckId && (
                   <FaCheck />
                 )}
@@ -145,6 +160,7 @@ const SignUp = ({changeAuthMode, setIsRegistered}) => {
               type="password"
               value={password}
               className="form-control mt-1"
+              autoComplete='off'
               placeholder="비밀번호를 입력해주세요"
               onChange={inputHandler}
               required
@@ -152,17 +168,18 @@ const SignUp = ({changeAuthMode, setIsRegistered}) => {
           </div>
           <div className="form-group mt-3">
             <label>비밀번호 확인</label>
-            <div className="form-dup-wrap">
+            <div className="debounce-container">
               <input
               name="checkPassword"
               type="password"
               value={checkPassword}
               className="form-control mt-1"
+              autoComplete='off'
               placeholder="비밀번호 확인"
               onChange={inputHandler}
               required
             />
-              <div className="form-dup">
+              <div className="debounce-wrap">
                 {isPasswordEqual && (
                   <FaCheck />
                 )}
@@ -179,6 +196,7 @@ const SignUp = ({changeAuthMode, setIsRegistered}) => {
               type="text"
               value={phone}
               className="form-control mt-1"
+              autoComplete='off'
               placeholder="-포함"
               pattern="^\d{2,3}-\d{3,4}-\d{4}$"
               onChange={inputHandler}
@@ -187,17 +205,18 @@ const SignUp = ({changeAuthMode, setIsRegistered}) => {
           </div>
           <div className="form-group mt-3">
             <label>브랜드명</label>
-            <div className="form-dup-wrap">
+            <div className="debounce-container">
               <input
                 name="brandName"
                 type="text"
                 value={brandName}
                 className="form-control mt-1"
+                autoComplete='off'
                 placeholder="브랜드명을 입력해주세요"
                 onChange={inputHandler}
                 required
               />
-              <div className="form-dup">
+              <div className="debounce-wrap">
                 {isBrandName && (
                   <FaCheck />
                 )}
@@ -215,6 +234,7 @@ const SignUp = ({changeAuthMode, setIsRegistered}) => {
         </div>
       </form>
     </div>
+    </>
   )
 }
 

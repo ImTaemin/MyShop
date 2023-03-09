@@ -1,5 +1,7 @@
 import React, {useState} from "react";
-import "../scss/auth.scss";
+import "../scss/Auth.scss";
+import "../scss/Debounce.scss";
+import "../scss/Alert.scss";
 import SignIn from "../components/auth/SignIn";
 import SignUp from "../components/auth/SignUp";
 

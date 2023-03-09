@@ -47,27 +47,10 @@
         color: rgb(34, 34, 34);
       }
 
-      .form-dup-wrap {
-        display: -webkit-box;
-
-        .form-dup {
-          font-size: 1.5em;
-          margin-left: 2%;
-          color: #0b5ed7;
-          display: flex;
-          align-items: center;
-        }
-      }
     }
   }
 }
 
-.alert-box {
-  position: fixed;
-  bottom: 10px;
-  right: 10px;
-  font-size: 0.8em;
-}
 
 // has로 부모에게 배경 색 설정
 :has(.auth-container) {

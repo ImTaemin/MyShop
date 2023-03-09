@@ -27,8 +27,6 @@ export const signIn = async ({id, password}) => {
       }
     );
 
-    // 전역 헤더 설정
-    client.defaults.headers.common['X-AUTH-TOKEN'] = localStorage.getItem("accessToken");
 
     return response.data;
   } catch (error) {
@@ -37,6 +35,7 @@ export const signIn = async ({id, password}) => {
 };
 
 export const signOut = () => {
+  localStorage.removeItem("brandName");
   localStorage.removeItem("accessToken");
   removeCookie("refreshToken");
 }
