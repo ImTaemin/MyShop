@@ -3,7 +3,8 @@ import logo from "../../assets/images/logo.png";
 import {signIn} from "../../lib/api/auth";
 import {Alert} from "react-bootstrap";
 import {useNavigate} from "react-router-dom";
-import {removeCookie, setCookie} from "../../lib/cookie";
+import {setCookie} from "../../lib/cookie";
+import client from "../../lib/api/client";
 
 const SignIn = ({changeAuthMode, isRegistered, setIsRegistered}) => {
   const navigate = useNavigate();
@@ -37,9 +38,11 @@ const SignIn = ({changeAuthMode, isRegistered, setIsRegistered}) => {
       const response = await signIn({ id, password });
 
       if(response.status === true) {
-        removeCookie("refreshToken");
         localStorage.setItem("accessToken", response.accessToken);
         setCookie("refreshToken", response.refreshToken);
+
+        // 전역 헤더 설정
+        client.defaults.headers.common['X-AUTH-TOKEN'] = localStorage.getItem("accessToken");
 
         navigate('/orders');
       } else if (response.status === false) {
@@ -86,6 +89,7 @@ const SignIn = ({changeAuthMode, isRegistered, setIsRegistered}) => {
                 type="text"
                 value={id}
                 className="form-control mt-1"
+                autoComplete='off'
                 placeholder="아이디를 입력해주세요"
                 onChange={inputHandler}
                 required
@@ -98,6 +102,7 @@ const SignIn = ({changeAuthMode, isRegistered, setIsRegistered}) => {
                 type="password"
                 value={password}
                 className="form-control mt-1"
+                autoComplete='off'
                 placeholder="비밀번호를 입력해주세요"
                 onChange={inputHandler}
                 required

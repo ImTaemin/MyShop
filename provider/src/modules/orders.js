@@ -1,6 +1,6 @@
 import createRequestSaga, {createRequestActionTypes} from "../lib/createRequestSaga";
 import * as ordersAPI from "../lib/api/orders";
-import { takeLatest } from 'redux-saga/effects';
+import {takeLatest} from 'redux-saga/effects';
 import {createAction, handleActions} from "redux-actions";
 
 // action
@@ -16,12 +16,16 @@ export const listOrders = createAction(
   ({page, orderStatus}) => ({page, orderStatus})
 );
 export const checkOrders = createAction(CHECK_ORDERS, (id) => (id));
-export const changeOrders = createAction(CHANGE_ORDERS, ({checkOrderList, orderStatus}) => ({checkOrderList, orderStatus}));
+export const changeOrders = createAction(CHANGE_ORDERS, ({checkOrderList, orderStatus}) => ({
+  checkOrderList,
+  orderStatus
+}));
 export const unLoadOrders = createAction(UNLOAD_ORDERS);
 
 // redux-saga
 const listOrdersSaga = createRequestSaga(LIST_ORDERS, ordersAPI.listOrders);
 const changeOrdersSaga = createRequestSaga(CHANGE_ORDERS, ordersAPI.changeOrders);
+
 export function* ordersSaga() {
   yield takeLatest(LIST_ORDERS, listOrdersSaga);
   yield takeLatest(CHANGE_ORDERS, changeOrdersSaga);
@@ -36,20 +40,19 @@ const initialState = {
 };
 
 // reducer
-const orders = handleActions(
-  {
+const orders = handleActions({
     [LIST_ORDERS_SUCCESS]: (state, {payload: orders}) => ({
       ...state,
       orders: orders.data.content,
       page: orders.data.pageable.pageNumber
     }),
 
-    [LIST_ORDERS_FAILURE]: (state, {payload: error }) => ({
+    [LIST_ORDERS_FAILURE]: (state, {payload: error}) => ({
       ...state,
       error: error.response.data,
     }),
 
-    [CHECK_ORDERS] : (state, {payload: {cnt, orderNo}}) => ({
+    [CHECK_ORDERS]: (state, {payload: {cnt, orderNo}}) => ({
       ...state,
       checkOrders: state.checkOrders.some(
         order => order.cnt === cnt && order.orderNo === orderNo
@@ -60,17 +63,17 @@ const orders = handleActions(
         : state.checkOrders.concat({cnt, orderNo})
     }),
 
-    [CHANGE_ORDERS] : (state, {payload: {checkOrderList}}) => ({
+    [CHANGE_ORDERS]: (state, {payload: {checkOrderList}}) => ({
       ...state,
       orders: state.orders.filter(order =>
         !checkOrderList.some(checkOrder =>
-            checkOrder.cnt === order.cnt
-            && checkOrder.orderNo === order.orderNo)
+          checkOrder.cnt === order.cnt
+          && checkOrder.orderNo === order.orderNo)
       ),
       checkOrders: []
     }),
 
-    [UNLOAD_ORDERS] : () => initialState,
+    [UNLOAD_ORDERS]: () => initialState,
   },
 
   initialState

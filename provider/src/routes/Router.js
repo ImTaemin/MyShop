@@ -5,7 +5,7 @@ import AuthPage from "../pages/AuthPage";
 // 페이지
 const MainPage = lazy(() => import("../pages/MainPage.js"));
 const OrderPage = lazy(() => import("../pages/OrderPage.js"));
-const ItemPage =  lazy(() => import("../pages/ItemPage.js"));
+const ItemsPage =  lazy(() => import("../pages/ItemsPage.js"));
 const CouponPage =  lazy(() => import("../pages/CouponPage.js"));
 const InfoPage =  lazy(() => import("../pages/InfoPage.js"));
 
@@ -39,7 +39,7 @@ const ThemeRoutes = [
     children: [
       {path: "/", element: <Navigate to="/auth"/>},
       {path: "/orders", element: <PrivateRoute element={<OrderPage />} />},
-      {path: "/items", element: <PrivateRoute element={<ItemPage />} />},
+      {path: "/items", element: <PrivateRoute element={<ItemsPage />} />},
       {path: "/coupons", element: <PrivateRoute element={<CouponPage />} />},
       {path: "/info", element: <PrivateRoute element={<InfoPage />} />},
     ]

@@ -1,0 +1,36 @@
+.btn-status {
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.card {
+  height: 100%;
+
+  .card-body {
+    overflow: scroll;
+    min-height: 172px;
+
+    table {
+      tr {
+        vertical-align: middle;
+        max-height: 50px;
+      }
+    }
+  }
+
+  .card-body::-webkit-scrollbar {
+    width: 10px;  /* 스크롤바의 너비 */
+  }
+
+  .card-body::-webkit-scrollbar-thumb {
+    background: #217af4; /* 스크롤바의 색상 */
+    border-radius: 50px;
+  }
+
+  .card-footer {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+}
+

@@ -4,7 +4,7 @@ import React, {useCallback} from "react";
 import {changeOrders} from "../../modules/orders";
 import {useDispatch, useSelector} from "react-redux";
 
-const OrderStatusChange = () => {
+const OrderStatusButtons = () => {
 
   const dispatch = useDispatch();
 
@@ -29,4 +29,4 @@ const OrderStatusChange = () => {
   );
 }
 
-export default OrderStatusChange;
+export default OrderStatusButtons;
