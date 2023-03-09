@@ -229,7 +229,7 @@ class ItemControllerTest {
 
         ItemRequest.PriceAndQuantityList priceAndQuantityList = new ItemRequest.PriceAndQuantityList();
         ItemRequest.PriceAndQuantity priceAndQuantity = new ItemRequest.PriceAndQuantity();
-        priceAndQuantity.setId(1L);
+        priceAndQuantity.setId("1");
         priceAndQuantity.setPrice(27000);
         priceAndQuantity.setQuantity(800);
         priceAndQuantityList.setPriceAndQuantityList(List.of(priceAndQuantity));

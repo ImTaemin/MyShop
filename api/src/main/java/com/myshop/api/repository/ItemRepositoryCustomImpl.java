@@ -84,7 +84,7 @@ public class ItemRepositoryCustomImpl extends QuerydslRepositorySupport implemen
                 .set(qItem.itemType, item.getItemType())
                 .set(qItem.genderType, item.getGenderType())
                 .where(qItem.provider().id.eq(provider.getId())
-                        .and(qItem.id.eq(item.getId())))
+                        .and(qItem.id.eq(Long.parseLong(item.getId()))))
                 .execute();
 
         itemImageList.forEach(entityManager::persist);
@@ -96,7 +96,7 @@ public class ItemRepositoryCustomImpl extends QuerydslRepositorySupport implemen
                 .set(qItem.price, priceAndQuantity.getPrice())
                 .set(qItem.quantity, priceAndQuantity.getQuantity())
                 .where(qItem.provider().id.eq(provider.getId())
-                        .and(qItem.id.eq(priceAndQuantity.getId())))
+                        .and(qItem.id.eq(Long.parseLong(priceAndQuantity.getId()))))
                 .execute();
     }
 

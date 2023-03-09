@@ -22,6 +22,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -64,7 +65,7 @@ public class FavoriteServiceTest {
                 .quantity(1000)
                 .itemType(ItemType.OUTER)
                 .genderType(GenderType.MEN)
-                .createDate(LocalDate.now())
+                .createDate(LocalDateTime.now())
                 .build();
 
         favorite = Favorite.builder()
