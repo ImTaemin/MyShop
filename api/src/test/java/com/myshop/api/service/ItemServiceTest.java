@@ -24,6 +24,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -84,7 +85,7 @@ public class ItemServiceTest {
                 .quantity(1000)
                 .itemType(ItemType.OUTER)
                 .genderType(GenderType.MEN)
-                .createDate(LocalDate.now())
+                .createDate(LocalDateTime.now())
                 .build();
 
         itemImage = ItemImage.builder()
@@ -97,12 +98,12 @@ public class ItemServiceTest {
         item.setItemImageList(List.of(itemImage));
 
         priceAndQuantity = new ItemRequest.PriceAndQuantity();
-        priceAndQuantity.setId(1L);
+        priceAndQuantity.setId("1");
         priceAndQuantity.setPrice(1000);
         priceAndQuantity.setQuantity(4);
 
         ItemRequest.Item reqItem = new ItemRequest.Item();
-        reqItem.setId(1L);
+        reqItem.setId("1");
         reqItem.setName("aaa");
         reqItem.setBrandName("브랜드명");
         reqItem.setPrice(3500);
@@ -130,7 +131,7 @@ public class ItemServiceTest {
         resItem.setQuantity(1000);
         resItem.setItemType(ItemType.OUTER);
         resItem.setGenderType(GenderType.MEN);
-        resItem.setCreateDate(LocalDate.now());
+        resItem.setCreateDate(LocalDateTime.now());
         resItem.setImageDetailList(List.of(resItemImage));
 
         resItemSimple = new ItemData.ItemSimple();

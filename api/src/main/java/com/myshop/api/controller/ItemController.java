@@ -14,9 +14,9 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Api(tags = {"상품 REST API"})
 @RequiredArgsConstructor
@@ -52,7 +52,7 @@ public class ItemController {
 
     @ApiOperation(value = "상품 등록")
     @PostMapping(value = {"/", ""}, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<BaseResponse> insertItems(@CurrentProvider Provider provider, ItemRequest.Item requestItem) {
+    public ResponseEntity<BaseResponse> insertItem(@CurrentProvider Provider provider, ItemRequest.Item requestItem) {
         Boolean isUploaded = itemService.insertItem(provider, requestItem);
 
         return isUploaded
@@ -72,12 +72,15 @@ public class ItemController {
                 : BaseResponse.fail();
     }
     */
+
+    // MultipartFile 바인딩이 되지 않아 매개변수로 받아옴.
     @ApiOperation(value = "상품 수정")
     @PutMapping(value = {"/", ""}, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<BaseResponse> modifyItems(@CurrentProvider Provider provider, ItemRequest.ItemList itemList) {
-        Long modifiedCnt = itemService.modifyItems(provider, itemList.getItemList());
+    public ResponseEntity<BaseResponse> modifyItem(@CurrentProvider Provider provider, @RequestPart ItemRequest.Item requestItem, @RequestPart("imageList") List<MultipartFile> imageList) {
+        requestItem.setImageList(imageList);
+        Boolean isModified = itemService.modifyItem(provider, requestItem);
 
-        return modifiedCnt > 0
+        return isModified
                 ? BaseResponse.ok()
                 : BaseResponse.fail();
     }

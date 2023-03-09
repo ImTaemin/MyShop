@@ -5,7 +5,9 @@ import com.myshop.api.enumeration.ItemType;
 import com.myshop.api.util.ApiValueUtils;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -27,7 +29,7 @@ public class ItemRequest {
     @AllArgsConstructor
     public static class PriceAndQuantity {
         @ApiModelProperty(value = ApiValueUtils.Item.ID, required = true, example = "1")
-        private Long id;
+        private String id;
 
         @ApiModelProperty(value = ApiValueUtils.Item.PRICE, required = true, example = "30000")
         private int price;
@@ -43,7 +45,7 @@ public class ItemRequest {
     public static class Item {
 
         @ApiModelProperty(value = ApiValueUtils.Item.ID, example = "1")
-        private Long id;
+        private String id;
 
         @ApiModelProperty(value = ApiValueUtils.Item.CODE, required = true)
         private String code;

@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -65,7 +64,6 @@ public class ItemServiceImpl implements ItemService {
     public Boolean insertItem(Provider provider, ItemRequest.Item requestItem) {
         try {
             Item item = Item.builder()
-                    .id(requestItem.getId())
                     .code(requestItem.getCode())
                     .name(requestItem.getName())
                     .brandName(provider.getBrandName())
@@ -88,6 +86,7 @@ public class ItemServiceImpl implements ItemService {
 
             return true;
         } catch (Exception e) {
+            LOGGER.warn("상품 등록 실패 {}", e);
             return false;
         }
     }
@@ -102,7 +101,7 @@ public class ItemServiceImpl implements ItemService {
         // 클라우드에 이미지 업로드 병렬처리
         itemUploadParam.parallelStream().forEach(reqItem -> {
             Item item = Item.builder()
-                    .id(reqItem.getId())
+                    .id(Long.parseLong(reqItem.getId()))
                     .code(reqItem.getCode().toUpperCase())
                     .name(reqItem.getName())
                     .brandName(reqItem.getBrandName())
@@ -131,13 +130,14 @@ public class ItemServiceImpl implements ItemService {
 
     @Transactional
     @Override
-    public Long modifyItems(Provider provider, List<ItemRequest.Item> reqItemList) {
+    public Boolean modifyItem(Provider provider, ItemRequest.Item requestItem) {
 
-        AtomicInteger modifiedCnt = new AtomicInteger(0);
-        reqItemList.forEach(reqItem -> {
+        try {
             // GCP 이미지 삭제
-            Long itemId = reqItem.getId();
+            Long itemId = Long.parseLong(requestItem.getId());
             gcpStorageService.deleteImages(provider.getBrandName(), itemId);
+
+            LOGGER.info("DB 이미지 삭제");
 
             // DB 이미지 정보 삭제 (고아 객체 제거 기능이 되지 않아 직접 delete)
             Item item = itemRepository.findById(itemId).orElseThrow(ItemNotFoundException::new);
@@ -147,16 +147,16 @@ public class ItemServiceImpl implements ItemService {
             itemImageList.clear();
 
             // GCP 이미지 업로드
-            itemImageList = gcpStorageService.uploadImages(reqItem.getImageList(), item);
+            itemImageList = gcpStorageService.uploadImages(requestItem.getImageList(), item);
 
             // 상품 정보 수정 및 이미지 새로 삽입
-            itemRepository.modifyByProviderItems(provider, reqItem, itemImageList);
-            LOGGER.info("{} 수정 완료", reqItem.getName());
+            itemRepository.modifyByProviderItems(provider, requestItem, itemImageList);
+            LOGGER.info("{} 수정 완료", requestItem.getName());
 
-            modifiedCnt.getAndIncrement();
-        });
-
-        return modifiedCnt.longValue();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     @Transactional

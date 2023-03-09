@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,9 +64,9 @@ public class ItemData {
         @ApiModelProperty(value = ApiValueUtils.Item.GENDER_TYPE, allowableValues = ApiValueUtils.User.GENDER_TYPE)
         private GenderType genderType;
 
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.dd", timezone = "Asia/Seoul")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.dd HH:mm", timezone = "Asia/Seoul")
         @ApiModelProperty(value = ApiValueUtils.Item.CREATE_DATE)
-        private LocalDate createDate;
+        private LocalDateTime createDate;
 
         @ApiModelProperty(value = ApiValueUtils.Item.IMAGE_LIST)
         private List<ItemImageData.ItemImage> imageDetailList = new ArrayList<>();

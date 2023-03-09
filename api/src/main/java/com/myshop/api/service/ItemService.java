@@ -16,7 +16,7 @@ public interface ItemService {
     PageImpl<ItemData.Item> getItemsByProvider(Provider provider, Pageable pageable);
     Boolean insertItem(Provider provider, ItemRequest.Item requestItem);
     Boolean insertItems(Provider provider, List<ItemRequest.Item> itemUploadParam);
-    Long modifyItems(Provider provider, List<ItemRequest.Item> itemRequest);
+    Boolean modifyItem(Provider provider, ItemRequest.Item requestItem);
     Long modifyPriceAndQuantityItems(Provider provider, List<ItemRequest.PriceAndQuantity> priceAndQuantityList);
     Long deleteItems(Provider provider, List<Long> itemIds);
     Boolean checkItemCode(String brandName, String itemCode);

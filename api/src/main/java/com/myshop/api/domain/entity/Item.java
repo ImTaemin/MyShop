@@ -11,6 +11,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,7 +59,7 @@ public class Item {
     @Column
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.dd HH:mm", timezone = "Asia/Seoul")
     @CreationTimestamp
-    private LocalDate createDate;
+    private LocalDateTime createDate;
 
     @Setter
     @OneToMany(
@@ -83,7 +84,7 @@ public class Item {
     private Customer customer;
 
     @Builder
-    public Item(Long id, String code, String name, String brandName, int price, int quantity, String mainImage, ItemType itemType, GenderType genderType, LocalDate createDate, List<ItemImage> itemImageList, Provider provider, List<Cart> cartList, Customer customer) {
+    public Item(Long id, String code, String name, String brandName, int price, int quantity, String mainImage, ItemType itemType, GenderType genderType, LocalDateTime createDate, List<ItemImage> itemImageList, Provider provider, List<Cart> cartList, Customer customer) {
         this.id = id;
         this.code = code;
         this.name = name;
