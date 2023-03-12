@@ -8,7 +8,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @ApiModel
 @Data
@@ -24,9 +24,9 @@ public class CouponData {
     @ApiModelProperty(value = ApiValueUtils.Coupon.CONTENT)
     private String content;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.dd HH:mm:ss", timezone = "Asia/Seoul")
-    @ApiModelProperty(value = ApiValueUtils.Coupon.EXPIRE_DATE)
-    private LocalDateTime expireDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.dd", timezone = "Asia/Seoul")
+    @ApiModelProperty(value = ApiValueUtils.Coupon.EXPIRATION_DATE)
+    private LocalDate expirationDate;
 
     @ApiModelProperty(value = ApiValueUtils.Coupon.DISCOUNT, example = "10")
     private int discount;
@@ -35,7 +35,7 @@ public class CouponData {
         this.id = coupon.getId();
         this.code = coupon.getCode();
         this.content = coupon.getContent();
-        this.expireDate = coupon.getExpireDate();
+        this.expirationDate = coupon.getExpirationDate();
         this.discount = (int) (coupon.getDiscount() * 100);
     }
 }

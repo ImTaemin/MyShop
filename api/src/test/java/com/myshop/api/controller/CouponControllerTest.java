@@ -21,14 +21,10 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -61,13 +57,13 @@ public class CouponControllerTest {
 
         couponRequest.setCode("ABCD-EFGH");
         couponRequest.setContent("1주년 감사 쿠폰");
-        couponRequest.setExpireDate(LocalDateTime.now().plusDays(5).toString());
+        couponRequest.setExpirationDate(LocalDate.now().plusDays(5).toString());
         couponRequest.setDiscount(10);
 
         couponData.setId(1L);
         couponData.setCode("ABCD-EFGH");
         couponData.setContent("1주년 감사 쿠폰");
-        couponData.setExpireDate(LocalDateTime.now().plusDays(5));
+        couponData.setExpirationDate(LocalDate.now().plusDays(5));
         couponData.setDiscount(10);
     }
     
@@ -121,7 +117,7 @@ public class CouponControllerTest {
     @DisplayName("쿠폰 코드 중복 확인 - 사용 불가")
     public void checkAvailableCouponCode() throws Exception {
         //given
-        given(couponService.checkCouponCode(anyString())).willReturn(false);
+        given(couponService.checkCouponCode(anyLong(), anyString())).willReturn(false);
         String content = objectMapper.writeValueAsString(Map.of("code", "ABCD-EFGH"));
 
         //when
@@ -137,7 +133,7 @@ public class CouponControllerTest {
                 .andDo(print());
 
         //then
-        verify(couponService).checkCouponCode(anyString());
+        verify(couponService).checkCouponCode(anyLong(), anyString());
     }
 
     @Test
@@ -145,7 +141,7 @@ public class CouponControllerTest {
     @DisplayName("쿠폰 코드 중복 확인 - 사용 가능")
     public void checkUnavailableCouponCode() throws Exception {
         //given
-        given(couponService.checkCouponCode(anyString())).willReturn(true);
+        given(couponService.checkCouponCode(anyLong(), anyString())).willReturn(true);
         String content = objectMapper.writeValueAsString(Map.of("code", "AAAA-CCCC"));
 
         //when
@@ -161,7 +157,7 @@ public class CouponControllerTest {
                 .andDo(print());
 
         //then
-        verify(couponService).checkCouponCode(anyString());
+        verify(couponService).checkCouponCode(anyLong(), anyString());
     }
 
     @Test

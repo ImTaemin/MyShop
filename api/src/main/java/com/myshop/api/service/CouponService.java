@@ -10,7 +10,7 @@ public interface CouponService {
 
     List<CouponData> getCouponList(Provider provider);
     void insertCoupon(Provider provider, CouponRequest couponRequest);
-    Boolean checkCouponCode(String code);
+    Boolean checkCouponCode(Long providerId, String code);
     void updateCoupon(Provider provider, CouponRequest couponRequest);
     void deleteCoupon(Provider provider, String code);
 }

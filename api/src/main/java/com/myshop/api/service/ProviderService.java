@@ -1,6 +1,5 @@
 package com.myshop.api.service;
 
-import com.myshop.api.domain.dto.account.ProviderAccount;
 import com.myshop.api.domain.dto.request.UserUpdateRequest;
 import com.myshop.api.domain.dto.response.data.ProviderData;
 import com.myshop.api.domain.entity.Provider;

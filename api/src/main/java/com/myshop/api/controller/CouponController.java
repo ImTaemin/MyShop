@@ -9,6 +9,7 @@ import com.myshop.api.service.CouponService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +25,7 @@ public class CouponController {
     private final CouponService couponService;
 
     @ApiOperation(value = "쿠폰 목록 조회 - 판매자")
-    @GetMapping("/")
+    @GetMapping(value = {"/", ""})
     public ResponseEntity<BaseResponse> getCouponList(@CurrentProvider Provider provider) {
         List<CouponData> couponData = couponService.getCouponList(provider);
 
@@ -32,7 +33,7 @@ public class CouponController {
     }
 
     @ApiOperation(value = "쿠폰 등록")
-    @PostMapping("/")
+    @PostMapping(value = {"/", ""}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<BaseResponse> insertCoupon(@CurrentProvider Provider provider, @RequestBody CouponRequest couponRequest) {
         couponService.insertCoupon(provider, couponRequest);
 
@@ -40,15 +41,15 @@ public class CouponController {
     }
 
     @ApiOperation(value = "쿠폰 코드 중복 확인")
-    @PostMapping("/exists")
-    public ResponseEntity<BaseResponse> checkCouponCode(@RequestBody Map<String, String> codeMap) {
-        return couponService.checkCouponCode(codeMap.get("code"))
+    @GetMapping(value = {"/exists/code/{couponCode}", "/exists/code/", "/exists/code"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<BaseResponse> checkCouponCode(@CurrentProvider Provider provider, @PathVariable String couponCode) {
+        return couponService.checkCouponCode(provider.getId(), couponCode)
                 ? BaseResponse.ok("사용 가능")
                 : BaseResponse.fail("사용 불가");
     }
 
     @ApiOperation(value = "쿠폰 수정")
-    @PutMapping("/")
+    @PutMapping(value = {"/", ""})
     public ResponseEntity<BaseResponse> updateCoupon(@CurrentProvider Provider provider, @RequestBody CouponRequest couponRequest) {
         couponService.updateCoupon(provider, couponRequest);
 
@@ -56,9 +57,9 @@ public class CouponController {
     }
 
     @ApiOperation(value = "쿠폰 삭제")
-    @DeleteMapping("/{couponId}")
-    public ResponseEntity<BaseResponse> deleteCoupon(@CurrentProvider Provider provider, @PathVariable String couponId) {
-        couponService.deleteCoupon(provider, couponId);
+    @DeleteMapping("/{couponCode}")
+    public ResponseEntity<BaseResponse> deleteCoupon(@CurrentProvider Provider provider, @PathVariable String couponCode) {
+        couponService.deleteCoupon(provider, couponCode);
 
         return BaseResponse.ok();
     }

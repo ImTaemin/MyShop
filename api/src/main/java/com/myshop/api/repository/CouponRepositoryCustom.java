@@ -13,4 +13,5 @@ public interface CouponRepositoryCustom {
     void updateCoupon(Provider provider, CouponRequest couponRequest);
     void deleteCoupon(Provider provider, String code);
     Optional<Coupon> findByCodeAndItemId(String code, Long itemId);
+    Boolean existsByCouponCode(Long providerId, String code);
 }

@@ -3,6 +3,7 @@ package com.myshop.api.controller;
 import com.myshop.api.domain.dto.response.BaseResponse;
 import com.myshop.api.exception.*;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -57,8 +58,8 @@ public class ExceptionControllerAdvice {
     }
 
     @ExceptionHandler(value = UsernameNotFoundException.class)
-    public ResponseEntity<BaseResponse> userNameNotFoundHandler(UsernameNotFoundException e) {
-        return BaseResponse.error(e.getMessage());
+    public ResponseEntity<String> userNameNotFoundHandler(UsernameNotFoundException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(value = DataIntegrityViolationException.class)

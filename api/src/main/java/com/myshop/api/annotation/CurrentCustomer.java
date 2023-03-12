@@ -9,6 +9,6 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.PARAMETER, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@AuthenticationPrincipal(expression = "#this == 'anonymousUser' ? null : customer" )
+@AuthenticationPrincipal(expression = "#this == 'anonymousUser' ? T(com.myshop.api.exception.UserNotFoundException).new() : customer")
 public @interface CurrentCustomer {
 }

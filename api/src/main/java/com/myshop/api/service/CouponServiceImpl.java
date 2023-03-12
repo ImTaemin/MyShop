@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -29,13 +29,12 @@ public class CouponServiceImpl implements CouponService{
     @Transactional
     @Override
     public void insertCoupon(Provider provider, CouponRequest couponRequest) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss");
-        LocalDateTime expireDate = LocalDateTime.parse(couponRequest.getExpireDate(), formatter);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
 
         Coupon coupon = Coupon.builder()
                 .code(couponRequest.getCode())
                 .content(couponRequest.getContent())
-                .expireDate(expireDate)
+                .expirationDate(LocalDate.parse(couponRequest.getExpirationDate(), formatter))
                 .discount(couponRequest.getDiscount() / 100)
                 .provider(provider)
                 .build();
@@ -49,8 +48,8 @@ public class CouponServiceImpl implements CouponService{
 
     @Transactional
     @Override
-    public Boolean checkCouponCode(String code) {
-        return !couponRepository.existsByCode(code);
+    public Boolean checkCouponCode(Long providerId, String code) {
+        return !couponRepository.existsByCouponCode(providerId, code);
     }
 
     @Transactional
