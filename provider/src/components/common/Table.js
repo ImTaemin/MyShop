@@ -12,7 +12,6 @@ export const TableNav = styled.div`
 `;
 
 export const TableTitle = styled.div`
-  display: flex;
   align-items: center;
   font-size: 1.2em;
 `;

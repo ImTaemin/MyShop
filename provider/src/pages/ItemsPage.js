@@ -3,11 +3,12 @@ import "../scss/Alert.scss";
 import {BiGridAlt} from "react-icons/bi";
 import {TableNav, TableTitle} from "../components/common/Table";
 import ItemList from "../components/items/ItemList";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import ItemRegisterModal from "../components/items/ItemRegisterModal";
 import styled from "styled-components";
 import {useSelector} from "react-redux";
 import ItemDeleteModal from "../components/items/ItemDeleteModal";
+import client from "../lib/api/client";
 
 const TableControlDiv = styled.div`
   
@@ -19,10 +20,27 @@ const TableControlDiv = styled.div`
 const ItemsPage = () => {
   const [regModalShow, setRegModalShow] = useState(false);
   const [delModalShow, setDelModalShow] = useState(false);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
   const [isRegModalChanged, setIsRegModalChanged] = useState(false);
   const [isDelModalChanged, setIsDelModalChanged] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+
+  useEffect(() =>{
+    if(error !== '') {
+      setTimeout(() => {
+        setError('');
+      }, 2000);
+    }
+  }, [error]);
+
+  useEffect(() =>{
+    if(success !== '') {
+      setTimeout(() => {
+        setSuccess('');
+      }, 2000);
+    }
+  }, [success]);
+
 
   const {checkItemIds} = useSelector(({items}) => ({
     checkItemIds: items.checkItemIds
@@ -35,6 +53,10 @@ const ItemsPage = () => {
       setError("상품을 먼저 선택하세요")
     }
   }
+
+  useEffect(() => {
+    client.defaults.headers.common['X-AUTH-TOKEN'] = localStorage.getItem("accessToken");
+  }, []);
 
   return (
     <>
