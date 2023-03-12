@@ -2,7 +2,6 @@ package com.myshop.api.repository;
 
 import com.myshop.api.domain.dto.request.ItemRequest;
 import com.myshop.api.domain.dto.response.data.ItemData;
-import com.myshop.api.domain.dto.response.data.ItemImageData;
 import com.myshop.api.domain.entity.*;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;

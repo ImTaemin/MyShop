@@ -69,7 +69,7 @@ public class JwtTokenProvider {
         claims.put("type", TokenType.REFRESH.toString());
 
         LocalDateTime now = LocalDateTime.now();
-        LocalDateTime expiryDate = now.plusDays(30);
+        LocalDateTime expiryDate = now.plusDays(REFRESH_TOKEN_VALID_DAY);
 
         return "Bearer " + Jwts.builder()
                 .setClaims(claims)

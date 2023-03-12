@@ -15,12 +15,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
@@ -53,14 +51,14 @@ public class CouponServiceTest {
                 .provider(provider)
                 .code("ABCD-EFGH")
                 .content("1주년 감사 쿠폰")
-                .expireDate(LocalDateTime.now().plusDays(5))
+                .expirationDate(LocalDate.now().plusDays(5))
                 .discount(10)
                 .build();
 
         couponData.setId(1L);
         couponData.setCode("ABCD-EFGH");
         couponData.setContent("1주년 감사 쿠폰");
-        couponData.setExpireDate(LocalDateTime.now().plusDays(5));
+        couponData.setExpirationDate(LocalDate.now().plusDays(5));
         couponData.setDiscount(10);
     }
 
@@ -99,14 +97,14 @@ public class CouponServiceTest {
     @DisplayName("쿠폰 코드 중복 확인 - 사용 불가")
     public void checkAvailableCouponCode() throws Exception {
         //given
-        given(!couponRepository.existsByCode(anyString())).willReturn(false);
+        given(!couponRepository.existsByCouponCode(anyLong(), anyString())).willReturn(false);
 
         //when
-        boolean exist = couponRepository.existsByCode("ABCD-EFGH");
+        boolean exist = couponRepository.existsByCouponCode(provider.getId(), "ABCD-EFGH");
 
         //then
         Assertions.assertFalse(exist);
-        verify(couponRepository).existsByCode(anyString());
+        verify(couponRepository).existsByCouponCode(anyLong(), anyString());
     }
 
     @Test
@@ -114,14 +112,14 @@ public class CouponServiceTest {
     @DisplayName("쿠폰 코드 중복 확인 - 사용 가능")
     public void checkUnavailableCouponCode() throws Exception {
         //given
-        given(couponRepository.existsByCode(anyString())).willReturn(true);
+        given(couponRepository.existsByCouponCode(anyLong(), anyString())).willReturn(true);
 
         //when
-        boolean exist = couponRepository.existsByCode("ABCD-EFGH");
+        boolean exist = couponRepository.existsByCouponCode(provider.getId(), "ABCD-EFGH");
 
         //then
         Assertions.assertTrue(exist);
-        verify(couponRepository).existsByCode(anyString());
+        verify(couponRepository).existsByCouponCode(anyLong(), anyString());
     }
 
     @Test

@@ -12,6 +12,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -38,11 +39,12 @@ public class CouponRepositoryCustomImpl extends QuerydslRepositorySupport implem
                                 qCoupon.id,
                         qCoupon.code,
                         qCoupon.content,
-                        qCoupon.expireDate,
+                        qCoupon.expirationDate,
                         Expressions.numberTemplate(
                                 Integer.class, "{0}",
                                 qCoupon.discount.multiply(100).intValue()).as("discount")))
                 .from(qCoupon)
+                .orderBy(qCoupon.createDate.desc())
                 .fetch();
 
         return resCartList;
@@ -50,10 +52,12 @@ public class CouponRepositoryCustomImpl extends QuerydslRepositorySupport implem
 
     @Override
     public void updateCoupon(Provider provider, CouponRequest couponRequest) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+
         jpaQueryFactory.update(qCoupon)
                 .set(qCoupon.content, couponRequest.getContent())
-                .set(qCoupon.expireDate, LocalDateTime.parse(couponRequest.getExpireDate(), DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm.ss")))
-                .set(qCoupon.discount, couponRequest.getDiscount())
+                .set(qCoupon.expirationDate, LocalDate.parse(couponRequest.getExpirationDate(), formatter))
+                .set(qCoupon.discount, couponRequest.getDiscount() / 100)
                 .where(qCoupon.provider().id.eq(provider.getId())
                         .and(qCoupon.code.eq(couponRequest.getCode())))
                 .execute();
@@ -82,5 +86,16 @@ public class CouponRepositoryCustomImpl extends QuerydslRepositorySupport implem
                 .where(qCoupon.code.eq(code)
                         .and(qItem.id.eq(itemId)))
                 .fetchOne());
+    }
+
+    @Override
+    public Boolean existsByCouponCode(Long providerId, String code) {
+        String findCouponCode = jpaQueryFactory.select(qCoupon.code)
+                .from(qCoupon)
+                .where(qCoupon.code.eq(code)
+                        .and(qCoupon.provider().id.eq(providerId)))
+                .fetchFirst();
+
+        return findCouponCode != null;
     }
 }

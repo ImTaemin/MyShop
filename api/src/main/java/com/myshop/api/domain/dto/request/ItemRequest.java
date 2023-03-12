@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.Min;
 import java.util.List;
 
 public class ItemRequest {
@@ -31,9 +32,11 @@ public class ItemRequest {
         @ApiModelProperty(value = ApiValueUtils.Item.ID, required = true, example = "1")
         private String id;
 
+        @Min(0)
         @ApiModelProperty(value = ApiValueUtils.Item.PRICE, required = true, example = "30000")
         private int price;
 
+        @Min(0)
         @ApiModelProperty(value = ApiValueUtils.Item.QUANTITY, required = true, example = "2")
         private int quantity;
     }
@@ -56,9 +59,11 @@ public class ItemRequest {
         @ApiModelProperty(value = ApiValueUtils.Item.BRAND_NAME, required = true)
         private String brandName;
 
+        @Min(0)
         @ApiModelProperty(value = ApiValueUtils.Item.PRICE, required = true, example = "1")
         private int price;
 
+        @Min(0)
         @ApiModelProperty(value = ApiValueUtils.Item.QUANTITY, required = true, example = "5")
         private int quantity;
 
