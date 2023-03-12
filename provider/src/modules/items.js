@@ -4,21 +4,21 @@ import {takeLatest} from "redux-saga/effects";
 import * as itemsAPI from "../lib/api/items";
 
 // action
-const [LIST_ITEMS, LIST_ITEMS_SUCCESS, LIST_ITEMS_FAILURE] =
-  createRequestActionTypes('items/LIST_ITEMS');
+const [LIST_ITEM, LIST_ITEM_SUCCESS, LIST_ITEM_FAILURE] =
+  createRequestActionTypes('items/LIST_ITEM');
 const CHECK_ITEM_IDS = 'items/CHECK_ITEM_IDS';
-const UNLOAD_ITEMS = 'items/UNLOAD_ITEMS';
+const UNLOAD_ITEMS = 'items/UNLOAD_ITEM';
 
 // action creators
-export const listItems = createAction(LIST_ITEMS,(page) => (page));
+export const listItem = createAction(LIST_ITEM,(page) => (page));
 export const checkItemIds = createAction(CHECK_ITEM_IDS, (itemId) => (itemId));
 export const unLoadItems = createAction(UNLOAD_ITEMS);
 
 // redux-saga
-const listItemsSaga = createRequestSaga(LIST_ITEMS, itemsAPI.listItems);
+const listItemSaga = createRequestSaga(LIST_ITEM, itemsAPI.listItems);
 
 export function* itemsSaga() {
-  yield takeLatest(LIST_ITEMS, listItemsSaga);
+  yield takeLatest(LIST_ITEM, listItemSaga);
 }
 
 // init
@@ -30,13 +30,13 @@ const initialState = {
 };
 
 const items = handleActions({
-    [LIST_ITEMS_SUCCESS]: (state, {payload: items}) => ({
+    [LIST_ITEM_SUCCESS]: (state, {payload: items}) => ({
       ...state,
       items: items.data.content,
       page: items.data.pageable.pageNumber,
     }),
 
-    [LIST_ITEMS_FAILURE]: (state, {payload: error}) => ({
+    [LIST_ITEM_FAILURE]: (state, {payload: error}) => ({
       ...state,
       error: error.response.data,
     }),

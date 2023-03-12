@@ -2,9 +2,8 @@ import {Table} from "react-bootstrap";
 import ItemListItem from "./ItemListItem";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react";
-import {listItems, unLoadItems} from "../../modules/items";
+import {listItem, unLoadItems} from "../../modules/items";
 import Loader from "../loader/Loader";
-import client from "../../lib/api/client";
 
 const ItemList = (props) => {
 
@@ -19,10 +18,7 @@ const ItemList = (props) => {
   }));
 
   useEffect(() => {
-    // TODO: 이 코드를 넣어주지 않으면 첫 요청에 토큰을 포함하지 않는다. 왜지..?
-    client.defaults.headers.common['X-AUTH-TOKEN'] = localStorage.getItem("accessToken");
-
-    dispatch(listItems(page));
+    dispatch(listItem(page));
 
     return () => {
       dispatch(unLoadItems())
@@ -46,7 +42,7 @@ const ItemList = (props) => {
 
         <tbody>
         {
-          !loading && items && (
+          items && (
             items.map((item, index) => (
               <ItemListItem
                 item={item}

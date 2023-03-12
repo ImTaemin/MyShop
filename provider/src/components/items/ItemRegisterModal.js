@@ -29,13 +29,12 @@ const ItemRegisterModal = (props) => {
     imageList: [],
   }
   const [formData, setFormData] = useState(initForm);
-
   const {code, name, price, quantity, itemType, genderType, imageList} = formData;
 
   const unLoadModal = useCallback(() => {
     setFormData(initForm);
-
     setIsCheckCode(false);
+
     onHide(false);
   }, [onHide]);
 
@@ -46,9 +45,9 @@ const ItemRegisterModal = (props) => {
         const response = await client.get(`/item/exists/code/${itemCode}`);
         if (response.status === 200) {
           setIsCheckCode(true);
-        } else {
-          setIsCheckCode(false);
+          return;
         }
+        setIsCheckCode(false);
       } catch (error) {
         setIsCheckCode(false);
       }
