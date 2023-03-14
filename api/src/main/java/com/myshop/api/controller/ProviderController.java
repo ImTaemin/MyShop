@@ -31,7 +31,7 @@ public class ProviderController {
     private final SignService signService;
 
     @ApiOperation(value = "판매자 정보 확인")
-    @GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = {"/", ""}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ProviderData.Provider> info(@CurrentProvider Provider provider) {
         ProviderData.Provider providerData = providerService.getInfo(provider);
 
@@ -78,8 +78,8 @@ public class ProviderController {
                 : BaseResponse.fail("사용 불가");
     }
 
-    @ApiOperation("판매자 패스워드 수정")
-    @PutMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation("판매자 정보(pw, hp) 수정")
+    @PutMapping(value = {"/", ""}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<BaseResponse> modify(@CurrentProvider @Valid @RequestBody UserUpdateRequest updateParam) {
         return providerService.modify(updateParam)
                 ? BaseResponse.ok()
@@ -87,7 +87,7 @@ public class ProviderController {
     }
 
     @ApiOperation(value = "판매자 퇴점")
-    @DeleteMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = {"/", ""}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<BaseResponse> withdrawal(@CurrentProvider @RequestBody UserIdAndPassword idAndPassword){
         return providerService.withdrawal(idAndPassword.getUserId(), idAndPassword.getPassword())
                 ? BaseResponse.ok()
