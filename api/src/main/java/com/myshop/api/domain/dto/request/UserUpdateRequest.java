@@ -32,7 +32,7 @@ public class UserUpdateRequest {
     private String modifyPassword;
 
     @NotBlank
-    @Pattern(regexp = "^\\d{3}-\\d{4}-\\d{4}$")
+    @Pattern(regexp = "^\\d{2,3}-\\d{3,4}-\\d{4}$")
     @ApiModelProperty(value = ApiValueUtils.User.PHONE, required = true)
     private String phone;
 }

@@ -54,7 +54,9 @@ public class ProviderServiceImpl implements ProviderService{
         Provider dbProvider = providerRepository.findByUserId(updateParam.getUserId()).orElseThrow(UserNotFoundException::new);
 
         if(PasswordEncryptor.isMatchBcrypt(updateParam.getPassword(), dbProvider.getPassword())){
-            dbProvider.setPassword(updateParam.getModifyPassword());
+            String encryptedPassword = PasswordEncryptor.bcrypt(updateParam.getModifyPassword());
+
+            dbProvider.setPassword(encryptedPassword);
             dbProvider.setPhone(updateParam.getPhone());
 
             providerRepository.save(dbProvider);
