@@ -90,7 +90,8 @@ const ItemRegisterModal = (props) => {
   };
 
   // 데이터 전송
-  const submitHandler = async (e) => {
+  const submitHandler = async (e) =>
+  {
     e.preventDefault();
 
     if (!isCheckCode || code === '') {
