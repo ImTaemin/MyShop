@@ -103,7 +103,7 @@ const CouponUpdateModal = (props) => {
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-          쿠폰 등록
+          쿠폰 수정
         </Modal.Title>
       </Modal.Header>
 

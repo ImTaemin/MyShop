@@ -1,7 +1,7 @@
 import {Alert, Button, Card, ListGroup} from "react-bootstrap";
 import React, {useEffect, useState} from "react";
 import {TableNav, TableTitle} from "../components/common/Table";
-import {BiClipboard} from "react-icons/bi";
+import {BiPurchaseTagAlt} from "react-icons/bi";
 import "../scss/Coupon.scss";
 import CouponRegisterModal from "../components/coupon/CouponRegisterModal";
 import CouponList from "../components/coupon/CouponList";
@@ -55,7 +55,7 @@ const CouponPage = () => {
       <Card>
         <Card.Header>
           <TableNav>
-            <TableTitle><BiClipboard style={{marginRight: "0.6em"}} />쿠폰 관리</TableTitle>
+            <TableTitle><BiPurchaseTagAlt style={{marginRight: "0.6em"}} />쿠폰 관리</TableTitle>
             <Button variant="primary" onClick={() => setRegModalShow(true)}>쿠폰 등록</Button>
           </TableNav>
         </Card.Header>
