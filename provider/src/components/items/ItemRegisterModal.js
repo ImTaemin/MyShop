@@ -1,6 +1,6 @@
 import {Button, Form, Modal} from "react-bootstrap";
-import "../../scss/ItemRegister.scss"
-import "../../scss/Debounce.scss";
+import "../../assets/scss/itemRegister.scss"
+import "../../assets/scss/debounce.scss";
 import React, {useCallback, useState} from "react";
 import {GenderType, ItemType} from "../common/Types.js";
 import {Swiper, SwiperSlide} from "swiper/react";

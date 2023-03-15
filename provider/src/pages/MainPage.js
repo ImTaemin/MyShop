@@ -1,8 +1,8 @@
 import React from "react";
 import {Outlet} from "react-router-dom";
 import Header from "../components/common/Header";
-import '../scss/Main.scss';
-import "../scss/Table.scss";
+import '../assets/scss/main.scss';
+import "../assets/scss/table.scss";
 
 const MainPage = () => {
 

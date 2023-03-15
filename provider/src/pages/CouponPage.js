@@ -2,7 +2,7 @@ import {Alert, Button, Card, ListGroup} from "react-bootstrap";
 import React, {useEffect, useState} from "react";
 import {TableNav, TableTitle} from "../components/common/Table";
 import {BiPurchaseTagAlt} from "react-icons/bi";
-import "../scss/Coupon.scss";
+import "../assets/scss/coupon.scss";
 import CouponRegisterModal from "../components/coupon/CouponRegisterModal";
 import CouponList from "../components/coupon/CouponList";
 import CouponUpdateModal from "../components/coupon/CouponUpdateModal";

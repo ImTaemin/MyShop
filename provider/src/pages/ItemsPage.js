@@ -1,5 +1,5 @@
 import {Alert, Button, Card} from "react-bootstrap";
-import "../scss/Alert.scss";
+import "../assets/scss/alert.scss";
 import {BiGridAlt} from "react-icons/bi";
 import {TableNav, TableTitle} from "../components/common/Table";
 import ItemList from "../components/items/ItemList";

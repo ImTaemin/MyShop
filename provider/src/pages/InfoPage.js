@@ -1,8 +1,8 @@
 import {Alert, Button, Card, Col, Form, Row} from "react-bootstrap";
 import {TableNav, TableTitle} from "../components/common/Table";
 import React, {useCallback, useEffect, useState} from "react";
-import "../scss/Info.scss";
-import "../scss/Debounce.scss";
+import "../assets/scss/info.scss";
+import "../assets/scss/debounce.scss";
 import {FaCheck, FaTimesCircle} from "react-icons/fa";
 import {getInfo, updateInfo} from "../lib/api/info";
 import {useNavigate} from "react-router-dom";

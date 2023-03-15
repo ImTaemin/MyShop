@@ -1,0 +1,58 @@
+.auth-form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+
+  .auth-form {
+    width: 420px;
+    box-shadow: rgb(0 0 0 / 16%) 1px 1px 10px;
+    padding-top: 30px;
+    padding-bottom: 3%;
+    border-radius: 8px;
+    background-color: white;
+
+    .auth-logo-wrap {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 5%;
+
+      .auth-logo {
+        border-radius: 50%;
+        width: 100px;
+        height: 100px;
+      }
+    }
+
+
+    .auth-form-content {
+      padding-left: 12%;
+      padding-right: 12%;
+
+      .auth-form-title {
+        text-align: center;
+        margin-bottom: 1em;
+        font-size: 24px;
+        color: rgb(34, 34, 34);
+        font-weight: 800;
+      }
+
+      .link-primary {
+        cursor: pointer;
+      }
+
+      label {
+        font-size: 14px;
+        font-weight: 600;
+        color: rgb(34, 34, 34);
+      }
+
+    }
+  }
+}
+
+
+// has로 부모에게 배경 색 설정
+:has(.auth-container) {
+  background: rgb(236,255,223);
+}

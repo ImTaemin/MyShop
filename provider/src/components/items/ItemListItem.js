@@ -3,7 +3,7 @@ import React, {useCallback, useState} from "react";
 import {useDispatch} from "react-redux";
 import {checkItemIds} from "../../modules/items";
 import ItemUpdateModalContainer from "./ItemUpdateModalContainer";
-import "../../scss/Alert.scss";
+import "../../assets/scss/alert.scss";
 
 
 const ItemListItem = (props) => {

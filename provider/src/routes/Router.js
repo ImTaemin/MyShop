@@ -1,6 +1,5 @@
 import {lazy} from "react";
 import {Link, Navigate} from "react-router-dom";
-import AuthPage from "../pages/AuthPage";
 
 // 페이지
 const MainPage = lazy(() => import("../pages/MainPage.js"));
@@ -8,6 +7,7 @@ const OrderPage = lazy(() => import("../pages/OrderPage.js"));
 const ItemsPage =  lazy(() => import("../pages/ItemsPage.js"));
 const CouponPage =  lazy(() => import("../pages/CouponPage.js"));
 const InfoPage =  lazy(() => import("../pages/InfoPage.js"));
+const AuthPage =  lazy(() => import("../pages/AuthPage"));
 
 const PrivateRoute = ({ element, ...rest }) => {
   const accessToken = localStorage.getItem('accessToken');
