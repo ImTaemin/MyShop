@@ -1,13 +1,13 @@
 import {useRoutes} from "react-router-dom";
-import ThemeRoutes from './routes/Router'
+import ThemeRoutes from "./routes/Router";
 import 'bootstrap/dist/css/bootstrap.css';
 import React from "react";
 
-const App = () => {
+function App() {
   const routing = useRoutes(ThemeRoutes);
 
   return (
-    <div>
+    <div className="App">
       {routing}
     </div>
   );

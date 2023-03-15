@@ -1,12 +1,12 @@
 import axios from "axios";
 import {removeCookie} from "../cookie";
 
-export const signUp = async ({userId, password, phone, brandName }) => {
+export const signUp = async ({userId, password, phone, name }) => {
 
   try {
     const response = await axios.post(
-      process.env.REACT_APP_API_MYSHOP + "/provider/sign-up",
-      {userId, password, phone, brandName}
+      process.env.REACT_APP_API_MYSHOP + "/customer/sign-up",
+      {userId, password, phone, name}
     );
 
     return response.data;
@@ -19,7 +19,7 @@ export const signUp = async ({userId, password, phone, brandName }) => {
 export const signIn = async ({id, password}) => {
   try {
     const response = await axios.post(
-      process.env.REACT_APP_API_MYSHOP + "/provider/sign-in",
+      process.env.REACT_APP_API_MYSHOP + "/customer/sign-in",
       {
         userId: id,
         password: password,

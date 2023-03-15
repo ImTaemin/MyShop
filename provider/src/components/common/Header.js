@@ -1,4 +1,4 @@
-import "../../scss/Header.scss";
+import "../../assets/scss/header.scss";
 import {Nav} from "react-bootstrap";
 import {BiClipboard, BiGridAlt, BiHomeAlt, BiPurchaseTagAlt} from "react-icons/bi";
 import {Link, useLocation, useNavigate} from "react-router-dom";
@@ -33,7 +33,7 @@ const Header = () => {
 
   const onSignOut = () => {
     signOut();
-    navigate("auth");
+    navigate("/auth");
   }
 
   return (

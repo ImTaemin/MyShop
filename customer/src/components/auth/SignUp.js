@@ -6,6 +6,7 @@ import {FaTimesCircle, FaCheck} from "react-icons/fa";
 import {signUp} from "../../lib/api/auth";
 import {Alert} from "react-bootstrap";
 import {Helmet} from "react-helmet-async";
+import {Link} from "react-router-dom";
 
 const SignUp = ({changeAuthMode, setIsRegistered}) => {
   const [formData, setFormData] = useState({
@@ -13,38 +14,24 @@ const SignUp = ({changeAuthMode, setIsRegistered}) => {
     password: '',
     checkPassword: '',
     phone: '',
-    brandName: ''
+    name: ''
   });
 
-  const {userId, password, checkPassword, phone, brandName} = formData;
+  const {userId, password, checkPassword, phone, name} = formData;
 
   const [isCheckId, setIsCheckId] = useState(false);
-  const [isBrandName, setIsBrandName] = useState(false);
   const [isPasswordEqual, setIsPasswordEqual] = useState(false);
 
   const [error, setError] = useState('');
 
   const debounceCheckId = useCallback(
     debounce((userId) => {
-      axios.get(`${process.env.REACT_APP_API_MYSHOP}/provider/exists/id/${userId}`)
+      axios.get(`${process.env.REACT_APP_API_MYSHOP}/customer/exists/id/${userId}`)
         .then((response) => {
           setIsCheckId(true);
         })
         .catch((err) => {
           setIsCheckId(false);
-        });
-    }, 300),
-    []
-  );
-
-  const debounceBrandName = useCallback(
-    debounce((brandName) => {
-      axios.get(`${process.env.REACT_APP_API_MYSHOP}/provider/exists/brand/${brandName}`)
-        .then((response) => {
-          setIsBrandName(true);
-        })
-        .catch((err) => {
-          setIsBrandName(false);
         });
     }, 300),
     []
@@ -63,10 +50,6 @@ const SignUp = ({changeAuthMode, setIsRegistered}) => {
         debounceCheckId(value);
         break;
 
-      case "brandName":
-        debounceBrandName(value);
-        break;
-
       default:
     }
   }, [formData]);
@@ -78,7 +61,7 @@ const SignUp = ({changeAuthMode, setIsRegistered}) => {
   const submitHandler = async (e) => {
     e.preventDefault();
 
-    if(!isCheckId || !isBrandName || !isPasswordEqual) {
+    if(!isCheckId || !isPasswordEqual) {
       setError("모든 항목을 만족해야합니다.");
       return;
     }
@@ -88,15 +71,14 @@ const SignUp = ({changeAuthMode, setIsRegistered}) => {
       password: '',
       checkPassword: '',
       phone: '',
-      brandName: ''
+      name: ''
     });
 
     setIsPasswordEqual(false);
     setIsCheckId(false);
-    setIsBrandName(false);
 
     try {
-      const response = await signUp({userId, password, phone, brandName });
+      const response = await signUp({userId, password, phone, name });
 
       if(response.status === true) {
         setIsRegistered(true);
@@ -120,12 +102,14 @@ const SignUp = ({changeAuthMode, setIsRegistered}) => {
     )}
 
     <Helmet>
-      <title>판매자 회원가입</title>
+      <title>회원가입</title>
     </Helmet>
     <div className="auth-form-container">
       <form className="auth-form" onSubmit={submitHandler}>
         <div className="auth-logo-wrap">
-          <img src={logo} className="auth-logo" alt="" />
+          <Link to="/">
+            <img src={logo} className="auth-logo" alt="" />
+          </Link>
         </div>
         <div className="auth-form-content">
           <h3 className="auth-form-title">회원가입</h3>
@@ -209,27 +193,17 @@ const SignUp = ({changeAuthMode, setIsRegistered}) => {
             />
           </div>
           <div className="form-group mt-3">
-            <label>브랜드명</label>
-            <div className="debounce-container">
-              <input
-                name="brandName"
-                type="text"
-                value={brandName}
-                className="form-control mt-1"
-                autoComplete='off'
-                placeholder="브랜드명을 입력해주세요"
-                onChange={inputHandler}
-                required
-              />
-              <div className="debounce-wrap">
-                {isBrandName && (
-                  <FaCheck />
-                )}
-                {!isBrandName && (
-                  <FaTimesCircle />
-                )}
-              </div>
-            </div>
+            <label>이름</label>
+            <input
+              name="name"
+              type="text"
+              value={name}
+              className="form-control mt-1"
+              autoComplete='off'
+              placeholder="성함을 입력해주세요"
+              onChange={inputHandler}
+              required
+            />
           </div>
           <div className="d-grid gap-2 mt-3">
             <button type="submit" className="btn btn-primary">

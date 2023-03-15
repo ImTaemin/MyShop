@@ -1,5 +1,5 @@
-import "../../scss/ItemRegister.scss"
-import "../../scss/Debounce.scss";
+import "../../assets/scss/itemRegister.scss"
+import "../../assets/scss/debounce.scss";
 import React, {useEffect} from "react";
 import SwiperCore, {Navigation, Pagination} from 'swiper/core';
 import 'swiper/css';

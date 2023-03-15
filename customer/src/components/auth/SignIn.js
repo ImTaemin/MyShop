@@ -1,11 +1,11 @@
 import React, {useState} from "react";
 import logo from "../../assets/images/logo.png";
-import {signIn} from "../../lib/api/auth";
 import {Alert} from "react-bootstrap";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {setCookie} from "../../lib/cookie";
 import client from "../../lib/api/client";
 import {Helmet} from "react-helmet-async";
+import {signIn} from "../../lib/api/auth";
 
 const SignIn = ({changeAuthMode, isRegistered, setIsRegistered}) => {
   const navigate = useNavigate();
@@ -45,7 +45,7 @@ const SignIn = ({changeAuthMode, isRegistered, setIsRegistered}) => {
         // 전역 헤더 설정
         client.defaults.headers.common['X-AUTH-TOKEN'] = localStorage.getItem("accessToken");
 
-        navigate('/orders');
+        navigate('/');
       } else if (response.status === false) {
         setError(response.msg);
       }
@@ -72,19 +72,21 @@ const SignIn = ({changeAuthMode, isRegistered, setIsRegistered}) => {
       )}
 
       <Helmet>
-        <title>판매자 로그인</title>
+        <title>로그인</title>
       </Helmet>
       <div className="auth-form-container">
         <form className="auth-form" onSubmit={submitHandler}>
           <div className="auth-logo-wrap">
-            <img src={logo} className="auth-logo" alt="" />
+            <Link to="/">
+              <img src={logo} className="auth-logo" alt="" />
+            </Link>
           </div>
           <div className="auth-form-content">
-            <h3 className="auth-form-title">판매자 로그인</h3>
+            <h3 className="auth-form-title">로그인</h3>
             <div className="text-center">
               새 계정 만들기 {"  "}
               <span className="link-primary">
-                <span onClick={changeAuthMode}>판매자 회원가입</span>
+                <span onClick={changeAuthMode}>회원가입</span>
               </span>
             </div>
             <div className="form-group mt-3">
