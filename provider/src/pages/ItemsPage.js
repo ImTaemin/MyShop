@@ -9,6 +9,7 @@ import styled from "styled-components";
 import {useSelector} from "react-redux";
 import ItemDeleteModal from "../components/items/ItemDeleteModal";
 import client from "../lib/api/client";
+import {Helmet} from "react-helmet-async";
 
 const TableControlDiv = styled.div`
   
@@ -74,7 +75,10 @@ const ItemsPage = () => {
           </Alert>
         </div>
       )}
-
+      
+      <Helmet>
+        <title>상품 관리</title>
+      </Helmet>
       <Card style={{height: "100%"}}>
         <Card.Header>
           <TableNav>

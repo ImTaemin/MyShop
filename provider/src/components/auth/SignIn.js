@@ -5,6 +5,7 @@ import {Alert} from "react-bootstrap";
 import {useNavigate} from "react-router-dom";
 import {setCookie} from "../../lib/cookie";
 import client from "../../lib/api/client";
+import {Helmet} from "react-helmet-async";
 
 const SignIn = ({changeAuthMode, isRegistered, setIsRegistered}) => {
   const navigate = useNavigate();
@@ -69,6 +70,10 @@ const SignIn = ({changeAuthMode, isRegistered, setIsRegistered}) => {
           </Alert>
         </div>
       )}
+
+      <Helmet>
+        <title>판매자 로그인</title>
+      </Helmet>
       <div className="auth-form-container">
         <form className="auth-form" onSubmit={submitHandler}>
           <div className="auth-logo-wrap">

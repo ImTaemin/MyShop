@@ -5,6 +5,7 @@ import {debounce} from "lodash";
 import {FaTimesCircle, FaCheck} from "react-icons/fa";
 import {signUp} from "../../lib/api/auth";
 import {Alert} from "react-bootstrap";
+import {Helmet} from "react-helmet-async";
 
 const SignUp = ({changeAuthMode, setIsRegistered}) => {
   const [formData, setFormData] = useState({
@@ -117,6 +118,10 @@ const SignUp = ({changeAuthMode, setIsRegistered}) => {
         </Alert>
       </div>
     )}
+
+    <Helmet>
+      <title>판매자 회원가입</title>
+    </Helmet>
     <div className="auth-form-container">
       <form className="auth-form" onSubmit={submitHandler}>
         <div className="auth-logo-wrap">

@@ -6,6 +6,7 @@ import "../scss/Coupon.scss";
 import CouponRegisterModal from "../components/coupon/CouponRegisterModal";
 import CouponList from "../components/coupon/CouponList";
 import CouponUpdateModal from "../components/coupon/CouponUpdateModal";
+import {Helmet} from "react-helmet-async";
 
 const CouponPage = () => {
 
@@ -52,6 +53,9 @@ const CouponPage = () => {
         </div>
       )}
 
+      <Helmet>
+        <title>쿠폰 관리</title>
+      </Helmet>
       <Card>
         <Card.Header>
           <TableNav>
