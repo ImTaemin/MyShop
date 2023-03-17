@@ -84,7 +84,7 @@ const SignIn = ({changeAuthMode, isRegistered, setIsRegistered}) => {
             <div className="text-center">
               새 계정 만들기 {"  "}
               <span className="link-primary">
-                <span onClick={changeAuthMode}>판매자 회원가입</span>
+                <span onClick={changeAuthMode}>회원가입</span>
               </span>
             </div>
             <div className="form-group mt-3">

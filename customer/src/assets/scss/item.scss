@@ -1,0 +1,61 @@
+.item-container {
+  flex-grow: 1;
+  background: rgb(245, 245, 245);
+  border-left: 1px solid #ddd;
+  min-width: 1200px;
+
+  .item-list-wrap {
+    background: white;
+    margin: 20px;
+    min-height: 840px;
+  }
+}
+
+.item-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(20%, auto));
+  grid-auto-rows: minmax(370px, auto);
+
+  a, a:hover {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .item-box {
+    padding: 10%;
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    height: 100%;
+
+    &:hover {
+      background: rgb(245, 245, 245);
+    }
+
+    .item-img > img {
+      position: relative;
+      width: 100%;
+      height: 230px;
+    }
+
+    .item-content {
+      padding: 5% 5%;
+      font-size: 14px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+
+      p {
+        margin-top: 3px;
+        margin-bottom: 0;
+      }
+
+      p.brand-name, p.price {
+        font-weight: bold;
+      }
+
+      p.price::after{
+        content: "원";
+      }
+    }
+  }
+}

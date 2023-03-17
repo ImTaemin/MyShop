@@ -1,6 +1,7 @@
 import MainPage from "../pages/MainPage";
 import {Link, Navigate} from "react-router-dom";
 import {lazy} from "react";
+import ItemListContainer from "../container/ItemListContainer";
 
 const AuthPage = lazy(() => import("../pages/AuthPage"));
 
@@ -22,7 +23,8 @@ const ThemeRoutes = [
     path: "/",
     element: <MainPage />,
     children: [
-
+      {path: "/", element: <Navigate to="/category/TOP" />},
+      {path: "/category/:type", element: <ItemListContainer />}
     ]
   },
   {
