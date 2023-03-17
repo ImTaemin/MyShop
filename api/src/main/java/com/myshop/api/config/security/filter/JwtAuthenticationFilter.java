@@ -36,6 +36,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        if ("GET".equals(request.getMethod()) && (request.getHeader("X-AUTH-TOKEN") == null)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         try {
             String token = jwtTokenProvider.resolveToken(request);
             LOGGER.info("token 값 추출 완료 : {}", token);

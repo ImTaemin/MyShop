@@ -3,6 +3,7 @@ package com.myshop.api.repository;
 import com.myshop.api.domain.dto.request.ItemRequest;
 import com.myshop.api.domain.dto.response.data.ItemData;
 import com.myshop.api.domain.entity.*;
+import com.myshop.api.enumeration.ItemType;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Pageable;
@@ -43,6 +44,24 @@ public class ItemRepositoryCustomImpl extends QuerydslRepositorySupport implemen
                                 qItem.mainImage))
                 .from(qItem)
                 .where(qItem.provider().brandName.eq(brandName))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(qItem.createDate.desc())
+                .fetch();
+    }
+
+    @Override
+    public List<ItemData.ItemSimple> selectByItemType(ItemType itemType, Pageable pageable) {
+        return jpaQueryFactory.select(
+                        Projections.bean(ItemData.ItemSimple.class,
+                                qItem.id,
+                                qItem.code,
+                                qItem.name,
+                                qItem.brandName,
+                                qItem.price,
+                                qItem.mainImage))
+                .from(qItem)
+                .where(qItem.itemType.eq(itemType))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .orderBy(qItem.createDate.desc())

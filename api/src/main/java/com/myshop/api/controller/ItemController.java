@@ -6,6 +6,7 @@ import com.myshop.api.domain.dto.request.ItemRequest;
 import com.myshop.api.domain.dto.response.BaseResponse;
 import com.myshop.api.domain.dto.response.data.ItemData;
 import com.myshop.api.domain.entity.Provider;
+import com.myshop.api.enumeration.ItemType;
 import com.myshop.api.service.ItemService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -32,14 +33,6 @@ public class ItemController {
         ItemData.Item resItem = itemService.getItem(itemId);
 
         return ResponseEntity.ok(resItem);
-    }
-    
-    @ApiOperation(value = "구매자 브랜드명으로 상품 목록 조회")
-    @GetMapping(value = "/brand/{brandName}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PageImpl<ItemData.ItemSimple>> getItemsByBrandName(@PathVariable String brandName, CustomPageRequest pageRequest) {
-        PageImpl<ItemData.ItemSimple> pagingItems = itemService.getItemsByBrandName(brandName, pageRequest.of());
-
-        return ResponseEntity.ok(pagingItems);
     }
 
     @ApiOperation(value = "판매자 상품 목록 조회")
@@ -114,5 +107,22 @@ public class ItemController {
                 : BaseResponse.fail("사용 불가");
 
     }
+
+    @ApiOperation(value = "브랜드명으로 상품 목록 조회")
+    @GetMapping(value = "/brand/{brandName}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<PageImpl<ItemData.ItemSimple>> getItemsByBrandName(@PathVariable String brandName, CustomPageRequest pageRequest) {
+        PageImpl<ItemData.ItemSimple> pagingItems = itemService.getItemsByBrandName(brandName, pageRequest.of());
+
+        return ResponseEntity.ok(pagingItems);
+    }
+
+    @ApiOperation(value = "상품 타입으로 상품 목록 조회")
+    @GetMapping(value = "/category/{category}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<PageImpl<ItemData.ItemSimple>> getItemsByCategory(@PathVariable String category, CustomPageRequest pageRequest) {
+        PageImpl<ItemData.ItemSimple> pagingItems = itemService.getItemsByCategory(ItemType.valueOf(category), pageRequest.of());
+
+        return ResponseEntity.ok(pagingItems);
+    }
+
 
 }

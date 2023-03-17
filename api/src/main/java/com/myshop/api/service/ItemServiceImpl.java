@@ -5,6 +5,7 @@ import com.myshop.api.domain.dto.response.data.ItemData;
 import com.myshop.api.domain.entity.Item;
 import com.myshop.api.domain.entity.ItemImage;
 import com.myshop.api.domain.entity.Provider;
+import com.myshop.api.enumeration.ItemType;
 import com.myshop.api.exception.ItemNotFoundException;
 import com.myshop.api.repository.ItemImageRepository;
 import com.myshop.api.repository.ItemRepository;
@@ -57,6 +58,14 @@ public class ItemServiceImpl implements ItemService {
         LOGGER.info("판매자 상품 페이징 조회 완료");
 
         return new PageImpl<>(providerItemList, pageable, providerItemList.size());
+    }
+
+    @Transactional
+    @Override
+    public PageImpl<ItemData.ItemSimple> getItemsByCategory(ItemType itemType, Pageable pageable) {
+        List<ItemData.ItemSimple> categoryItemList = itemRepository.selectByItemType(itemType, pageable);
+
+        return new PageImpl<>(categoryItemList, pageable, categoryItemList.size());
     }
 
     @Transactional
