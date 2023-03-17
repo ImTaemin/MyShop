@@ -1,6 +1,9 @@
 import Header from "../components/common/Header";
 import {Helmet} from "react-helmet-async";
 import React from "react";
+import Category from "../components/common/Category";
+import {Outlet} from "react-router-dom";
+import "../assets/scss/main.scss";
 
 const MainPage = () => {
 
@@ -9,8 +12,14 @@ const MainPage = () => {
       <Helmet>
         <title>마이샵</title>
       </Helmet>
-      <main style={{minWidth: "762px"}}>
-        <Header/>
+      <main className="main">
+        <Header />
+        <div className="main-wrap">
+          <Category />
+          <div className="item-container">
+            <Outlet />
+          </div>
+        </div>
       </main>
     </>
   );

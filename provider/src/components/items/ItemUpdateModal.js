@@ -1,6 +1,6 @@
 import {Button, Form, Modal} from "react-bootstrap";
 import {Swiper, SwiperSlide} from "swiper/react";
-import {GenderType, ItemType} from "../common/Types";
+import {genderTypes, itemTypes} from "../common/Types";
 import React, {useCallback, useEffect, useState} from "react";
 import {updateItem} from "../../lib/api/item";
 
@@ -266,7 +266,7 @@ const ItemUpdateModal = (props) => {
               <div className="input-wrap">
                 <label>상품 타입</label>
                 <Form.Select name="itemType" onChange={inputHandler}>
-                  {ItemType.map((type, index) => {
+                  {itemType.map((type, index) => {
                     return <option key={index}>{type}</option>
                   })}
                 </Form.Select>
@@ -274,7 +274,7 @@ const ItemUpdateModal = (props) => {
               <div className="input-wrap">
                 <label>상품 성별</label>
                 <Form.Select name="genderType" onChange={inputHandler}>
-                  {GenderType.map((type, index) => {
+                  {genderType.map((type, index) => {
                     return <option key={index}>{type}</option>
                   })}
                 </Form.Select>

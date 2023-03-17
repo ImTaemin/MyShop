@@ -2,7 +2,6 @@ import {Button, Form, Modal} from "react-bootstrap";
 import "../../assets/scss/itemRegister.scss"
 import "../../assets/scss/debounce.scss";
 import React, {useCallback, useState} from "react";
-import {GenderType, ItemType} from "../common/Types.js";
 import {Swiper, SwiperSlide} from "swiper/react";
 import SwiperCore, {Navigation, Pagination} from 'swiper/core';
 import 'swiper/css';
@@ -12,6 +11,7 @@ import client from "../../lib/api/client";
 import {debounce} from "lodash";
 import {FaCheck, FaTimesCircle} from "react-icons/fa";
 import {registerItem} from "../../lib/api/item";
+import {genderTypes, itemTypes} from "../common/Types";
 
 SwiperCore.use([Navigation, Pagination]);
 
@@ -247,7 +247,7 @@ const ItemRegisterModal = (props) => {
               <div className="input-wrap">
                 <label>상품 타입</label>
                 <Form.Select name="itemType" onChange={inputHandler}>
-                  {ItemType.map((type, index) => {
+                  {itemTypes.map((type, index) => {
                     return <option key={index}>{type}</option>
                   })}
                 </Form.Select>
@@ -255,7 +255,7 @@ const ItemRegisterModal = (props) => {
               <div className="input-wrap">
                 <label>상품 성별</label>
                 <Form.Select name="genderType" onChange={inputHandler}>
-                  {GenderType.map((type, index) => {
+                  {genderTypes.map((type, index) => {
                     return <option key={index}>{type}</option>
                   })}
                 </Form.Select>

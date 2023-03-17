@@ -1,0 +1,37 @@
+
+.category-container {
+  min-width: 270px;
+  display: inline-block;
+
+  .category-list {
+    margin: 0 15px;
+
+    & > a {
+      text-decoration: none;
+      color: inherit;
+
+      :hover {
+        background: rgb(245, 245, 245);
+      }
+    }
+
+    .category-wrap {
+      display: flex;
+      align-items: center;
+      height: 40px;
+      border-bottom: 1px solid #ddd;
+      padding: 10px 0 10px 0;
+
+      .title {
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .type {
+        margin-left: 8px;
+        color: #999;
+        font-size: 12px;
+      }
+    }
+  }
+}

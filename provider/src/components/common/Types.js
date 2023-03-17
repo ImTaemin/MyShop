@@ -1,5 +1,5 @@
 
-export const ItemType = ["TOP", "OUTER", "PANTS",
+export const itemTypes = ["TOP", "OUTER", "PANTS",
   "ONEPIECE", "SKIRT", "SNEAKERS",
   "SHOES", "BAG", "SPORTS",
   "HEADWEAR", "SOCKS_LEGWEAR", "UNDERWEAR",
@@ -7,4 +7,4 @@ export const ItemType = ["TOP", "OUTER", "PANTS",
   "JEWELRY", "BEAUTY", "DIGITAL_TECH",
   "LIFE", "CULTURE", "PET"];
 
-export const GenderType = ["UNISEX", "MEN", "WOMEN"];
+export const genderTypes = ["UNISEX", "MEN", "WOMEN"];

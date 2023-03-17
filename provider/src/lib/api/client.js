@@ -5,6 +5,8 @@ const client = axios.create({
   baseURL: process.env.REACT_APP_API_MYSHOP
 });
 
+let isReissuance = false;
+
 // 응답 인터셉터
 client.interceptors.response.use(
   response => {
@@ -16,6 +18,11 @@ client.interceptors.response.use(
      * accessToken 401 에러면 refreshToken으로 토큰 재발급 후 이전 요청 재요청
      */
     if(error.response.status === 401){
+      if(isReissuance) {
+        return;
+      }
+      isReissuance = true;
+
       const preRefreshToken = getCookie("refreshToken");
 
       if(preRefreshToken) {

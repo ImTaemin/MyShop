@@ -128,7 +128,7 @@ const SignUp = ({changeAuthMode, setIsRegistered}) => {
           <img src={logo} className="auth-logo" alt="" />
         </div>
         <div className="auth-form-content">
-          <h3 className="auth-form-title">회원가입</h3>
+          <h3 className="auth-form-title">판매자 회원가입</h3>
           <div className="text-center">
             이미 계정이 있습니까?{" "}
             <span className="link-primary">
@@ -233,7 +233,7 @@ const SignUp = ({changeAuthMode, setIsRegistered}) => {
           </div>
           <div className="d-grid gap-2 mt-3">
             <button type="submit" className="btn btn-primary">
-              회원가입
+              핀메자 회원가입
             </button>
           </div>
         </div>
