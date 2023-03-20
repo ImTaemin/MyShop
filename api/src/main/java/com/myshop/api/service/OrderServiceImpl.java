@@ -7,6 +7,7 @@ import com.myshop.api.domain.entity.Customer;
 import com.myshop.api.domain.entity.Orders;
 import com.myshop.api.domain.entity.Provider;
 import com.myshop.api.enumeration.OrderStatus;
+import com.myshop.api.repository.CartRepository;
 import com.myshop.api.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageImpl;
@@ -24,6 +25,7 @@ import java.util.List;
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
+    private final CartRepository cartRepository;
 
     private final KakaoPayService kakaoPayService;
 
@@ -41,6 +43,12 @@ public class OrderServiceImpl implements OrderService {
         List<OrderItemData> orderItemList = orderRepository.selectByProvider(provider, pageable, orderStatus);
 
         return new PageImpl<>(orderItemList, pageable, orderItemList.size());
+    }
+
+    @Transactional
+    @Override
+    public void directOrderItem(Customer customer, Long itemId, int quantity) {
+        cartRepository.directOrderToSave(customer, itemId, quantity);
     }
 
     @Transactional

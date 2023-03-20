@@ -49,6 +49,15 @@ public class CartRepositoryCustomImpl extends QuerydslRepositorySupport implemen
     }
 
     @Override
+    public void directOrderToSave(Customer customer, Long itemId, int quantity) {
+        jpaQueryFactory.insert(qCart)
+                .set(qCart.customer().id, customer.getId())
+                .set(qCart.item().id, itemId)
+                .set(qCart.quantity, quantity)
+                .execute();
+    }
+
+    @Override
     public void updateCartItemQuantity(Customer customer, CartRequest cartRequest) {
         jpaQueryFactory.update(qCart)
                 .set(qCart.quantity, cartRequest.getQuantity())

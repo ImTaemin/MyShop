@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 public interface OrderService {
     PageImpl<OrderItemData> getOrdersByCustomer(Customer customer, Pageable pageable);
     PageImpl<OrderItemData> getOrdersByProvider(Provider provider, Pageable pageable, OrderStatus orderStatus);
+    void directOrderItem(Customer customer, Long itemId, int quantity);
     void changeOrders(OrderRequest.OrderChange orderChangeRequest);
     ReadyResponse readyToKakaoPay(Customer customer, OrderRequest.Order orderRequest);
     void approveToKakaoPay(String pgToken, String orderId);

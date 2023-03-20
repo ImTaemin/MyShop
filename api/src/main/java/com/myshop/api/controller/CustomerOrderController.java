@@ -32,6 +32,14 @@ public class CustomerOrderController {
         return ResponseEntity.ok(pagingOrders);
     }
 
+    @ApiOperation(value = "바로 구매")
+    @PostMapping(value = {"/", ""}, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<BaseResponse> orderItem(@CurrentCustomer Customer customer, Long itemId, int quantity) {
+        orderService.directOrderItem(customer, itemId, quantity);
+
+        return BaseResponse.ok();
+    }
+
     @ApiOperation(value = "카카오 주문 준비")
     @PostMapping(value = "/kakao/ready")
     public ResponseEntity<BaseResponse> readyToKakaoPay(@CurrentCustomer Customer customer, @RequestBody OrderRequest.Order orderRequest) {
