@@ -10,5 +10,6 @@ import java.util.List;
 
 public interface CartRepositoryCustom {
     List<CartData> getCartItemList(Customer customer, Pageable pageable);
+    void directOrderToSave(Customer customer, Long itemId, int quantity);
     void updateCartItemQuantity(Customer customer, CartRequest cartRequest);
 }
