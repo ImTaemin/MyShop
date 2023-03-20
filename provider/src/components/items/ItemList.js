@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react";
 import {listItem, unLoadItems} from "../../modules/items";
 import Loader from "../loader/Loader";
+import client from "../../lib/api/client";
 
 const ItemList = (props) => {
 
@@ -18,10 +19,11 @@ const ItemList = (props) => {
   }));
 
   useEffect(() => {
+    client.defaults.headers.common['X-AUTH-TOKEN'] = localStorage.getItem("accessToken");
     dispatch(listItem(page));
 
     return () => {
-      dispatch(unLoadItems())
+      dispatch(unLoadItems());
     }
   }, [dispatch, page, props.isRegModalChanged, props.isDelModalChanged]);
 

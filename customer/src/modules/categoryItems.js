@@ -28,7 +28,7 @@ const initialState = {
 
 // reducer
 const categoryItems = handleActions({
-    [LIST_CATEGORY_ITEM_SUCCESS]: (state, {payload: categoryItems}) => (console.log(categoryItems.data.content),{
+    [LIST_CATEGORY_ITEM_SUCCESS]: (state, {payload: categoryItems}) => ({
       ...state,
       categoryItems: categoryItems.data.content,
       page: categoryItems.data.pageable.pageNumber,

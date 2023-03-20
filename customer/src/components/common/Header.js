@@ -22,16 +22,16 @@ const Header = () => {
 
   return (
     <div className="header-container">
+      <div className="header-wrap">
         {userId && (
-          <div className="header-wrap">
-            {userId}
-          </div>
+          userId
         )}
         {!userId && (
           <Link to="/auth">
-            <div className="header-wrap">로그인</div>
+            로그인
           </Link>
         )}
+      </div>
       <div className="header-wrap">
         마이페이지
       </div>

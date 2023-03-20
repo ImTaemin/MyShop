@@ -32,7 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowedOrigins(List.of("http://provider.myshop.com", "http://myshop.com", "http://localhost:3000"));
+        corsConfiguration.setAllowedOrigins(List.of("http://provider.myshop.com", "http://myshop.com", "http://localhost:3000", "http://localhost:3001"));
         corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         corsConfiguration.setAllowedHeaders(List.of("X-AUTH-TOKEN", "Content-Type", "Access-Control-Allow-Headers"));
         corsConfiguration.setAllowCredentials(true);

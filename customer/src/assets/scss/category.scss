@@ -1,3 +1,4 @@
+@import "common";
 
 .category-container {
   min-width: 270px;
@@ -19,7 +20,7 @@
       display: flex;
       align-items: center;
       height: 40px;
-      border-bottom: 1px solid #ddd;
+      border-bottom: $custom-border;
       padding: 10px 0 10px 0;
 
       .title {
