@@ -57,17 +57,17 @@ const ItemUpdateModal = (props) => {
   }, [formData]);
 
   // 이미지 추가
-  const imageInsertHandler = (e) => {
+  const imageInsertHandler = useCallback((e) => {
     const file = e.target.files[0];
 
     setFormData((prev) => ({
       ...prev,
       imageList: [...prev.imageList, file],
     }));
-  };
+  }, [formData.imageList]);
 
   // 이미지 삭제
-  const imageDeleteHandler = (index) => {
+  const imageDeleteHandler = useCallback((index) => {
     setFormData((prev) => {
       const newImageList = [...prev.imageList];
       newImageList.splice(index, 1);
@@ -77,7 +77,7 @@ const ItemUpdateModal = (props) => {
         imageList: newImageList
       }
     });
-  };
+  }, [formData.imageList]);
 
   // 이미지 URL 변환 함수
   const getImageFile = async (url, index) => {
@@ -170,7 +170,7 @@ const ItemUpdateModal = (props) => {
 
             <input
               // 같은 이미지 업로드 시 캐시된 파일 사용 x
-              key={id}
+              key={imageList.length}
               id="file-input"
               type="file"
               accept="image/*"
@@ -185,6 +185,7 @@ const ItemUpdateModal = (props) => {
               >
                 {imageList.length > 0 && (
                   imageList.map((image, index) => (
+                    console.log(image),
                     <SwiperSlide key={`slide-${index}`}>
                       {(typeof image) === "object" && (
                         <img src={URL.createObjectURL(image)} className="input-image" alt={`slide-${index}`}
@@ -266,7 +267,7 @@ const ItemUpdateModal = (props) => {
               <div className="input-wrap">
                 <label>상품 타입</label>
                 <Form.Select name="itemType" onChange={inputHandler}>
-                  {itemType.map((type, index) => {
+                  {itemTypes.map((type, index) => {
                     return <option key={index}>{type}</option>
                   })}
                 </Form.Select>
@@ -274,7 +275,7 @@ const ItemUpdateModal = (props) => {
               <div className="input-wrap">
                 <label>상품 성별</label>
                 <Form.Select name="genderType" onChange={inputHandler}>
-                  {genderType.map((type, index) => {
+                  {genderTypes.map((type, index) => {
                     return <option key={index}>{type}</option>
                   })}
                 </Form.Select>

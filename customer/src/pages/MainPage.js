@@ -14,7 +14,7 @@ const MainPage = () => {
       </Helmet>
       <main className="main">
         <Header />
-        <div className="main-wrap">
+        <div className="body-container">
           <Category />
           <div className="item-container">
             <Outlet />

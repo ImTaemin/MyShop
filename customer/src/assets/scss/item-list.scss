@@ -1,13 +1,17 @@
+@import 'common';
+
 .item-container {
   flex-grow: 1;
   background: rgb(245, 245, 245);
-  border-left: 1px solid #ddd;
+  border-left: $custom-border;
   min-width: 1200px;
 
-  .item-list-wrap {
+  .item-list-container {
     background: white;
     margin: 20px;
     min-height: 840px;
+    border-left: $custom-border;
+    border-top: $custom-border;
   }
 }
 
@@ -23,8 +27,8 @@
 
   .item-box {
     padding: 10%;
-    border-right: 1px solid #ddd;
-    border-bottom: 1px solid #ddd;
+    border-right: $custom-border;
+    border-bottom: $custom-border;
     height: 100%;
 
     &:hover {

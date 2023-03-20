@@ -4,9 +4,9 @@ import {useDispatch, useSelector} from "react-redux";
 import {listCategoryItem, unloadCategoryItems} from "../modules/categoryItems";
 import Item from "../components/Item/Item";
 import Loader from "../components/loader/Loader";
-import "../assets/scss/item.scss";
+import "../assets/scss/item-list.scss";
 
-const ItemListContainer = () => {
+const ItemListPage = () => {
   const { type } = useParams();
   const dispatch = useDispatch();
 
@@ -26,16 +26,15 @@ const ItemListContainer = () => {
   }, [dispatch, page, type]);
 
   return (
-    <div className="item-list-wrap">
+    <div className="item-list-container">
       <div className="item-list">
         {loading && (
           <Loader />
         )}
         {
           !loading && categoryItems && (
-            console.log(categoryItems),
             categoryItems.map((item, index) => (
-              <Item item={item}/>
+              <Item item={item} key={index}/>
             ))
           )
         }
@@ -47,4 +46,4 @@ const ItemListContainer = () => {
   );
 }
 
-export default ItemListContainer;
+export default ItemListPage;
