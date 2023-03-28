@@ -32,6 +32,21 @@ public class ItemRepositoryCustomImpl extends QuerydslRepositorySupport implemen
     }
 
     @Override
+    public List<ItemData.ItemSimple> selectByItemIdList(List<Long> itemIdList) {
+        return jpaQueryFactory.select(
+                Projections.bean(ItemData.ItemSimple.class,
+                        qItem.id,
+                        qItem.code,
+                        qItem.name,
+                        qItem.brandName,
+                        qItem.price,
+                        qItem.mainImage))
+                .from(qItem)
+                .where(qItem.id.in(itemIdList))
+                .fetch();
+    }
+
+    @Override
     public List<ItemData.ItemSimple> selectByBrandName(String brandName, Pageable pageable) {
 
         return jpaQueryFactory.select(

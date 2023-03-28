@@ -20,7 +20,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -86,8 +85,8 @@ class OrderControllerTest {
         orderItem.setItemId(1L);
         orderItem.setQuantity(3);
 
-        orderRequest.setLoadName("도로명");
-        orderRequest.setDetail("상세주소");
+        orderRequest.setRoadAddress("도로명");
+        orderRequest.setDetailAddress("상세주소");
         orderRequest.setOrderItemList(List.of(orderItem, orderItem));
 
         readyResponse.setPartner_order_id("cid");

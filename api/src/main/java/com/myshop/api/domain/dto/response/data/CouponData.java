@@ -31,6 +31,14 @@ public class CouponData {
     @ApiModelProperty(value = ApiValueUtils.Coupon.DISCOUNT, example = "10")
     private int discount;
 
+    public CouponData(Long id, String code, String content, LocalDate expirationDate, int discount) {
+        this.id = id;
+        this.code = code;
+        this.content = content;
+        this.expirationDate = expirationDate;
+        this.discount = discount;
+    }
+
     public CouponData(Coupon coupon) {
         this.id = coupon.getId();
         this.code = coupon.getCode();

@@ -23,7 +23,7 @@ public class CartController {
     private final CartService cartService;
     
     @ApiOperation(value = "구매자 장바구니 목록 조회")
-    @GetMapping("/")
+    @GetMapping({"/", ""})
     public ResponseEntity<PageImpl<CartData>> getCartItemList(@CurrentCustomer Customer customer, CustomPageRequest pageRequest) {
         PageImpl<CartData> pagingCartItemList = cartService.getCartItemList(customer, pageRequest.of());
 
@@ -31,7 +31,7 @@ public class CartController {
     }
 
     @ApiOperation(value = "구매자 장바구니 상품 추가")
-    @PostMapping("/")
+    @PostMapping({"/", ""})
     public ResponseEntity<BaseResponse> insertCartItem(@CurrentCustomer Customer customer, @RequestBody CartRequest cartRequest) {
         cartService.insertCartItem(customer, cartRequest);
 
@@ -39,7 +39,7 @@ public class CartController {
     }
 
     @ApiOperation(value = "구매자 장바구니 상품 수량 수정")
-    @PutMapping("/")
+    @PutMapping({"/", ""})
     public ResponseEntity<BaseResponse> updateCartItemQuantity(@CurrentCustomer Customer customer, @RequestBody CartRequest cartRequest) {
         cartService.updateCartItemQuantity(customer, cartRequest);
 

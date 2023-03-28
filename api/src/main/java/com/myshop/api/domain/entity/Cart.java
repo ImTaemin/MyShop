@@ -6,7 +6,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -32,13 +31,13 @@ public class Cart {
 
     @Column
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-    @CreationTimestamp
-    private LocalDateTime createDate;
+    private LocalDateTime updateDate;
 
     @Builder
-    public Cart(Customer customer, Item item, int quantity) {
+    public Cart(Customer customer, Item item, int quantity, LocalDateTime updateDate) {
         this.customer = customer;
         this.item = item;
         this.quantity = quantity;
+        this.updateDate = updateDate;
     }
 }

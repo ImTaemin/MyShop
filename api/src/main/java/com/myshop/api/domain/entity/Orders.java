@@ -21,7 +21,7 @@ import java.util.List;
 public class Orders implements Persistable {
 
     @Id
-    @Column(name = "order_id", unique = true)
+    @Column(name = "order_id")
     private String id;
 
     @Setter
@@ -54,7 +54,7 @@ public class Orders implements Persistable {
 
     @Setter
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @OneToMany(mappedBy = "item", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "orders", cascade =  CascadeType.ALL)
     private List<OrderItem> orderItemList = new ArrayList<>();
 
     @Override

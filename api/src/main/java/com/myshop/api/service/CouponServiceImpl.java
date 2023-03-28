@@ -3,6 +3,7 @@ package com.myshop.api.service;
 import com.myshop.api.domain.dto.request.CouponRequest;
 import com.myshop.api.domain.dto.response.data.CouponData;
 import com.myshop.api.domain.entity.Coupon;
+import com.myshop.api.domain.entity.Customer;
 import com.myshop.api.domain.entity.Provider;
 import com.myshop.api.exception.DuplicateCouponException;
 import com.myshop.api.repository.CouponRepository;
@@ -62,5 +63,11 @@ public class CouponServiceImpl implements CouponService{
     @Override
     public void deleteCoupon(Provider provider, String code) {
         couponRepository.deleteCoupon(provider, code);
+    }
+
+    @Transactional
+    @Override
+    public CouponData searchCoupon(Customer customer, String couponCode, Long itemId) {
+        return couponRepository.searchCoupon(customer, couponCode, itemId);
     }
 }

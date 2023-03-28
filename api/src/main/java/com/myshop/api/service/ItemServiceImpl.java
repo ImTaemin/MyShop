@@ -44,6 +44,15 @@ public class ItemServiceImpl implements ItemService {
 
     @Transactional
     @Override
+    public List<ItemData.ItemSimple> getItems(List<Long> itemIdList) {
+        List<ItemData.ItemSimple> itemSimpleList = itemRepository.selectByItemIdList(itemIdList);
+        LOGGER.info("상품 목록 조회 완료(페이징x)");
+
+        return itemSimpleList;
+    }
+
+    @Transactional
+    @Override
     public PageImpl<ItemData.ItemSimple> getItemsByBrandName(String brandName, Pageable pageable) {
         List<ItemData.ItemSimple> simpleItemList = itemRepository.selectByBrandName(brandName, pageable);
 

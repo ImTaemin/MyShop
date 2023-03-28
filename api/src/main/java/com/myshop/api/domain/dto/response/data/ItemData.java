@@ -38,6 +38,15 @@ public class ItemData {
         @ApiModelProperty(value = ApiValueUtils.Item.MAIN_IMAGE)
         private String mainImage;
 
+        public ItemSimple(Long id, String code, String name, String brandName, int price, String mainImage) {
+            this.id = id;
+            this.code = code;
+            this.name = name;
+            this.brandName = brandName;
+            this.price = price;
+            this.mainImage = mainImage;
+        }
+
         public ItemSimple(com.myshop.api.domain.entity.Item item) {
             this.id = item.getId();
             this.code = item.getCode();

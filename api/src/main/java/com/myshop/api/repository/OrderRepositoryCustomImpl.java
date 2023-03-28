@@ -1,11 +1,14 @@
 package com.myshop.api.repository;
 
 import com.myshop.api.domain.dto.request.OrderRequest;
+import com.myshop.api.domain.dto.response.data.CouponData;
 import com.myshop.api.domain.dto.response.data.ItemData;
+import com.myshop.api.domain.dto.response.data.OrderData;
 import com.myshop.api.domain.dto.response.data.OrderItemData;
 import com.myshop.api.domain.entity.*;
 import com.myshop.api.enumeration.OrderStatus;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
@@ -21,10 +24,63 @@ public class OrderRepositoryCustomImpl extends QuerydslRepositorySupport impleme
     QItem qItem = QItem.item;
     QOrders qOrders = QOrders.orders;
     QOrderItem qOrderItem = QOrderItem.orderItem;
+    QCoupon qCoupon = QCoupon.coupon;
 
     public OrderRepositoryCustomImpl(JPAQueryFactory jpaQueryFactory) {
         super(Orders.class);
         this.jpaQueryFactory = jpaQueryFactory;
+    }
+
+    @Override
+    public OrderData selectOrdersByOrderId(Customer customer, String orderId) {
+        // 주문 번호에 해당하는 주문 상세 조회
+        OrderData orderData = jpaQueryFactory
+                .select(Projections.constructor(OrderData.class,
+                        qOrders.id.as("orderNo"),
+                        qOrders.totalPayment,
+                        qOrders.orderDate,
+                        qOrders.cancelDate,
+                        qOrders.address().roadName,
+                        qOrders.address().detail,
+                        qOrders.address().postalCode,
+                        Projections.list(
+                            Projections.constructor(OrderItemData.class,
+                                qOrderItem.cnt,
+                                qOrderItem.orders().id.as("orderNo"),
+                                qOrderItem.quantity,
+                                qOrderItem.payment,
+                                qOrderItem.orderStatus,
+                                qOrderItem.orders().orderDate,
+                                Projections.constructor(ItemData.ItemSimple.class,
+                                    qItem.id,
+                                    qItem.code,
+                                    qItem.name,
+                                    qItem.brandName,
+                                    qItem.price,
+                                    qItem.mainImage
+                                ),
+                                Projections.constructor(CouponData.class,
+                                    qCoupon.id,
+                                    qCoupon.code,
+                                    qCoupon.content,
+                                    qCoupon.expirationDate,
+                                    Expressions.numberTemplate(
+                                            Integer.class, "{0}",
+                                            qCoupon.discount.multiply(100).intValue())
+                                )
+                            )
+                        )
+                    )
+                )
+                .from(qOrders)
+                .leftJoin(qOrders.orderItemList, qOrderItem)
+                .leftJoin(qOrderItem.item(), qItem)
+                .leftJoin(qOrderItem.coupon(), qCoupon)
+                .where(qOrders.id.eq(orderId)
+                        .and(qOrders.customer().id.eq(customer.getId())))
+                .fetchOne();
+
+        return orderData;
     }
 
     @Override
@@ -40,8 +96,8 @@ public class OrderRepositoryCustomImpl extends QuerydslRepositorySupport impleme
                                 qOrderItem.orderDate,
                                 Projections.bean(ItemData.ItemSimple.class,
                                         qItem.id,
-                                        qItem.name,
                                         qItem.code,
+                                        qItem.name,
                                         qItem.brandName,
                                         qItem.mainImage).as("item")))
                 .from(qOrders)

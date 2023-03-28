@@ -9,14 +9,15 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
 @Entity
-@Table(name = "Coupon", indexes = {
+@Table(name = "coupon", indexes = {
         @Index(name = "idx_coupon_provider_id", columnList = "provider_id"),
-        @Index(name = "idx_coupon_code", columnList = "code"),
-        @Index(name = "idx_coupon_customer_id", columnList = "customer_id")
+        @Index(name = "idx_coupon_code", columnList = "code")
 })
 public class Coupon {
 
@@ -24,10 +25,6 @@ public class Coupon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "coupon_id")
     private Long id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "provider_id")
-    private Provider provider;
 
     @Column(nullable = false)
     private String code;
@@ -47,11 +44,15 @@ public class Coupon {
     private LocalDateTime createDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id", insertable = false, updatable = false)
-    private Customer customer;
+    @JoinColumn(name = "provider_id")
+    private Provider provider;
+
+    @OneToMany(mappedBy = "coupon")
+    private List<UsedCoupon> usedCoupons = new ArrayList<>();
 
     @Builder
-    public Coupon(Long id, Provider provider, String code, String content, LocalDate expirationDate, float discount, LocalDateTime createDate, Customer customer) {
+
+    public Coupon(Long id, Provider provider, String code, String content, LocalDate expirationDate, float discount, LocalDateTime createDate, List<UsedCoupon> usedCoupons) {
         this.id = id;
         this.provider = provider;
         this.code = code;
@@ -59,6 +60,6 @@ public class Coupon {
         this.expirationDate = expirationDate;
         this.discount = discount;
         this.createDate = createDate;
-        this.customer = customer;
+        this.usedCoupons = usedCoupons;
     }
 }

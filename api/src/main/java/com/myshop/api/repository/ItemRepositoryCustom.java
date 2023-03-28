@@ -12,6 +12,7 @@ import java.util.List;
 
 // 정의하려는 기능들 정의
 public interface ItemRepositoryCustom {
+    List<ItemData.ItemSimple> selectByItemIdList(List<Long> itemIdList);
     List<ItemData.ItemSimple> selectByBrandName(String brandName, Pageable pageable);
     List<ItemData.ItemSimple> selectByItemType(ItemType itemType, Pageable pageable);
     List<ItemData.Item> selectByProvider(Provider provider, Pageable pageable);

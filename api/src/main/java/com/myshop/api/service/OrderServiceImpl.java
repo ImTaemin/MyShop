@@ -2,12 +2,12 @@ package com.myshop.api.service;
 
 import com.myshop.api.domain.dto.pay.kakao.ReadyResponse;
 import com.myshop.api.domain.dto.request.OrderRequest;
+import com.myshop.api.domain.dto.response.data.OrderData;
 import com.myshop.api.domain.dto.response.data.OrderItemData;
 import com.myshop.api.domain.entity.Customer;
 import com.myshop.api.domain.entity.Orders;
 import com.myshop.api.domain.entity.Provider;
 import com.myshop.api.enumeration.OrderStatus;
-import com.myshop.api.repository.CartRepository;
 import com.myshop.api.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageImpl;
@@ -25,9 +25,14 @@ import java.util.List;
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
-    private final CartRepository cartRepository;
 
     private final KakaoPayService kakaoPayService;
+
+    @Override
+    public OrderData getOrdersByOrderId(Customer customer, String orderId) {
+        return orderRepository.selectOrdersByOrderId(customer, orderId);
+    }
+
 
     @Transactional
     @Override
@@ -47,12 +52,6 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional
     @Override
-    public void directOrderItem(Customer customer, Long itemId, int quantity) {
-        cartRepository.directOrderToSave(customer, itemId, quantity);
-    }
-
-    @Transactional
-    @Override
     public void changeOrders(OrderRequest.OrderChange orderChangeRequest) {
         orderRepository.changeOrders(orderChangeRequest.getOrderNoCntList(), orderChangeRequest.getOrderStatus());
     }
@@ -62,8 +61,11 @@ public class OrderServiceImpl implements OrderService {
     public ReadyResponse readyToKakaoPay(Customer customer, OrderRequest.Order orderRequest) {
         String orderId = this.createOrderId();
 
+        ReadyResponse readyResponse = null;
         // 주문한 상품들 DB에 저장 및 주문번호, redirectUrl 가져옴
-        ReadyResponse readyResponse = kakaoPayService.ready(customer, orderId, orderRequest);
+        if(orderRequest.getPayMethod().equals("KAKAOPAY")) {
+            readyResponse = kakaoPayService.ready(customer, orderId, orderRequest);
+        }
 
         orderRepository.save(readyResponse.getOrder());
         readyResponse.setOrder(null);

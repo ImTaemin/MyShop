@@ -2,27 +2,25 @@ package com.myshop.api.repository;
 
 import com.myshop.api.domain.dto.request.CouponRequest;
 import com.myshop.api.domain.dto.response.data.CouponData;
-import com.myshop.api.domain.entity.Coupon;
-import com.myshop.api.domain.entity.Provider;
-import com.myshop.api.domain.entity.QCoupon;
-import com.myshop.api.domain.entity.QItem;
+import com.myshop.api.domain.entity.*;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
 @Component
-public class CouponRepositoryCustomImpl extends QuerydslRepositorySupport implements CouponRepositoryCustom{
+public class CouponRepositoryCustomImpl extends QuerydslRepositorySupport implements CouponRepositoryCustom {
 
     private final JPAQueryFactory jpaQueryFactory;
 
+    QUsedCoupon qUsedCoupon = QUsedCoupon.usedCoupon;
     QCoupon qCoupon = QCoupon.coupon;
     QItem qItem = QItem.item;
 
@@ -37,12 +35,12 @@ public class CouponRepositoryCustomImpl extends QuerydslRepositorySupport implem
                 .select(
                         Projections.bean(CouponData.class,
                                 qCoupon.id,
-                        qCoupon.code,
-                        qCoupon.content,
-                        qCoupon.expirationDate,
-                        Expressions.numberTemplate(
-                                Integer.class, "{0}",
-                                qCoupon.discount.multiply(100).intValue()).as("discount")))
+                                qCoupon.code,
+                                qCoupon.content,
+                                qCoupon.expirationDate,
+                                Expressions.numberTemplate(
+                                        Integer.class, "{0}",
+                                        qCoupon.discount.multiply(100).intValue()).as("discount")))
                 .from(qCoupon)
                 .orderBy(qCoupon.createDate.desc())
                 .fetch();
@@ -97,5 +95,34 @@ public class CouponRepositoryCustomImpl extends QuerydslRepositorySupport implem
                 .fetchFirst();
 
         return findCouponCode != null;
+    }
+
+    @Override
+    public CouponData searchCoupon(Customer customer, String couponCode, Long itemId) {
+        CouponData findCoupon = jpaQueryFactory
+                .select(
+                        Projections.bean(CouponData.class,
+                        qCoupon.id,
+                        qCoupon.code,
+                        qCoupon.content,
+                        qCoupon.expirationDate,
+                        Expressions.numberTemplate(
+                                Integer.class, "{0}",
+                                qCoupon.discount.multiply(100).intValue()).as("discount")))
+                .from(qCoupon)
+                .where(qCoupon.code.eq(couponCode)
+                        .and(qCoupon.provider().items.any().id.eq(itemId))
+                        .and(JPAExpressions
+                                .selectFrom(qUsedCoupon)
+                                .where(qUsedCoupon.coupon().id.eq(qCoupon.id)
+                                        .and(qUsedCoupon.item().id.eq(itemId))
+                                        .and(qUsedCoupon.customer().id.eq(customer.getId()))
+                                )
+                                .notExists()
+                        )
+                )
+                .fetchOne();
+
+        return findCoupon;
     }
 }

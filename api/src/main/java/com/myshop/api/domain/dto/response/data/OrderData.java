@@ -30,24 +30,26 @@ public class OrderData {
     @ApiModelProperty(value = ApiValueUtils.Order.CANCEL_DATE)
     private LocalDateTime cancelDate;
 
-    @ApiModelProperty(value = ApiValueUtils.Order.Address.LOAD_NAME)
-    private String loadName;
+    @ApiModelProperty(value = ApiValueUtils.Order.Address.ROAD_ADDRESS)
+    private String roadName;
 
-    @ApiModelProperty(value = ApiValueUtils.Order.Address.DETAIL)
+    @ApiModelProperty(value = ApiValueUtils.Order.Address.DETAIL_ADDRESS)
     private String detail;
 
     @ApiModelProperty(value = ApiValueUtils.Order.Address.POSTAL_CODE)
     private String postalCode;
 
-    private List<ItemData.ItemSimple> item;
+    @ApiModelProperty(value = ApiValueUtils.Order.ORDER_ITEM_LIST)
+    private List<OrderItemData> orderItemDataList;
 
-    public OrderData(Orders order) {
-        this.orderNo = order.getId();
-        this.totalPayment = order.getTotalPayment();
-        this.orderDate = order.getOrderDate();
-        this.cancelDate = order.getCancelDate();
-        this.loadName = order.getAddress().getLoadName();
-        this.detail = order.getAddress().getDetail();
-        this.postalCode = order.getAddress().getPostalCode();
+    public OrderData(String orderNo, int totalPayment, LocalDateTime orderDate, LocalDateTime cancelDate, String roadName, String detail, String postalCode, List<OrderItemData> orderItemDataList) {
+        this.orderNo = orderNo;
+        this.totalPayment = totalPayment;
+        this.orderDate = orderDate;
+        this.cancelDate = cancelDate;
+        this.roadName = roadName;
+        this.detail = detail;
+        this.postalCode = postalCode;
+        this.orderItemDataList = orderItemDataList;
     }
 }

@@ -17,17 +17,17 @@ public class OrderRequest {
     @Data
     @NoArgsConstructor
     public static class Order {
-        @ApiModelProperty(value = ApiValueUtils.Order.Address.LOAD_NAME, required = true)
-        private String loadName;
+        @ApiModelProperty(value = ApiValueUtils.Order.Address.ROAD_ADDRESS, required = true)
+        private String roadAddress;
 
-        @ApiModelProperty(value = ApiValueUtils.Order.Address.DETAIL, required = true)
-        private String detail;
+        @ApiModelProperty(value = ApiValueUtils.Order.Address.DETAIL_ADDRESS, required = true)
+        private String detailAddress;
 
         @ApiModelProperty(value = ApiValueUtils.Order.Address.POSTAL_CODE, required = true)
         private String postalCode;
 
         @ApiModelProperty(value = ApiValueUtils.Order.PAY_METHOD, required = true)
-        private PayMethod payMethod;
+        private String payMethod;
 
         @ApiModelProperty(value = ApiValueUtils.Order.ORDER_ITEM_LIST, required = true)
         private List<OrderItem> orderItemList;
