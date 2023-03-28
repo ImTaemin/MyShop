@@ -8,6 +8,9 @@ import {Swiper, SwiperSlide} from "swiper/react";
 import SwiperCore, {Navigation, Pagination} from 'swiper/core';
 import {AiOutlineHeart, AiOutlineMinus, AiOutlinePlus, AiOutlineShopping} from "react-icons/ai";
 import client from "../lib/api/client";
+import {useNavigate} from "react-router-dom";
+import {decodeToken} from "react-jwt";
+import {saveItem} from "../lib/api/cart";
 
 SwiperCore.use([Navigation, Pagination]);
 
@@ -17,29 +20,57 @@ const ItemInfoPage = () => {
   const [quantity, setQuantity] = useState(1);
   const [price, setPrice] = useState(0);
 
+  const navigate = useNavigate();
+
   // 상세 조회
   useEffect(() => {
+    client.defaults.headers.common['X-AUTH-TOKEN'] = localStorage.getItem("accessToken");
+
     client.get(`/item/${itemId}`)
       .then(response => {
         setItem(response.data);
         setPrice(response.data.price);
       });
 
-  }, [itemId]);
+  }, []);
 
   // 바로 주문
   const directOrder = useCallback((e) => {
     e.preventDefault();
 
+    // 로그인 하지 않은 상태
+    const token = localStorage.getItem("accessToken");
+    if(!token){
+      navigate("/auth");
+      return;
+    }
+
+    // 구매자가 아닌 상태
+    const decoded = decodeToken(token);
+    const role = decoded.roles[0].authority;
+    if(role !== 'CUSTOMER'){
+      navigate("/auth");
+      return;
+    }
+
     const reqFormData = new FormData();
     reqFormData.append("itemId", itemId);
     reqFormData.append("quantity", quantity);
 
-    const response = client.post("/customer/order", reqFormData);
+    // 장바구니 저장
+    const response = saveItem(reqFormData);
 
     console.log(response);
 
-  }, []);
+    navigate("/order/order-form", {
+      state:{
+        itemInfo: {
+          itemId: itemId,
+          quantity: quantity
+        }
+      }
+    });
+  }, [quantity]);
 
   const decrease = useCallback((e) => {
     e.preventDefault();
@@ -154,13 +185,13 @@ const ItemInfoPage = () => {
 
           {/* 하단 내용 영역*/}
           <div className="item-detail-wrap">
+            <img src={item.mainImage} className="detail-image" alt=""/>
             {item.imageDetailList.length > 0 &&
               item.imageDetailList.map((image, index) => (
                 <img src={image.path} className="detail-image" key={index} alt=""/>
               )
             )}
           </div>
-
         </>
       )}
     </div>

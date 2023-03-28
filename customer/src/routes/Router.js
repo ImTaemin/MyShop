@@ -1,20 +1,44 @@
 import MainPage from "../pages/MainPage";
 import {Link, Navigate} from "react-router-dom";
 import {lazy} from "react";
+import {decodeToken} from "react-jwt";
+import AuthPage from "../pages/AuthPage";
 import ItemListPage from "../pages/ItemListPage";
 import ItemInfoPage from "../pages/ItemInfoPage";
+import OrderFormPage from "../pages/OrderFormPage";
+import OrderSuccessPage from "../pages/OrderSuccessPage";
 
-const AuthPage = lazy(() => import("../pages/AuthPage"));
+// TODO: 지연로딩을 사용할 경우 스타일 시트를 불러오지 못해 일단 주석 처리.
+// const AuthPage = lazy(() => import("../pages/AuthPage"));
+// const ItemListPage = lazy(() => import("../pages/ItemListPage"));
+// const ItemInfoPage = lazy(() => import("../pages/ItemInfoPage"));
+// const OrderFormPage = lazy(() => import("../pages/OrderFormPage"));
 
+// 액세스 토큰이 이미 있는 상태면 구매자인지 확인 후 이동
 const AuthRoute = ({element, ...rest}) => {
   const accessToken = localStorage.getItem("accessToken");
-
-  if (accessToken) {
-    return <Navigate to="/" />;
+  if(accessToken) {
+    const decoded = decodeToken(accessToken);
+    const role = decoded.roles[0].authority;
+    if(role === 'CUSTOMER'){
+      return <Navigate to="/" />;
+    } else {
+      localStorage.removeItem("accessToken");
+    }
   }
 
   return element;
 }
+
+const PrivateRoute = ({ element, ...rest }) => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (!accessToken) {
+    return <Navigate to="/" />;
+  }
+  return element;
+};
+
 
 const ThemeRoutes = [
   {
@@ -26,7 +50,9 @@ const ThemeRoutes = [
     children: [
       {path: "/", element: <Navigate to="/category/TOP" />},
       {path: "/category/:type", element: <ItemListPage />},
-      {path: "/item/:itemId", element: <ItemInfoPage />}
+      {path: "/item/:itemId", element: <ItemInfoPage />},
+      {path: "/order/order-form", element: <PrivateRoute element={<OrderFormPage />} />},
+      {path: "/order/success", element: <PrivateRoute element={<OrderSuccessPage />} />},
     ]
   },
   {

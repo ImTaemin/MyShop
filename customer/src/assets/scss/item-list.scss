@@ -1,18 +1,11 @@
 @import 'common';
 
-.item-container {
-  flex-grow: 1;
-  background: rgb(245, 245, 245);
+.item-list-container {
+  background: white;
+  margin: 20px;
+  min-height: 840px;
   border-left: $custom-border;
-  min-width: 1200px;
-
-  .item-list-container {
-    background: white;
-    margin: 20px;
-    min-height: 840px;
-    border-left: $custom-border;
-    border-top: $custom-border;
-  }
+  border-top: $custom-border;
 }
 
 .item-list {

@@ -1,0 +1,70 @@
+@import "common";
+
+.delivery-info-container {
+  border: $custom-border;
+  display: flex;
+  flex-direction: column;
+
+  & + & {
+    border-bottom: $custom-border;
+  }
+}
+
+
+.delivery-info-wrap {
+  flex-grow: 1;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+
+  & + & {
+    border-top: $custom-border;
+  }
+
+  p {
+    font-size: 14px;
+    font-weight: bold;
+    display: inline-flex;
+    width: 140px;
+    margin: 0;
+  }
+
+  .btn-custom-border {
+    padding: 6px 10px;
+    background: white;
+    font-weight: bold;
+    border: $custom-border;
+  }
+
+  .delivery-item {
+    margin-right: 10px;
+  }
+
+  .address-detail{
+    flex-grow: 1;
+  }
+}
+
+.vertical-line {
+  border: 1px solid #aaa;
+  width: 1px;
+  height: 50%;
+  margin-right: 10px;
+}
+
+
+.postcode-modal {
+  background: white;
+  height:50% !important;
+  width:40% !important;
+  border: $custom-border;
+  position : fixed;
+  left: 50%;
+  top: 30%;
+
+  .btn-close {
+    font-size: 20px;
+    float: right;
+  }
+}

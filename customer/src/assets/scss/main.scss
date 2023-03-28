@@ -1,9 +1,31 @@
+@import 'common';
+
 .main {
   min-width: 762px;
   height: 100%;
 }
 
-.body-container {
+.body-panel {
   width: 100%;
   display: flex;
+
+  .right-panel {
+    flex-grow: 1;
+    background: rgb(245, 245, 245);
+    border-left: $custom-border;
+    min-width: 1200px;
+
+    .background-white {
+      background: white;
+      margin: 20px;
+      min-height: 840px;
+      border: $custom-border;
+      box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 5%);
+    }
+  }
+}
+
+a {
+  text-decoration: none !important;
+  color: black !important;
 }
