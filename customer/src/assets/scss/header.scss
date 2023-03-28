@@ -38,7 +38,7 @@
     text-decoration: underline;
   }
 
-  & + &, &:first-child {
+  & + &, &:first-child, &:last-child {
     padding: 0 10px 0 10px;
   }
 

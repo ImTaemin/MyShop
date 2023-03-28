@@ -4,7 +4,7 @@ import * as itemAPI from "../lib/api/item";
 import {takeLatest} from "redux-saga/effects";
 
 const [READ_ITEM, READ_ITEM_SUCCESS, READ_ITEM_FAILURE] =
-createRequestActionTypes("item/READ_ITEM");
+  createRequestActionTypes("item/READ_ITEM");
 const UNLOAD_ITEM = "item/UNLOAD_ITEM";
 
 export const readItem = createAction(READ_ITEM, (id) => id);

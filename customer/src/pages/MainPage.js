@@ -14,10 +14,12 @@ const MainPage = () => {
       </Helmet>
       <main className="main">
         <Header />
-        <div className="body-container">
+        <div className="body-panel">
           <Category />
-          <div className="item-container">
-            <Outlet />
+          <div className="right-panel">
+            <div className="background-white">
+              <Outlet />
+            </div>
           </div>
         </div>
       </main>

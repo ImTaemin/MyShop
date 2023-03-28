@@ -3,9 +3,7 @@
 .item-info-container {
   height: calc(100% - 50px);
   background: white;
-  padding: 20px;
   margin: 20px;
-  border: $custom-border;
 
   .item-type {
     font-size: 12px;
@@ -130,7 +128,6 @@
         justify-content: end;
         width: 150px;
       }
-
     }
 
     .order-box {

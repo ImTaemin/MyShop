@@ -6,7 +6,7 @@ const Item = ({item}) => {
     <Link to={`/item/${item.id}`}>
       <div className="item-box">
         <div className="item-img">
-          <img src={item.mainImage} />
+          <img src={item.mainImage} alt=""/>
         </div>
         <div className="item-content">
           <p className="brand-name">{item.brandName}</p>

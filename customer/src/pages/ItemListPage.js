@@ -26,22 +26,20 @@ const ItemListPage = () => {
   }, [dispatch, page, type]);
 
   return (
-    <div className="item-list-container">
-      <div className="item-list">
-        {loading && (
-          <Loader />
-        )}
-        {
-          !loading && categoryItems && (
-            categoryItems.map((item, index) => (
-              <Item item={item} key={index}/>
-            ))
-          )
-        }
-        {error && (
-          <div>{error.msg}</div>
-        )}
-      </div>
+    <div className="item-list">
+      {loading && (
+        <Loader />
+      )}
+      {
+        !loading && categoryItems && (
+          categoryItems.map((item, index) => (
+            <Item item={item} key={index}/>
+          ))
+        )
+      }
+      {error && (
+        <div>{error.msg}</div>
+      )}
     </div>
   );
 }
