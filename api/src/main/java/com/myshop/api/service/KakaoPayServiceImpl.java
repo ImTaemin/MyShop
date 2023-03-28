@@ -11,6 +11,7 @@ import com.myshop.api.exception.NotExistCouponException;
 import com.myshop.api.repository.CouponRepository;
 import com.myshop.api.repository.ItemRepository;
 import com.myshop.api.repository.OrderRepository;
+import com.myshop.api.repository.UsedCouponRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -46,6 +47,7 @@ public class KakaoPayServiceImpl implements KakaoPayService{
     private final ItemRepository itemRepository;
     private final CouponRepository couponRepository;
     private final OrderRepository orderRepository;
+    private final UsedCouponRepository usedCouponRepository;
 
     @Override
     public ReadyResponse ready(Customer customer, String orderId, OrderRequest.Order orderRequest) {
@@ -59,8 +61,8 @@ public class KakaoPayServiceImpl implements KakaoPayService{
 
         // 주문한 정보
         Address address = new Address();
-        address.setLoadName(orderRequest.getLoadName());
-        address.setDetail(orderRequest.getDetail());
+        address.setRoadName(orderRequest.getRoadAddress());
+        address.setDetail(orderRequest.getDetailAddress());
         address.setPostalCode(orderRequest.getPostalCode());
 
         Orders order = Orders.builder()
@@ -102,20 +104,29 @@ public class KakaoPayServiceImpl implements KakaoPayService{
             Coupon coupon = null;
 
             // 할인율
-            float discount = 0F;
+            float discount = 1F;
             if(orderItemRequest.getCouponCode() != null) {
                 // 쿠폰 사용
                 coupon = couponRepository.findByCodeAndItemId(orderItemRequest.getCouponCode(), orderItemRequest.getItemId())
                         .orElseThrow(NotExistCouponException::new);
-                discount = coupon.getDiscount();
+                discount = 1-coupon.getDiscount();
+
+                // 사용 쿠폰 저장
+                UsedCoupon usedCoupon = UsedCoupon.builder()
+                        .coupon(coupon)
+                        .customer(customer)
+                        .item(item)
+                        .build();
+
+                usedCouponRepository.save(usedCoupon);
             }
 
             int itemPrice = item.getPrice();
             int orderQuantity = orderItemRequest.getQuantity();
 
-            // 할인가 = 원가 * 할인율 --> ex) 3500 - (3500 * 0.1)
+            // 할인가 = 원가 * (1-할인율) --> ex) 3500 - (3500 * 0.9)
             // 아니면 원가 들어감
-            int salePrice = (int) (itemPrice - Math.floor(itemPrice * discount));
+            int salePrice = (int) Math.floor(itemPrice * discount);
             // 상품 수량에 대한 가격(카카오 페이에서 사용) = 원가 * 수량
             int totalCostPrice = itemPrice * orderQuantity;
 
@@ -131,8 +142,11 @@ public class KakaoPayServiceImpl implements KakaoPayService{
                     .build();
             orderItemList.add(orderItem);
 
-            totalPrice += totalCostPrice - salePrice;
+            totalPrice += orderQuantity == 1
+                    ? salePrice
+                    : totalCostPrice - salePrice;
             totalQuantity += orderQuantity;
+
             orderItemCnt++;
         }
 

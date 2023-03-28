@@ -60,10 +60,10 @@ public class Customer implements UserDetails {
     private List<Orders> orderList = new ArrayList<>();
 
     @OneToMany(mappedBy = "customer")
-    private List<Cart> cartList;
+    private List<Cart> cartList = new ArrayList<>();
 
     @OneToMany(mappedBy = "customer")
-    private List<Coupon> usedCouponList = new ArrayList<>();
+    private List<UsedCoupon> usedCouponList = new ArrayList<>();
 
     @Setter
     @Column
@@ -111,7 +111,7 @@ public class Customer implements UserDetails {
      * 따라서 생성자에 Builder 어노테이션을 작성
      */
     @Builder
-    public Customer(Long id, String userId, String password, String phone, String name, LocalDateTime createDate, List<String> roles, List<Orders> orderList, List<Cart> cartList, List<Coupon> usedCouponList) {
+    public Customer(Long id, String userId, String password, String phone, String name, LocalDateTime createDate, List<String> roles, List<Orders> orderList, List<Cart> cartList) {
         this.id = id;
         this.userId = userId;
         this.password = password;
@@ -121,6 +121,5 @@ public class Customer implements UserDetails {
         this.roles = roles;
         this.orderList = orderList;
         this.cartList = cartList;
-        this.usedCouponList = usedCouponList;
     }
 }

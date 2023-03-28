@@ -80,8 +80,8 @@ public class ApiValueUtils {
                 "DELIVERED";
 
         public static class Address {
-            public static final String LOAD_NAME = "도로명 주소";
-            public static final String DETAIL = "상세 주소";
+            public static final String ROAD_ADDRESS = "도로명 주소";
+            public static final String DETAIL_ADDRESS = "상세 주소";
             public static final String POSTAL_CODE = "우편번호";
         }
    }
@@ -92,6 +92,7 @@ public class ApiValueUtils {
         public static final String PAYMENT = "주문 금액(상품금액 - 할인금액)";
         public static final String COUPON = "사용 쿠폰";
         public static final String ORDER_STATUS = "주문 상태";
+        public static final String ITEM = "주문 상품";
    }
 
     public static class Page {

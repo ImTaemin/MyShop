@@ -34,13 +34,20 @@ public class OrderItemData {
     @ApiModelProperty(value = ApiValueUtils.Order.ORDER_DATE)
     private LocalDateTime orderDate;
 
+    @ApiModelProperty(value = ApiValueUtils.OrderItem.ITEM)
     private ItemData.ItemSimple item;
 
-    public OrderItemData(com.myshop.api.domain.entity.OrderItem item) {
-        this.orderNo = item.getOrders().getId();
-        this.quantity = item.getQuantity();
-        this.payment = item.getPayment();
-        this.orderStatus = item.getOrderStatus();
-    }
+    @ApiModelProperty(value = ApiValueUtils.OrderItem.COUPON)
+    private CouponData coupon;
 
+    public OrderItemData(int cnt, String orderNo, int quantity, int payment, OrderStatus orderStatus, LocalDateTime orderDate, ItemData.ItemSimple item, CouponData coupon) {
+        this.cnt = cnt;
+        this.orderNo = orderNo;
+        this.quantity = quantity;
+        this.payment = payment;
+        this.orderStatus = orderStatus;
+        this.orderDate = orderDate;
+        this.item = item;
+        this.coupon = coupon;
+    }
 }

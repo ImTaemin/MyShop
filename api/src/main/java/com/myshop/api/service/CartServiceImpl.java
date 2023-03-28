@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -38,6 +39,7 @@ public class CartServiceImpl implements CartService {
         Cart cart = Cart.builder()
                 .item(item)
                 .customer(customer)
+                .updateDate(LocalDateTime.now())
                 .quantity(cartRequest.getQuantity())
                 .build();
 

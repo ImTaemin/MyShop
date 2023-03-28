@@ -12,7 +12,8 @@ import java.util.List;
 
 public interface ItemService {
 
-    ItemData.Item getItem(Long itemCode);
+    ItemData.Item getItem(Long itemId);
+    List<ItemData.ItemSimple> getItems(List<Long> itemIdList);
     PageImpl<ItemData.ItemSimple> getItemsByBrandName(String brandName, Pageable pageable);
     PageImpl<ItemData.ItemSimple> getItemsByCategory(ItemType itemType, Pageable pageable);
     PageImpl<ItemData.Item> getItemsByProvider(Provider provider, Pageable pageable);

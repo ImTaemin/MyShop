@@ -63,7 +63,6 @@ public class Item {
 
     @Setter
     @OneToMany(
-            fetch = FetchType.EAGER,
             mappedBy = "item",
             cascade = {CascadeType.REMOVE},
             orphanRemoval = true
@@ -76,15 +75,11 @@ public class Item {
     @JoinColumn(name = "provider_id", nullable = false)
     private Provider provider;
 
-    @OneToMany(mappedBy = "item", fetch = FetchType.LAZY)
-    private List<Cart> cartList;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id", insertable = false, updatable = false)
-    private Customer customer;
+    @OneToMany(mappedBy = "item")
+    private List<Cart> cartList = new ArrayList<>();
 
     @Builder
-    public Item(Long id, String code, String name, String brandName, int price, int quantity, String mainImage, ItemType itemType, GenderType genderType, LocalDateTime createDate, List<ItemImage> itemImageList, Provider provider, List<Cart> cartList, Customer customer) {
+    public Item(Long id, String code, String name, String brandName, int price, int quantity, String mainImage, ItemType itemType, GenderType genderType, LocalDateTime createDate, List<ItemImage> itemImageList, Provider provider, List<Cart> cartList) {
         this.id = id;
         this.code = code;
         this.name = name;
@@ -98,6 +93,5 @@ public class Item {
         this.itemImageList = itemImageList;
         this.provider = provider;
         this.cartList = cartList;
-        this.customer = customer;
     }
 }

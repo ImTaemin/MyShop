@@ -23,3 +23,6 @@ spring:
 
 server:
   port: 9090
+
+client:
+  url: http://localhost:3001

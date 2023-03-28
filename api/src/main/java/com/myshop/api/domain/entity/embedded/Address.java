@@ -8,7 +8,7 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class Address {
 
-    private String loadName;
+    private String roadName;
     private String detail;
     private String postalCode;
 }

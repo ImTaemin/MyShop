@@ -32,3 +32,6 @@ jasypt:
     bean: jasyptStringEncryptor # Bean 이름
     algorithm: PBEWithMD5AndDES
     iv-generator-classname: org.jasypt.iv.NoIvGenerator
+
+client:
+  url: http://myshop.com

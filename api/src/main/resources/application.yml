@@ -26,4 +26,4 @@ server:
 
 api:
   url:
-    baseUrl: https://ae5f-210-100-160-190.jp.ngrok.io
+    baseUrl: https://48d3-210-100-160-190.jp.ngrok.io
