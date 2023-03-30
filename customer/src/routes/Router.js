@@ -6,7 +6,8 @@ import AuthPage from "../pages/AuthPage";
 import ItemListPage from "../pages/ItemListPage";
 import ItemInfoPage from "../pages/ItemInfoPage";
 import OrderFormPage from "../pages/OrderFormPage";
-import OrderSuccessPage from "../pages/OrderSuccessPage";
+import OrderedPage from "../pages/OrderedPage";
+import FavoritePage from "../pages/FavoritePage";
 
 // TODO: 지연로딩을 사용할 경우 스타일 시트를 불러오지 못해 일단 주석 처리.
 // const AuthPage = lazy(() => import("../pages/AuthPage"));
@@ -34,7 +35,7 @@ const PrivateRoute = ({ element, ...rest }) => {
   const accessToken = localStorage.getItem('accessToken');
 
   if (!accessToken) {
-    return <Navigate to="/" />;
+    return <Navigate to="/auth" />;
   }
   return element;
 };
@@ -52,7 +53,8 @@ const ThemeRoutes = [
       {path: "/category/:type", element: <ItemListPage />},
       {path: "/item/:itemId", element: <ItemInfoPage />},
       {path: "/order/order-form", element: <PrivateRoute element={<OrderFormPage />} />},
-      {path: "/order/success", element: <PrivateRoute element={<OrderSuccessPage />} />},
+      {path: "/order", element: <PrivateRoute element={<OrderedPage />} />},
+      {path: "/favorites", element: <PrivateRoute element={<FavoritePage />} />},
     ]
   },
   {

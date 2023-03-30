@@ -3,7 +3,7 @@ import client from "../lib/api/client";
 import "../assets/scss/order-item.scss";
 import {Link, useNavigate} from "react-router-dom";
 
-const OrderSuccessPage = () => {
+const OrderedPage = () => {
   const navigate = useNavigate();
 
   const [orders, setOrders] = useState(null);
@@ -107,4 +107,4 @@ const OrderSuccessPage = () => {
   );
 }
 
-export default OrderSuccessPage;
+export default OrderedPage;

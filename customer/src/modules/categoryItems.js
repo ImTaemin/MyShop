@@ -1,22 +1,22 @@
 import createRequestSaga, {createRequestActionTypes} from "../lib/createRequestSaga";
 import {createAction, handleActions} from "redux-actions";
-import * as itemsAPI from "../lib/api/categoryItems";
+import * as itemsAPI from "../lib/api/items";
 import {takeLatest} from "redux-saga/effects";
 
 // action
-const [LIST_CATEGORY_ITEM, LIST_CATEGORY_ITEM_SUCCESS, LIST_CATEGORY_ITEM_FAILURE] =
-  createRequestActionTypes('categotyItems/LIST_CATEGORY_ITEM');
+const [LOAD_CATEGORY_ITEMS, LOAD_CATEGORY_ITEM_SUCCESSS, LOAD_CATEGORY_ITEM_FAILURES] =
+  createRequestActionTypes('categotyItems/LOAD_CATEGORY_ITEMS');
 const UNLOAD_CATEGORY_ITEM = 'categotyItems/UNLOAD_CATEGORY_ITEM';
 
 // action creators
-export const listCategoryItem = createAction(LIST_CATEGORY_ITEM,({type, page}) => ({type, page}));
+export const loadCategoryItems = createAction(LOAD_CATEGORY_ITEMS,({type, page}) => ({type, page}));
 export const unloadCategoryItems = createAction(UNLOAD_CATEGORY_ITEM);
 
 // redux-saga
-const listCategoryItemSaga = createRequestSaga(LIST_CATEGORY_ITEM, itemsAPI.listCategoryItem);
+const loadCategoryItemsSaga = createRequestSaga(LOAD_CATEGORY_ITEMS, itemsAPI.loadCategoryItems);
 
 export function* categoryItemSaga() {
-  yield takeLatest(LIST_CATEGORY_ITEM, listCategoryItemSaga);
+  yield takeLatest(LOAD_CATEGORY_ITEMS, loadCategoryItemsSaga);
 }
 
 // init
@@ -28,13 +28,13 @@ const initialState = {
 
 // reducer
 const categoryItems = handleActions({
-    [LIST_CATEGORY_ITEM_SUCCESS]: (state, {payload: categoryItems}) => ({
+    [LOAD_CATEGORY_ITEM_SUCCESSS]: (state, {payload: categoryItems}) => ({
       ...state,
       categoryItems: categoryItems.data.content,
       page: categoryItems.data.pageable.pageNumber,
     }),
 
-    [LIST_CATEGORY_ITEM_FAILURE]: (state, {payload: error}) => ({
+    [LOAD_CATEGORY_ITEM_FAILURES]: (state, {payload: error}) => ({
       ...state,
       error: error.response.data,
     }),

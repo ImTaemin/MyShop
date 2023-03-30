@@ -54,7 +54,7 @@ const orderForm = handleActions(
       ...state,
       items: state.items.concat({
         id: item.data.id,
-        data: item.data,
+        data: item.data.data,
         coupon: null,
         quantity: quantity,
       }),
