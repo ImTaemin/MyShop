@@ -114,4 +114,7 @@ public class ApiValueUtils {
         public static final String DISCOUNT = "쿠폰 할인율";
     }
 
+    public static class Favorite {
+        public static final String IS_FAVORITE = "상품 좋아요 여부";
+    }
 }

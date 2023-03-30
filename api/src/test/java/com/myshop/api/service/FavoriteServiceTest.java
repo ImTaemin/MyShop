@@ -85,20 +85,14 @@ public class FavoriteServiceTest {
             itemList.add(new ItemData.ItemSimple());
         }
 
-        given(favoriteRepository.getFavoriteItemList(any(Customer.class), any(Pageable.class)))
+        given(favoriteRepository.getFavoriteItemList(any(Customer.class)))
                 .willReturn(itemList);
 
         //when
-        PageImpl<ItemData.ItemSimple> resFavoriteItems = favoriteService.getFavoriteItemList(customer, new CustomPageRequest().of());
+        List<ItemData.ItemSimple> resFavoriteItems = favoriteService.getFavoriteItemList(customer);
 
         //then
         Assertions.assertNotNull(resFavoriteItems);
-        Assertions.assertEquals(resFavoriteItems.getTotalPages(), 4);
-        Assertions.assertEquals(resFavoriteItems.getTotalElements(), 100);
-        Assertions.assertEquals(resFavoriteItems.getSize(), 30);
-        Assertions.assertNotNull(resFavoriteItems.getContent());
-        Assertions.assertFalse(resFavoriteItems.hasPrevious());
-        Assertions.assertTrue(resFavoriteItems.hasNext());
     }
 
     @WithMockCustomer

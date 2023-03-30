@@ -2,7 +2,7 @@ package com.myshop.api.repository;
 
 import com.myshop.api.domain.dto.request.ItemRequest;
 import com.myshop.api.domain.dto.response.data.ItemData;
-import com.myshop.api.domain.entity.Item;
+import com.myshop.api.domain.entity.Customer;
 import com.myshop.api.domain.entity.ItemImage;
 import com.myshop.api.domain.entity.Provider;
 import com.myshop.api.enumeration.ItemType;

@@ -21,35 +21,14 @@ public class FavoriteServiceImpl implements FavoriteService {
     private final FavoriteRepository favoriteRepository;
 
     @Override
-    public PageImpl<ItemData.ItemSimple> getFavoriteItemList(Customer customer, Pageable pageable) {
-        List<ItemData.ItemSimple> favoriteItemList = favoriteRepository.getFavoriteItemList(customer, pageable);
-
-        return new PageImpl<>(favoriteItemList, pageable, favoriteItemList.size());
+    public List<ItemData.ItemSimple> getFavoriteItemList(Customer customer) {
+        return favoriteRepository.getFavoriteItemList(customer);
     }
 
     @Transactional
     @Override
-    public void insertFavoriteItem(Customer customer, Long itemId) {
-        Item insertItem = Item.builder()
-                .id(itemId)
-                .build();
-
-        Favorite favorite = Favorite.builder()
-                .item(insertItem)
-                .customer(customer)
-                .build();
-
-        favoriteRepository.save(favorite);
-    }
-
-    @Transactional
-    @Override
-    public void deleteFavoriteItem(Customer customer, Long itemId) {
-        FavoriteId favoriteId = FavoriteId.builder()
-                .item(itemId)
-                .customer(customer.getId())
-                .build();
-
-        favoriteRepository.deleteById(favoriteId);
+    public void updateFavoriteItem(Customer customer, Long itemId) {
+        Favorite findFavorite = favoriteRepository.findFavoriteByCustomerAndItemId(customer, itemId);
+        favoriteRepository.updateFavoriteItem(findFavorite, customer, itemId);
     }
 }

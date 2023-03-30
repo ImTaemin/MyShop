@@ -2,11 +2,10 @@ package com.myshop.api.service;
 
 import com.myshop.api.domain.dto.request.ItemRequest;
 import com.myshop.api.domain.dto.response.data.ItemData;
-import com.myshop.api.domain.entity.Item;
-import com.myshop.api.domain.entity.ItemImage;
-import com.myshop.api.domain.entity.Provider;
+import com.myshop.api.domain.entity.*;
 import com.myshop.api.enumeration.ItemType;
 import com.myshop.api.exception.ItemNotFoundException;
+import com.myshop.api.repository.FavoriteRepository;
 import com.myshop.api.repository.ItemImageRepository;
 import com.myshop.api.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,15 +28,21 @@ public class ItemServiceImpl implements ItemService {
 
     private final ItemRepository itemRepository;
     private final ItemImageRepository itemImageRepository;
+    private final FavoriteRepository favoriteRepository;
     private final GCPStorageService gcpStorageService;
 
     @Transactional
     @Override
-    public ItemData.Item getItem(Long itemId) {
+    public ItemData.Item getItem(Customer customer, Long itemId) {
         Item item = itemRepository.findById(itemId).orElseThrow(ItemNotFoundException::new);
         LOGGER.info("상품 조회 완료");
 
         ItemData.Item resItem = new ItemData.Item(item);
+
+        if(customer != null) {
+            Favorite favorite = favoriteRepository.findFavoriteByCustomerAndItemId(customer, itemId);
+            resItem.setIsFavorite(favorite != null);
+        }
 
         return resItem;
     }

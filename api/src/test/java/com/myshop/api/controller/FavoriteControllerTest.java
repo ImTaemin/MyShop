@@ -46,7 +46,7 @@ public class FavoriteControllerTest {
 
     ObjectMapper objectMapper = new ObjectMapper();
 
-    PageImpl<ItemData.ItemSimple> pagingFavorite;
+    List<ItemData.ItemSimple> favoriteSimpleList = null;
 
     ItemData.ItemSimple resFavoriteSimple;
     CustomPageRequest pageRequest = new CustomPageRequest();
@@ -60,11 +60,9 @@ public class FavoriteControllerTest {
         resFavoriteSimple.setPrice(30000);
         resFavoriteSimple.setMainImage("메인 이미지");
 
-        List<ItemData.ItemSimple> favoriteSimpleList = new ArrayList<>();
+        favoriteSimpleList = new ArrayList<>();
         favoriteSimpleList.add(resFavoriteSimple);
         favoriteSimpleList.add(resFavoriteSimple);
-
-        pagingFavorite = new PageImpl<>(favoriteSimpleList, pageRequest.of(), favoriteSimpleList.size());
     }
 
     @Test
@@ -72,8 +70,8 @@ public class FavoriteControllerTest {
     @DisplayName("구매자 상품 찜 목록 페이징")
     public void getFavoriteItems() throws Exception {
         //given
-        given(favoriteService.getFavoriteItemList(any(Customer.class), any(PageRequest.class)))
-                .willReturn(pagingFavorite);
+        given(favoriteService.getFavoriteItemList(any(Customer.class)))
+                .willReturn(favoriteSimpleList);
 
         String content = objectMapper.writeValueAsString(pageRequest);
 
@@ -84,18 +82,10 @@ public class FavoriteControllerTest {
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .with(csrf()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$").isMap())
-                .andExpect(jsonPath("$.content").isArray())
-                .andExpect(jsonPath("$.content[*]").isNotEmpty())
-                .andExpect(jsonPath("$.pageable").isNotEmpty())
-                .andExpect(jsonPath("$.totalPages", is(pagingFavorite.getTotalPages())))
-                .andExpect(jsonPath("$.totalElements", is(Long.valueOf(pagingFavorite.getTotalElements()).intValue())))
-                .andExpect(jsonPath("$.size", is(pagingFavorite.getSize())))
-                .andExpect(jsonPath("$.number", is(pagingFavorite.getNumber())))
                 .andDo(print());
 
         //then
-        verify(favoriteService).getFavoriteItemList(any(Customer.class), any(PageRequest.class));
+        verify(favoriteService).getFavoriteItemList(any(Customer.class));
 
     }
 
@@ -112,7 +102,7 @@ public class FavoriteControllerTest {
                 .andExpect(status().isOk());
 
         //then
-        verify(favoriteService).insertFavoriteItem(any(Customer.class), anyLong());
+        verify(favoriteService).updateFavoriteItem(any(Customer.class), anyLong());
     }
 
     @Test
