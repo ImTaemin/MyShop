@@ -62,7 +62,7 @@ public class CustomerOrderController {
     public ResponseEntity<BaseResponse> approveToKakaoPay(HttpServletResponse response, @RequestParam("pg_token") String pgToken, @RequestParam("orderId") String orderId) throws IOException {
         orderService.approveToKakaoPay(pgToken, orderId);
 
-        response.sendRedirect(clientUrl + "/order/success?orderId=" + orderId);
+        response.sendRedirect(clientUrl + "/order?orderId=" + orderId);
 
         return BaseResponse.ok("주문 성공");
     }

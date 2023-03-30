@@ -4,12 +4,14 @@ import com.myshop.api.domain.dto.request.CustomPageRequest;
 import com.myshop.api.domain.dto.request.ItemRequest;
 import com.myshop.api.domain.dto.response.data.ItemData;
 import com.myshop.api.domain.dto.response.data.ItemImageData;
+import com.myshop.api.domain.entity.Customer;
 import com.myshop.api.domain.entity.Item;
 import com.myshop.api.domain.entity.ItemImage;
 import com.myshop.api.domain.entity.Provider;
 import com.myshop.api.enumeration.GenderType;
 import com.myshop.api.enumeration.ItemType;
 import com.myshop.api.enumeration.UserRole;
+import com.myshop.api.repository.FavoriteRepository;
 import com.myshop.api.repository.ItemImageRepository;
 import com.myshop.api.repository.ItemRepository;
 import org.junit.jupiter.api.Assertions;
@@ -46,6 +48,9 @@ public class ItemServiceTest {
     ItemImageRepository itemImageRepository;
 
     @Mock
+    FavoriteRepository favoriteRepository;
+
+    @Mock
     GCPStorageService gcpStorageService;
 
     Item item;
@@ -73,7 +78,7 @@ public class ItemServiceTest {
                 .roles(List.of(UserRole.PROVIDER.toString()))
                 .build();
 
-        itemService = new ItemServiceImpl(itemRepository, itemImageRepository, gcpStorageService);
+        itemService = new ItemServiceImpl(itemRepository, itemImageRepository, favoriteRepository, gcpStorageService);
 
         item = Item.builder()
                 .id(1L)
@@ -150,7 +155,7 @@ public class ItemServiceTest {
         given(itemRepository.findById(anyLong())).willReturn(Optional.ofNullable(item));
 
         //when
-        ItemData.Item resItem = itemService.getItem(1L);
+        ItemData.Item resItem = itemService.getItem(new Customer(), 1L);
 
         //then
         Assertions.assertNotNull(resItem.getId());

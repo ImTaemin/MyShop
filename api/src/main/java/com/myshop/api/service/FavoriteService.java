@@ -5,8 +5,9 @@ import com.myshop.api.domain.entity.Customer;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 public interface FavoriteService {
-    PageImpl<ItemData.ItemSimple> getFavoriteItemList(Customer customer, Pageable pageable);
-    void insertFavoriteItem(Customer customer, Long itemId);
-    void deleteFavoriteItem(Customer customer, Long itemId);
+    List<ItemData.ItemSimple> getFavoriteItemList(Customer customer);
+    void updateFavoriteItem(Customer customer, Long itemId);
 }

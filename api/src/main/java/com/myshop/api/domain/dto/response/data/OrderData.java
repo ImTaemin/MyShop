@@ -5,6 +5,7 @@ import com.myshop.api.domain.entity.Orders;
 import com.myshop.api.util.ApiValueUtils;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +15,7 @@ import java.util.List;
 @ApiModel
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class OrderData {
 
     @ApiModelProperty(value = ApiValueUtils.Order.ID)
@@ -42,14 +44,4 @@ public class OrderData {
     @ApiModelProperty(value = ApiValueUtils.Order.ORDER_ITEM_LIST)
     private List<OrderItemData> orderItemDataList;
 
-    public OrderData(String orderNo, int totalPayment, LocalDateTime orderDate, LocalDateTime cancelDate, String roadName, String detail, String postalCode, List<OrderItemData> orderItemDataList) {
-        this.orderNo = orderNo;
-        this.totalPayment = totalPayment;
-        this.orderDate = orderDate;
-        this.cancelDate = cancelDate;
-        this.roadName = roadName;
-        this.detail = detail;
-        this.postalCode = postalCode;
-        this.orderItemDataList = orderItemDataList;
-    }
 }

@@ -7,6 +7,7 @@ import com.myshop.api.annotation.mock.WithMockProvider;
 import com.myshop.api.domain.dto.request.CustomPageRequest;
 import com.myshop.api.domain.dto.request.ItemRequest;
 import com.myshop.api.domain.dto.response.data.ItemData;
+import com.myshop.api.domain.entity.Customer;
 import com.myshop.api.domain.entity.Provider;
 import com.myshop.api.enumeration.GenderType;
 import com.myshop.api.enumeration.ItemType;
@@ -102,7 +103,7 @@ class ItemControllerTest {
     @DisplayName("상품 단건 조회 테스트")
     public void getItemTest() throws Exception {
         //given
-        given(itemService.getItem(anyLong())).willReturn(resItem);
+        given(itemService.getItem(any(Customer.class), anyLong())).willReturn(resItem);
 
         //when
         mockMvc.perform(
@@ -122,7 +123,7 @@ class ItemControllerTest {
                 .andDo(print());
 
         //then
-        verify(itemService).getItem(anyLong());
+        verify(itemService).getItem(any(Customer.class), anyLong());
     }
 
     @Test

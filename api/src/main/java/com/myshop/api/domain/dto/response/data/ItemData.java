@@ -6,6 +6,7 @@ import com.myshop.api.enumeration.ItemType;
 import com.myshop.api.util.ApiValueUtils;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -18,6 +19,7 @@ public class ItemData {
     @ApiModel
     @Data
     @NoArgsConstructor
+    @AllArgsConstructor
     public static class ItemSimple {
 
         @ApiModelProperty(value = ApiValueUtils.Item.ID)
@@ -38,15 +40,6 @@ public class ItemData {
         @ApiModelProperty(value = ApiValueUtils.Item.MAIN_IMAGE)
         private String mainImage;
 
-        public ItemSimple(Long id, String code, String name, String brandName, int price, String mainImage) {
-            this.id = id;
-            this.code = code;
-            this.name = name;
-            this.brandName = brandName;
-            this.price = price;
-            this.mainImage = mainImage;
-        }
-
         public ItemSimple(com.myshop.api.domain.entity.Item item) {
             this.id = item.getId();
             this.code = item.getCode();
@@ -61,6 +54,7 @@ public class ItemData {
     @ApiModel
     @Data
     @NoArgsConstructor
+    @AllArgsConstructor
     public static class Item extends ItemSimple {
 
         @ApiModelProperty(value = ApiValueUtils.Item.QUANTITY)
@@ -78,6 +72,19 @@ public class ItemData {
 
         @ApiModelProperty(value = ApiValueUtils.Item.IMAGE_LIST)
         private List<ItemImageData.ItemImage> imageDetailList = new ArrayList<>();
+
+        @ApiModelProperty(value = ApiValueUtils.Favorite.IS_FAVORITE)
+        private Boolean isFavorite;
+
+        public Item(Long id, String code, String name, String brandName, int price, String mainImage, int quantity, ItemType itemType, GenderType genderType, LocalDateTime createDate, List<ItemImageData.ItemImage> imageDetailList, Boolean isFavorite) {
+            super(id, code, name, brandName, price, mainImage);
+            this.quantity = quantity;
+            this.itemType = itemType;
+            this.genderType = genderType;
+            this.createDate = createDate;
+            this.imageDetailList = imageDetailList;
+            this.isFavorite = isFavorite;
+        }
 
         public Item(com.myshop.api.domain.entity.Item item) {
             super(item);

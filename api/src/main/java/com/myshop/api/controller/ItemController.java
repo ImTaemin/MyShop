@@ -1,10 +1,12 @@
 package com.myshop.api.controller;
 
+import com.myshop.api.annotation.CurrentCustomer;
 import com.myshop.api.annotation.CurrentProvider;
 import com.myshop.api.domain.dto.request.CustomPageRequest;
 import com.myshop.api.domain.dto.request.ItemRequest;
 import com.myshop.api.domain.dto.response.BaseResponse;
 import com.myshop.api.domain.dto.response.data.ItemData;
+import com.myshop.api.domain.entity.Customer;
 import com.myshop.api.domain.entity.Provider;
 import com.myshop.api.enumeration.ItemType;
 import com.myshop.api.service.ItemService;
@@ -29,10 +31,10 @@ public class ItemController {
 
     @ApiOperation(value = "상품 상세 조회")
     @GetMapping(value = "/{itemId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ItemData.Item> getItem(@PathVariable Long itemId) {
-        ItemData.Item resItem = itemService.getItem(itemId);
+    public ResponseEntity<BaseResponse> getItem(@CurrentCustomer Customer customer, @PathVariable Long itemId) {
+        ItemData.Item resItem = itemService.getItem(customer, itemId);
 
-        return ResponseEntity.ok(resItem);
+        return BaseResponse.ok(resItem);
     }
 
     @ApiOperation(value = "id에 해당하는 상품 목록 간단 조회(페이징 x)")
