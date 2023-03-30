@@ -1,6 +1,6 @@
 @import "common";
 
-.order-item-container {
+.order-item-table, .cart-item-table {
   border: $custom-border;
   width: 100%;
 
@@ -25,7 +25,7 @@
   }
 }
 
-.order-item-wrap {
+.order-item-wrap, .cart-item-wrap {
   display: flex;
 
   .item-image {

@@ -39,7 +39,7 @@ const FavoritePage = () => {
       {!loading && favoriteItems && (
         <div className="item-list">
           {favoriteItems.map((item, index) => (
-            <Item item={item} key={index}/>
+            <Item item={item} key={index} />
           ))}
         </div>
       )}

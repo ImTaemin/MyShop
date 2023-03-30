@@ -11,6 +11,7 @@ import client from "../lib/api/client";
 import {useNavigate} from "react-router-dom";
 import {decodeToken} from "react-jwt";
 import {saveItem} from "../lib/api/cart";
+import {addFavorite} from "../lib/api/favorite";
 
 SwiperCore.use([Navigation, Pagination]);
 
@@ -55,14 +56,6 @@ const ItemInfoPage = () => {
       navigate("/auth");
       return;
     }
-
-    const reqFormData = new FormData();
-    reqFormData.append("itemId", itemId);
-    reqFormData.append("quantity", quantity);
-
-    // 장바구니 저장 (TODO: 구매 성공 시 CART에 저장된 데이터 삭제 필요. 아니면 아예 장바구니 저장 없앨 것)
-    const response = saveItem(reqFormData);
-    console.log(response);
     
     navigate("/order/order-form", {
       state:{
@@ -99,9 +92,31 @@ const ItemInfoPage = () => {
   }, [quantity, price]);
 
   const favoriteBtnHandler = useCallback((e) => {
-    client.post("/customer/favorite", itemId);
-    setFavorite(!favorite);
+    addFavorite(itemId)
+      .then(response => {
+        setFavorite(!favorite);
+      });
   }, [favorite]);
+
+  const cartBtnHandler = useCallback((e) => {
+    const reqFormData = new FormData();
+    reqFormData.append("itemId", itemId);
+    reqFormData.append("quantity", quantity);
+
+    saveItem(reqFormData)
+      .then(response => {
+        if(response.status === 200) {
+          alert("장바구니에 상품이 추가되었습니다.");
+          return;
+        }
+
+        // 장바구니에 이미 추가된 경우
+        alert(`${response.data.msg}`);
+      })
+      .catch(error => {
+        alert(`${error}`);
+      });
+  }, [quantity]);
 
   return (
     <div className="item-info-container">
@@ -192,7 +207,9 @@ const ItemInfoPage = () => {
                     <AiTwotoneHeart fill="red" />
                   )}
                 </button>
-                <button className="btn-basket"><AiOutlineShopping /></button>
+                <button className="btn-basket" onClick={cartBtnHandler}>
+                  <AiOutlineShopping />
+                </button>
               </div>
             </div>
           </div>

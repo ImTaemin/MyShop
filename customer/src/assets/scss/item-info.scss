@@ -94,35 +94,6 @@
         flex-grow: 7;
       }
 
-      .quantity-control {
-        display: flex;
-        flex-grow: 1;
-        border: $custom-border;
-
-        button {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          background: #f5f5f5;
-          border: none;
-        }
-
-        .decrease {
-          flex-grow: 1;
-        }
-
-        .quantity {
-          text-align: center;
-          width: 20px;
-          flex-grow: 1;
-          border: none;
-        }
-
-        .increase {
-          flex-grow: 1;
-        }
-      }
-
       .price {
         display: flex;
         justify-content: end;
@@ -158,6 +129,36 @@
         flex-grow: 6;
       }
     }
+  }
+}
+
+.quantity-control {
+  width: 100px;
+  display: flex;
+  border: $custom-border;
+  margin: auto;
+
+  button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f5f5f5;
+    border: none;
+  }
+
+  .decrease {
+    flex-grow: 1;
+  }
+
+  .quantity {
+    text-align: center;
+    width: 20px;
+    flex-grow: 1;
+    border: none;
+  }
+
+  .increase {
+    flex-grow: 1;
   }
 }
 

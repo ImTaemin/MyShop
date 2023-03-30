@@ -15,7 +15,7 @@ const OrderItems = () => {
     <>
       <h5 className="title">상품 정보</h5>
       <table
-        className="order-item-container"
+        className="order-item-table"
       >
         <thead>
           <tr>
