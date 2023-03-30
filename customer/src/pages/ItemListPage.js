@@ -1,7 +1,7 @@
 import {useParams} from "react-router";
 import {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {listCategoryItem, unloadCategoryItems} from "../modules/categoryItems";
+import {loadCategoryItems, unloadCategoryItems} from "../modules/categoryItems";
 import Item from "../components/Item/Item";
 import Loader from "../components/loader/Loader";
 import "../assets/scss/item-list.scss";
@@ -18,7 +18,7 @@ const ItemListPage = () => {
   }));
 
   useEffect(() => {
-    dispatch(listCategoryItem({page, type}));
+    dispatch(loadCategoryItems({page, type}));
 
     return () => {
       dispatch(unloadCategoryItems());
@@ -30,13 +30,11 @@ const ItemListPage = () => {
       {loading && (
         <Loader />
       )}
-      {
-        !loading && categoryItems && (
-          categoryItems.map((item, index) => (
-            <Item item={item} key={index}/>
-          ))
-        )
-      }
+      {!loading && categoryItems && (
+        categoryItems.map((item, index) => (
+          <Item item={item} key={index}/>
+        ))
+      )}
       {error && (
         <div>{error.msg}</div>
       )}

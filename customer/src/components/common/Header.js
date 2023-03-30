@@ -43,7 +43,7 @@ const Header = () => {
           마이페이지
         </div>
       </Link>
-      <Link to="/">
+      <Link to="/favorites">
         <div className="header-wrap">
           <span className="header-like">좋아요</span>
         </div>

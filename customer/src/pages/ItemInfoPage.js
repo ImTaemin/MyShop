@@ -6,7 +6,7 @@ import {useParams} from "react-router";
 import {useCallback, useEffect, useState} from "react";
 import {Swiper, SwiperSlide} from "swiper/react";
 import SwiperCore, {Navigation, Pagination} from 'swiper/core';
-import {AiOutlineHeart, AiOutlineMinus, AiOutlinePlus, AiOutlineShopping} from "react-icons/ai";
+import {AiOutlineHeart, AiOutlineMinus, AiOutlinePlus, AiOutlineShopping, AiTwotoneHeart} from "react-icons/ai";
 import client from "../lib/api/client";
 import {useNavigate} from "react-router-dom";
 import {decodeToken} from "react-jwt";
@@ -19,6 +19,7 @@ const ItemInfoPage = () => {
   const [item, setItem] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [price, setPrice] = useState(0);
+  const [favorite, setFavorite] = useState(false);
 
   const navigate = useNavigate();
 
@@ -28,13 +29,15 @@ const ItemInfoPage = () => {
 
     client.get(`/item/${itemId}`)
       .then(response => {
-        setItem(response.data);
-        setPrice(response.data.price);
+        console.log(response);
+        setItem(response.data.data);
+        setPrice(response.data.data.price);
+        setFavorite(response.data.data.isFavorite);
       });
 
   }, []);
 
-  // 바로 주문
+  // 바로 구매
   const directOrder = useCallback((e) => {
     e.preventDefault();
 
@@ -57,11 +60,10 @@ const ItemInfoPage = () => {
     reqFormData.append("itemId", itemId);
     reqFormData.append("quantity", quantity);
 
-    // 장바구니 저장
+    // 장바구니 저장 (TODO: 구매 성공 시 CART에 저장된 데이터 삭제 필요. 아니면 아예 장바구니 저장 없앨 것)
     const response = saveItem(reqFormData);
-
     console.log(response);
-
+    
     navigate("/order/order-form", {
       state:{
         itemInfo: {
@@ -95,6 +97,11 @@ const ItemInfoPage = () => {
     setQuantity(Number(value));
     setPrice(Number(item.price * value));
   }, [quantity, price]);
+
+  const favoriteBtnHandler = useCallback((e) => {
+    client.post("/customer/favorite", itemId);
+    setFavorite(!favorite);
+  }, [favorite]);
 
   return (
     <div className="item-info-container">
@@ -177,7 +184,14 @@ const ItemInfoPage = () => {
 
               <div className="order-box">
                 <button className="direct-order" onClick={directOrder}>바로 구매</button>
-                <button className="btn-like"><AiOutlineHeart /></button>
+                <button className="btn-favorite" onClick={favoriteBtnHandler}>
+                  {!favorite && (
+                    <AiOutlineHeart />
+                  )}
+                  {favorite && (
+                    <AiTwotoneHeart fill="red" />
+                  )}
+                </button>
                 <button className="btn-basket"><AiOutlineShopping /></button>
               </div>
             </div>
