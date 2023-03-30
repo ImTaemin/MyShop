@@ -11,8 +11,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Api(tags = {"구매자 장바구니 REST API"})
 @RequiredArgsConstructor
@@ -23,15 +26,15 @@ public class CartController {
     private final CartService cartService;
     
     @ApiOperation(value = "구매자 장바구니 목록 조회")
-    @GetMapping({"/", ""})
-    public ResponseEntity<PageImpl<CartData>> getCartItemList(@CurrentCustomer Customer customer, CustomPageRequest pageRequest) {
-        PageImpl<CartData> pagingCartItemList = cartService.getCartItemList(customer, pageRequest.of());
+    @GetMapping(value = {"/", ""}, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<BaseResponse> getCartItemList(@CurrentCustomer Customer customer) {
+        List<CartData> cartItemList = cartService.getCartItemList(customer);
 
-        return ResponseEntity.ok(pagingCartItemList);
+        return BaseResponse.ok(cartItemList);
     }
 
     @ApiOperation(value = "구매자 장바구니 상품 추가")
-    @PostMapping({"/", ""})
+    @PostMapping(value = {"/", ""}, produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<BaseResponse> insertCartItem(@CurrentCustomer Customer customer, @RequestBody CartRequest cartRequest) {
         cartService.insertCartItem(customer, cartRequest);
 
@@ -39,7 +42,7 @@ public class CartController {
     }
 
     @ApiOperation(value = "구매자 장바구니 상품 수량 수정")
-    @PutMapping({"/", ""})
+    @PutMapping(value = {"/", ""}, produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<BaseResponse> updateCartItemQuantity(@CurrentCustomer Customer customer, @RequestBody CartRequest cartRequest) {
         cartService.updateCartItemQuantity(customer, cartRequest);
 
@@ -47,8 +50,8 @@ public class CartController {
     }
 
     @ApiOperation(value = "구매자 장바구니 상품 삭제")
-    @DeleteMapping("/{itemId}")
-    public ResponseEntity<BaseResponse> deleteCartItem(@CurrentCustomer Customer customer, @PathVariable Long itemId) {
+    @DeleteMapping(value = {"/", ""}, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<BaseResponse> deleteCartItem(@CurrentCustomer Customer customer, @RequestBody Long itemId) {
         cartService.deleteCartItem(customer, itemId);
 
         return BaseResponse.ok();

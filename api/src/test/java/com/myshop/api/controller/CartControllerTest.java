@@ -46,7 +46,7 @@ public class CartControllerTest {
 
     ObjectMapper objectMapper = new ObjectMapper();
 
-    PageImpl<CartData> pagingCart;
+    List<CartData> cartList;
 
     CartData cartData;
     CustomPageRequest pageRequest = new CustomPageRequest();
@@ -67,11 +67,9 @@ public class CartControllerTest {
         cartData.setMainImage("메인 이미지");
         cartData.setQuantity(5);
 
-        List<CartData> cartList = new ArrayList<>();
+        cartList = new ArrayList<>();
         cartList.add(cartData);
         cartList.add(cartData);
-
-        pagingCart = new PageImpl<>(cartList, pageRequest.of(), cartList.size());
     }
 
     @Test
@@ -79,8 +77,8 @@ public class CartControllerTest {
     @DisplayName("구매자 장바구니 목록 페이징")
     public void getCartItemList() throws Exception {
         //given
-        given(cartService.getCartItemList(any(Customer.class), any(PageRequest.class)))
-                .willReturn(pagingCart);
+        given(cartService.getCartItemList(any(Customer.class)))
+                .willReturn(cartList);
 
         String content = objectMapper.writeValueAsString(pageRequest);
 
@@ -92,17 +90,10 @@ public class CartControllerTest {
                                 .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isMap())
-                .andExpect(jsonPath("$.content").isArray())
-                .andExpect(jsonPath("$.content[*]").isNotEmpty())
-                .andExpect(jsonPath("$.pageable").isNotEmpty())
-                .andExpect(jsonPath("$.totalPages", is(pagingCart.getTotalPages())))
-                .andExpect(jsonPath("$.totalElements", is(Long.valueOf(pagingCart.getTotalElements()).intValue())))
-                .andExpect(jsonPath("$.size", is(pagingCart.getSize())))
-                .andExpect(jsonPath("$.number", is(pagingCart.getNumber())))
                 .andDo(print());
 
         //then
-        verify(cartService).getCartItemList(any(Customer.class), any(PageRequest.class));
+        verify(cartService).getCartItemList(any(Customer.class));
     }
 
     @Test

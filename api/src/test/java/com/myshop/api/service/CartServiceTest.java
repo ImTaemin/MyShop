@@ -85,20 +85,14 @@ public class CartServiceTest {
             itemList.add(new CartData());
         }
 
-        given(cartRepository.getCartItemList(any(Customer.class), any(Pageable.class)))
+        given(cartRepository.getCartItemList(any(Customer.class)))
                 .willReturn(itemList);
 
         //when
-        PageImpl<CartData> resCartItems = cartService.getCartItemList(customer, new CustomPageRequest().of());
+        List<CartData> resCartItems = cartService.getCartItemList(customer);
 
         //then
         Assertions.assertNotNull(resCartItems);
-        Assertions.assertEquals(resCartItems.getTotalPages(), 4);
-        Assertions.assertEquals(resCartItems.getTotalElements(), 100);
-        Assertions.assertEquals(resCartItems.getSize(), 30);
-        Assertions.assertNotNull(resCartItems.getContent());
-        Assertions.assertFalse(resCartItems.hasPrevious());
-        Assertions.assertTrue(resCartItems.hasNext());
     }
 
     @WithMockCustomer

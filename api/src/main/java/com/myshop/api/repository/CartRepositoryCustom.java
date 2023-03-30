@@ -9,6 +9,6 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface CartRepositoryCustom {
-    List<CartData> getCartItemList(Customer customer, Pageable pageable);
+    List<CartData> getCartItemList(Customer customer);
     void updateCartItemQuantity(Customer customer, CartRequest cartRequest);
 }
