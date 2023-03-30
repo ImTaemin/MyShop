@@ -48,7 +48,7 @@ const Header = () => {
           <span className="header-like">좋아요</span>
         </div>
       </Link>
-      <Link to="/">
+      <Link to="/cart">
         <div className="header-wrap">
           장바구니
         </div>

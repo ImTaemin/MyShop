@@ -8,6 +8,7 @@ import ItemInfoPage from "../pages/ItemInfoPage";
 import OrderFormPage from "../pages/OrderFormPage";
 import OrderedPage from "../pages/OrderedPage";
 import FavoritePage from "../pages/FavoritePage";
+import CartPage from "../pages/CartPage";
 
 // TODO: 지연로딩을 사용할 경우 스타일 시트를 불러오지 못해 일단 주석 처리.
 // const AuthPage = lazy(() => import("../pages/AuthPage"));
@@ -55,6 +56,7 @@ const ThemeRoutes = [
       {path: "/order/order-form", element: <PrivateRoute element={<OrderFormPage />} />},
       {path: "/order", element: <PrivateRoute element={<OrderedPage />} />},
       {path: "/favorites", element: <PrivateRoute element={<FavoritePage />} />},
+      {path: "/cart", element: <PrivateRoute element={<CartPage />} />},
     ]
   },
   {

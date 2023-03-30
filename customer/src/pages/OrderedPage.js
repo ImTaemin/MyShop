@@ -35,7 +35,7 @@ const OrderedPage = () => {
           <div className="order-form-wrap">
             <h5 className="title">배송지 정보</h5>
             <table
-              className="order-item-container"
+              className="order-item-table"
             >
               <thead>
                 <tr>
@@ -63,7 +63,7 @@ const OrderedPage = () => {
           <div className="order-form-wrap">
             <h5 className="title">주문 상세</h5>
             <table
-              className="order-item-container"
+              className="order-item-table"
             >
               <thead>
               <tr>
