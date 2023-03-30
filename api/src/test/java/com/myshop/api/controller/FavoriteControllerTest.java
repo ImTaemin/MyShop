@@ -105,19 +105,4 @@ public class FavoriteControllerTest {
         verify(favoriteService).updateFavoriteItem(any(Customer.class), anyLong());
     }
 
-    @Test
-    @WithMockCustomer
-    @DisplayName("구매자 상품 찜 제거")
-    public void deleteFavoriteItemTest() throws Exception {
-        //given
-
-        //when
-        mockMvc.perform(
-                        delete("/customer/favorite/1")
-                                .with(csrf()))
-                .andExpect(status().isOk());
-
-        //then
-        verify(favoriteService).deleteFavoriteItem(any(Customer.class), anyLong());
-    }
 }

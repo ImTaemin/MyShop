@@ -6,8 +6,10 @@ import com.myshop.api.domain.entity.Customer;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 public interface CartService {
-    PageImpl<CartData> getCartItemList(Customer customer, Pageable pageable);
+    List<CartData> getCartItemList(Customer customer);
     void insertCartItem(Customer customer, CartRequest cartRequest);
     void updateCartItemQuantity(Customer customer, CartRequest cartRequest);
     void deleteCartItem(Customer customer, Long itemId);

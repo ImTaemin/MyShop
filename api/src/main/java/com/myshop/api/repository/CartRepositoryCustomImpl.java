@@ -28,8 +28,8 @@ public class CartRepositoryCustomImpl extends QuerydslRepositorySupport implemen
     }
 
     @Override
-    public List<CartData> getCartItemList(Customer customer, Pageable pageable) {
-        List<CartData> resCartList = jpaQueryFactory
+    public List<CartData> getCartItemList(Customer customer) {
+        return jpaQueryFactory
                 .select(
                         Projections.bean(CartData.class,
                                 qItem.id,
@@ -41,11 +41,7 @@ public class CartRepositoryCustomImpl extends QuerydslRepositorySupport implemen
                 .from(qCart)
                 .join(qCart.item(), qItem)
                 .where(qCart.customer().id.eq(customer.getId()))
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
                 .fetch();
-
-        return resCartList;
     }
 
     @Override

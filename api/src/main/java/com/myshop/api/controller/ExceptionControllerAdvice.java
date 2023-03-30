@@ -73,12 +73,17 @@ public class ExceptionControllerAdvice {
     }
 
     @ExceptionHandler(value = IllegalOrderException.class)
-    public ResponseEntity<BaseResponse> IllegalOrderHandler(IllegalOrderException e) {
+    public ResponseEntity<BaseResponse> illegalOrderHandler(IllegalOrderException e) {
         return BaseResponse.error(e.getMessage());
     }
 
     @ExceptionHandler(value = NotExistCouponException.class)
-    public ResponseEntity<BaseResponse> NotExistCouponHandler(NotExistCouponException e) {
+    public ResponseEntity<BaseResponse> notExistCouponHandler(NotExistCouponException e) {
+        return BaseResponse.error(e.getMessage());
+    }
+
+    @ExceptionHandler(value = ExistCartItemException.class)
+    public ResponseEntity<BaseResponse> existCartItemException(ExistCartItemException e) {
         return BaseResponse.error(e.getMessage());
     }
 

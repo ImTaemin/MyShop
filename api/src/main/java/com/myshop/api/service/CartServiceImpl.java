@@ -6,15 +6,15 @@ import com.myshop.api.domain.entity.Cart;
 import com.myshop.api.domain.entity.Customer;
 import com.myshop.api.domain.entity.Item;
 import com.myshop.api.domain.entity.id.CartId;
+import com.myshop.api.exception.ExistCartItemException;
 import com.myshop.api.repository.CartRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -23,15 +23,25 @@ public class CartServiceImpl implements CartService {
     private final CartRepository cartRepository;
 
     @Override
-    public PageImpl<CartData> getCartItemList(Customer customer, Pageable pageable) {
-        List<CartData> cartItemList = cartRepository.getCartItemList(customer, pageable);
-
-        return new PageImpl<>(cartItemList, pageable, cartItemList.size());
+    public List<CartData> getCartItemList(Customer customer) {
+        return cartRepository.getCartItemList(customer);
     }
 
     @Transactional
     @Override
     public void insertCartItem(Customer customer, CartRequest cartRequest) {
+
+        CartId cartId = CartId.builder()
+                .item(cartRequest.getItemId())
+                .customer(customer.getId())
+                .build();
+
+        // 장바구니에 해당 아이템이 있는 경우
+        Optional<Cart> existCart = cartRepository.findById(cartId);
+        if(existCart.isPresent()) {
+            throw new ExistCartItemException();
+        }
+
         Item item = Item.builder()
                 .id(cartRequest.getItemId())
                 .build();
