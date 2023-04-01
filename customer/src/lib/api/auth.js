@@ -1,5 +1,6 @@
 import axios from "axios";
 import {removeCookie} from "../cookie";
+import client from "./client";
 
 export const signUp = async ({userId, password, phone, name }) => {
 
@@ -32,6 +33,14 @@ export const signIn = async ({id, password}) => {
     return error.response.data;
   }
 };
+
+export const loadAuthInfo = () => {
+  return client.get("/customer");
+}
+
+export const submitAuthInfo = (submitAuthData) => {
+  return client.put("/customer", submitAuthData);
+}
 
 export const signOut = () => {
   localStorage.removeItem("accessToken");

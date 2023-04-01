@@ -5,6 +5,8 @@ import loading from "./loading";
 import orderForm, {orderFormSaga} from "./orderForm";
 import favoriteItems, {favoriteItemsSaga} from "./favoriteItems";
 import cartItems, {cartItemsSaga} from "./cartItems";
+import orderedList, {orderedListSaga} from "./orderedList";
+import mypage, {authInfoSaga} from "./mypage";
 
 const rootReducer = combineReducers({
   loading,
@@ -12,10 +14,19 @@ const rootReducer = combineReducers({
   orderForm,
   favoriteItems,
   cartItems,
+  orderedList,
+  mypage,
 });
 
 export function* rootSaga() {
-  yield all([categoryItemSaga(), orderFormSaga(), favoriteItemsSaga(), cartItemsSaga()]);
+  yield all([
+    categoryItemSaga(),
+    orderFormSaga(),
+    favoriteItemsSaga(),
+    cartItemsSaga(),
+    orderedListSaga(),
+    authInfoSaga(),
+  ]);
 }
 
 export default rootReducer;

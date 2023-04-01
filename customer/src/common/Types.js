@@ -24,3 +24,17 @@ export const itemType = [
 ];
 
 export const genderType = ["UNISEX", "MEN", "WOMEN"];
+
+export const orderStatusMap = [
+  { name: '주문 요청', value: 'REQUESTED'},
+  { name: '결제 완료', value: 'PAY_SUCCESS'},
+  { name: '주문 접수', value: 'RECEIVED'},
+  { name: '주문 취소', value: 'CANCELED'},
+  { name: '배송 진행', value: 'DELIVERING'},
+  { name: '배송 완료', value: 'DELIVERED'},
+];
+
+export const getNameByValue = (value) => {
+  const result = orderStatusMap.find((element) => element.value === value);
+  return result ? result.name : null;
+}
