@@ -8,6 +8,7 @@ import com.myshop.api.domain.entity.Customer;
 import com.myshop.api.domain.entity.Orders;
 import com.myshop.api.domain.entity.Provider;
 import com.myshop.api.enumeration.OrderStatus;
+import com.myshop.api.repository.CartRepository;
 import com.myshop.api.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageImpl;
@@ -19,12 +20,14 @@ import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
+    private final CartRepository cartRepository;
 
     private final KakaoPayService kakaoPayService;
 
@@ -67,7 +70,13 @@ public class OrderServiceImpl implements OrderService {
             readyResponse = kakaoPayService.ready(customer, orderId, orderRequest);
         }
 
+        List<Long> itemIdList = orderRequest.getOrderItemList()
+                .stream()
+                .map(OrderRequest.OrderItem::getItemId)
+                .collect(Collectors.toList());
+
         orderRepository.save(readyResponse.getOrder());
+        cartRepository.deleteByCustomerAndItemIdIn(customer, itemIdList);
         readyResponse.setOrder(null);
 
         return readyResponse;

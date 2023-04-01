@@ -45,7 +45,9 @@ public class CustomerServiceImpl implements CustomerService{
         Customer dbCustomer = customerRepository.findByUserId(updateParam.getUserId()).orElseThrow(UserNotFoundException::new);
 
         if(PasswordEncryptor.isMatchBcrypt(updateParam.getPassword(), dbCustomer.getPassword())) {
-            dbCustomer.setPassword(updateParam.getPassword());
+            String encryptedPassword = PasswordEncryptor.bcrypt(updateParam.getModifyPassword());
+
+            dbCustomer.setPassword(encryptedPassword);
             dbCustomer.setPhone(updateParam.getPhone());
 
             customerRepository.save(dbCustomer);

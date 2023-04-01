@@ -27,6 +27,11 @@ public class CartServiceImpl implements CartService {
         return cartRepository.getCartItemList(customer);
     }
 
+    @Override
+    public List<CartData> getSelectCartItemList(Customer customer, List<Long> itemIdList) {
+        return cartRepository.getSelectCartItemList(customer, itemIdList);
+    }
+
     @Transactional
     @Override
     public void insertCartItem(Customer customer, CartRequest cartRequest) {
@@ -64,12 +69,7 @@ public class CartServiceImpl implements CartService {
 
     @Transactional
     @Override
-    public void deleteCartItem(Customer customer, Long itemId) {
-        CartId cartId = CartId.builder()
-                .item(itemId)
-                .customer(customer.getId())
-                .build();
-
-        cartRepository.deleteById(cartId);
+    public void deleteCartItem(Customer customer, List<Long> itemIdList) {
+        cartRepository.deleteCartItems(customer, itemIdList);
     }
 }

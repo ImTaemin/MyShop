@@ -58,7 +58,7 @@ public class ProviderServiceImpl implements ProviderService{
 
             dbProvider.setPassword(encryptedPassword);
             dbProvider.setPhone(updateParam.getPhone());
-
+            
             providerRepository.save(dbProvider);
             return true;
         }

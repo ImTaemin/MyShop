@@ -37,13 +37,6 @@ public class ItemController {
         return BaseResponse.ok(resItem);
     }
 
-    @ApiOperation(value = "id에 해당하는 상품 목록 간단 조회(페이징 x)")
-    @GetMapping(value = "/simple", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<BaseResponse> getItems(@RequestParam("id") List<Long> itemIdList) {
-        List<ItemData.ItemSimple> resItem = itemService.getItems(itemIdList);
-
-        return BaseResponse.ok(resItem);
-    }
 
     @ApiOperation(value = "판매자 상품 목록 조회")
     @GetMapping(value = {"/", ""}, produces = MediaType.APPLICATION_JSON_VALUE)

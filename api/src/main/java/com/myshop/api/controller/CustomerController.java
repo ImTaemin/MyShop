@@ -1,6 +1,7 @@
 package com.myshop.api.controller;
 
 import com.myshop.api.annotation.CurrentCustomer;
+import com.myshop.api.annotation.CurrentProvider;
 import com.myshop.api.domain.dto.request.CustomerRequest;
 import com.myshop.api.domain.dto.request.UserIdAndPassword;
 import com.myshop.api.domain.dto.request.UserUpdateRequest;
@@ -31,7 +32,7 @@ public class CustomerController {
     private final SignService signService;
 
     @ApiOperation(value = "구매자 정보 확인")
-    @GetMapping("/")
+    @GetMapping({"/", ""})
     public ResponseEntity<CustomerData.Customer> info(@CurrentCustomer Customer customer) {
         CustomerData.Customer customerData = customerService.getInfo(customer);
 
@@ -70,16 +71,17 @@ public class CustomerController {
                 : BaseResponse.fail("사용 불가");
     }
 
-    @ApiOperation("구매자 비밀번호 수정")
-    @PutMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<BaseResponse> modify(@CurrentCustomer @Valid @RequestBody UserUpdateRequest updateParam) {
+    @ApiOperation("구매자 정보(pw, hp) 수정")
+    @PutMapping(value = {"/", ""}, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<BaseResponse> modify(@CurrentProvider @Valid @RequestBody UserUpdateRequest updateParam) {
         return customerService.modify(updateParam)
                 ? BaseResponse.ok()
                 : BaseResponse.fail();
     }
 
+
     @ApiOperation(value = "구매자 회원 탈퇴")
-    @DeleteMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = {"/", ""}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<BaseResponse> withdrawal(@CurrentCustomer @RequestBody UserIdAndPassword idAndPassword){
         return customerService.withdrawal(idAndPassword.getUserId(), idAndPassword.getPassword())
                 ? BaseResponse.ok()
