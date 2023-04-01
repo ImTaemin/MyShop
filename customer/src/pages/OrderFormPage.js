@@ -3,7 +3,7 @@ import React, {useCallback, useEffect} from "react";
 import Delivery from "../components/order/orderForm/Delivery";
 import OrderItems from "../components/order/orderForm/OrderItems";
 import {useDispatch, useSelector} from "react-redux";
-import {loadItem, unloadOrderForm} from "../modules/orderForm";
+import {loadItem, loadItems, unloadOrderForm} from "../modules/orderForm";
 import {useLocation} from "react-router";
 import client from "../lib/api/client";
 import DiscountInfo from "../components/order/orderForm/DiscountInfo";
@@ -13,7 +13,7 @@ const OrderFormPage = () => {
 
   const dispatch = useDispatch();
   const location = useLocation();
-  const {itemId, quantity} = location.state?.itemInfo;
+  const {itemId, quantity, itemIds} = location.state?.itemInfo;
 
   const {items, name, phone, roadAddress, postalCode, detailAddress, payMethod} = useSelector( ({orderForm}) => ({
     items: orderForm.items,
@@ -67,11 +67,16 @@ const OrderFormPage = () => {
 
   }, [items, name, phone, roadAddress, postalCode, detailAddress, payMethod]);
 
-
   useEffect(() => {
     client.defaults.headers.common['X-AUTH-TOKEN'] = localStorage.getItem("accessToken");
 
-    dispatch(loadItem({itemId, quantity}));
+    if(itemId) {
+      // 바로 구매
+      dispatch(loadItem({itemId, quantity}));
+    } else {
+      // 장바구니 구매
+      dispatch(loadItems(itemIds));
+    }
 
     return () => {
       dispatch(unloadOrderForm());

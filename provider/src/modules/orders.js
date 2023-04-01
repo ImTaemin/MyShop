@@ -63,15 +63,15 @@ const orders = handleActions({
         : state.checkOrders.concat({cnt, orderNo})
     }),
 
-    [CHANGE_ORDERS]: (state, {payload: {checkOrderList}}) => ({
-      ...state,
-      orders: state.orders.filter(order =>
-        !checkOrderList.some(checkOrder =>
-          checkOrder.cnt === order.cnt
-          && checkOrder.orderNo === order.orderNo)
-      ),
-      checkOrders: []
-    }),
+    // [CHANGE_ORDERS]: (state, {payload: {checkOrderList}}) => ({
+    //   ...state,
+    //   orders: state.orders.filter(order =>
+    //     !checkOrderList.some(checkOrder =>
+    //       checkOrder.cnt === order.cnt
+    //       && checkOrder.orderNo === order.orderNo)
+    //   ),
+    //   checkOrders: []
+    // }),
 
     [UNLOAD_ORDERS]: () => initialState,
   },

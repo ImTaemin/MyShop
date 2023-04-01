@@ -1,8 +1,8 @@
-import {getNameByValue} from "../../pages/OrderPage";
 import {useCallback} from "react";
 import {useDispatch} from "react-redux";
 import {checkOrders} from "../../modules/orders";
 import {CustomCheckBox, ImgNameWrap, ItemNameDiv} from "../common/StyledComponents";
+import {getNameByValue} from "../common/Types";
 
 const OrderListItem = ({order, checked}) => {
   const dispatch = useDispatch();

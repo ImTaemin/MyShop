@@ -5,6 +5,9 @@ import client from "../lib/api/client";
 import {loadCartItems, unloadCartItems} from "../modules/cartItems";
 import CartItems from "../components/cart/CartItems";
 
+/** order-form.scss에 테이블 스타일 있음.
+ *
+ */
 const CartPage = () => {
   const dispatch= useDispatch();
 
@@ -36,9 +39,11 @@ const CartPage = () => {
         <Loader />
       )}
       {!loading && cartItems && cartItems.length > 0 && (
-        <div className="cart-item-container">
-          <CartItems />
-        </div>
+        <>
+          <div className="cart-item-container">
+            <CartItems />
+          </div>
+        </>
       )}
     </>
   );

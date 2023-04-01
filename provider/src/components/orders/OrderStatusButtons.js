@@ -15,7 +15,9 @@ const OrderStatusButtons = () => {
   // 체크한 주문 상태 변경
   const onChangeOrders = useCallback(
     (orderStatus) => {
+      // 리로드 안하고 싶으면 리덕스 수정
       dispatch(changeOrders({checkOrderList, orderStatus}));
+      window.location.reload();
     },
     [checkOrderList, dispatch]
   );

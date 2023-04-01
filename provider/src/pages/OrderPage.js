@@ -5,21 +5,7 @@ import {TableHeader, TableNav, TableTitle} from "../components/common/Table";
 import OrderList from "../components/orders/OrderList";
 import OrderStatusButtons from "../components/orders/OrderStatusButtons";
 import {Helmet} from "react-helmet-async";
-
-const status = [
-  { name: '주문 요청', value: 'REQUESTED', variant: 'outline-secondary' },
-  { name: '결제 완료', value: 'PAY_SUCCESS', variant: 'outline-success' },
-  { name: '주문 접수', value: 'RECEIVED', variant: 'outline-primary' },
-  { name: '주문 취소', value: 'CANCELED', variant: 'outline-danger' },
-  { name: '배송 진행', value: 'DELIVERING', variant: 'outline-warning' },
-  { name: '배송 완료', value: 'DELIVERED', variant: 'outline-dark' },
-];
-
-export const getNameByValue = (value) => {
-  const result = status.find((element) => element.value === value);
-  return result ? result.name : null;
-}
-
+import {orderStatusMap} from "../components/common/Types";
 const OrderPage = () => {
 
   const [orderStatus, setOrderStatus] = useState('PAY_SUCCESS');
@@ -34,7 +20,7 @@ const OrderPage = () => {
           <TableNav>
             <TableTitle><BiClipboard style={{marginRight: "0.6em"}} />주문 관리</TableTitle>
             <ButtonGroup style={{display:"flex", alignItems:"center"}}>
-              {status.map((radio, idx) => (
+              {orderStatusMap.map((radio, idx) => (
                 <ToggleButton
                   className="btn-status"
                   style={{width:"4.6em"}}

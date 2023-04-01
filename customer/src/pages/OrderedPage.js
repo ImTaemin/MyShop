@@ -15,6 +15,7 @@ const OrderedPage = () => {
 
     client.post("/customer/order", params.get("orderId"))
       .then(response => {
+        console.log(response);
         if(!response.data.data){
           alert("주문번호에 해당하는 상세 주문이 없습니다.");
           navigate("/");
@@ -77,16 +78,16 @@ const OrderedPage = () => {
                 {orders.orderItemDataList.map((order, index) => (
                   <tr key={index}>
                     <td>
-                      <Link to={"/item/" + order.item.id}>
-                        <div className="order-item-wrap">
-                          <div className="item-image">
-                            <img src={order.item.mainImage} alt=""/>
-                          </div>
-                          <div className="item-article">
-                            [{order.item.brandName}] {order.item.name}_{order.item.code}
-                          </div>
+                      <div className="order-item-wrap">
+                        <div className="item-image">
+                          <Link to={"/item/" + order.item.id}>
+                          <img src={order.item.mainImage} alt=""/>
+                          </Link>
                         </div>
-                      </Link>
+                        <div className="item-article">
+                          [{order.item.brandName}] {order.item.name}_{order.item.code}
+                        </div>
+                      </div>
                     </td>
                     <td>{order.quantity}개</td>
                     <td>{order.payment.toLocaleString()}원</td>

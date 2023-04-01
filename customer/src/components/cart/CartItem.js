@@ -2,6 +2,7 @@ import {Link} from "react-router-dom";
 import React, {useCallback, useEffect, useState} from "react";
 import {AiOutlineMinus, AiOutlinePlus} from "react-icons/ai";
 import {deleteCartItem, updateCartQuantity} from "../../lib/api/cart";
+import {CustomCheckBox} from "../../common/StyledComponents";
 
 const CartItem = ({item, checked, onToggleCheck}) => {
 
@@ -47,6 +48,13 @@ const CartItem = ({item, checked, onToggleCheck}) => {
     updateCartItemQuantity(qty);
   }, [quantity, price]);
 
+  const quantityKeyPress = useCallback((e) => {
+    if (e.key === 'Enter') {
+      updateCartItemQuantity(Number(quantity));
+    }
+  }, [quantity]);
+
+  // 수량 input
   const quantityHandler = useCallback((e) => {
     const value = e.target.value;
 
@@ -55,7 +63,6 @@ const CartItem = ({item, checked, onToggleCheck}) => {
     setQuantity(Number(value));
     setPrice(Number(item.price * value));
 
-    updateCartItemQuantity(Number(value));
   }, [quantity, price]);
 
   const deleteCartItemHandler = useCallback((e) => {
@@ -74,7 +81,7 @@ const CartItem = ({item, checked, onToggleCheck}) => {
       {item && (
         <tr>
           <td>
-            <input
+            <CustomCheckBox
               type="checkbox"
               checked={checked}
               onChange={() => onToggleCheck()}
@@ -96,7 +103,7 @@ const CartItem = ({item, checked, onToggleCheck}) => {
           <td>
             <div className="quantity-control">
               <button className="decrease" onClick={decrease}><AiOutlineMinus /></button>
-              <input className="quantity" onChange={quantityHandler} type="text" value={quantity} />
+              <input className="quantity" onChange={quantityHandler} onKeyPress={quantityKeyPress}  type="text" value={quantity} />
               <button className="increase" onClick={increase}><AiOutlinePlus/></button>
             </div>
           </td>

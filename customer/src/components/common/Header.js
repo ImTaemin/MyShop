@@ -38,7 +38,7 @@ const Header = () => {
           </div>
         </Link>
       )}
-      <Link to="/">
+      <Link to="/mypage">
         <div className="header-wrap">
           마이페이지
         </div>
@@ -53,7 +53,7 @@ const Header = () => {
           장바구니
         </div>
       </Link>
-      <Link to="/">
+      <Link to="/orders">
         <div className="header-wrap">
             주문조회
         </div>
