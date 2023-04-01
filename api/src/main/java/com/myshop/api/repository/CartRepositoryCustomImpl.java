@@ -2,10 +2,7 @@ package com.myshop.api.repository;
 
 import com.myshop.api.domain.dto.request.CartRequest;
 import com.myshop.api.domain.dto.response.data.CartData;
-import com.myshop.api.domain.entity.Cart;
-import com.myshop.api.domain.entity.Customer;
-import com.myshop.api.domain.entity.QCart;
-import com.myshop.api.domain.entity.QItem;
+import com.myshop.api.domain.entity.*;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +16,7 @@ public class CartRepositoryCustomImpl extends QuerydslRepositorySupport implemen
 
     private final JPAQueryFactory jpaQueryFactory;
 
+    QCustomer qCustomer = QCustomer.customer;
     QCart qCart = QCart.cart;
     QItem qItem = QItem.item;
 
@@ -45,6 +43,23 @@ public class CartRepositoryCustomImpl extends QuerydslRepositorySupport implemen
     }
 
     @Override
+    public List<CartData> getSelectCartItemList(Customer customer, List<Long> itemIdList) {
+        return jpaQueryFactory
+                .select(
+                        Projections.bean(CartData.class,
+                                qItem.id,
+                                qItem.name,
+                                qItem.brandName,
+                                qItem.price,
+                                qItem.mainImage,
+                                qCart.quantity))
+                .from(qCart)
+                .where(qCart.customer().id.eq(customer.getId())
+                        .and(qCart.item().id.in(itemIdList)))
+                .fetch();
+    }
+
+    @Override
     public void updateCartItemQuantity(Customer customer, CartRequest cartRequest) {
         jpaQueryFactory.update(qCart)
                 .set(qCart.quantity, cartRequest.getQuantity())
@@ -53,4 +68,12 @@ public class CartRepositoryCustomImpl extends QuerydslRepositorySupport implemen
                 .execute();
     }
 
+    @Override
+    public void deleteCartItems(Customer customer, List<Long> itemIdList) {
+        jpaQueryFactory.delete(qCart)
+                .where(qCart.item().id.in(itemIdList)
+                        .and(qCart.customer().id.eq(customer.getId())))
+                .execute()
+                ;
+    }
 }

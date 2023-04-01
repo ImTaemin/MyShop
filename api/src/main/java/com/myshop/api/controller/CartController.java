@@ -5,6 +5,7 @@ import com.myshop.api.domain.dto.request.CartRequest;
 import com.myshop.api.domain.dto.request.CustomPageRequest;
 import com.myshop.api.domain.dto.response.BaseResponse;
 import com.myshop.api.domain.dto.response.data.CartData;
+import com.myshop.api.domain.dto.response.data.ItemData;
 import com.myshop.api.domain.entity.Customer;
 import com.myshop.api.service.CartService;
 import io.swagger.annotations.Api;
@@ -24,7 +25,7 @@ import java.util.List;
 public class CartController {
 
     private final CartService cartService;
-    
+
     @ApiOperation(value = "구매자 장바구니 목록 조회")
     @GetMapping(value = {"/", ""}, produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<BaseResponse> getCartItemList(@CurrentCustomer Customer customer) {
@@ -41,6 +42,14 @@ public class CartController {
         return BaseResponse.ok();
     }
 
+    @ApiOperation(value = "구매자 선택한 장바구니 목록 조회")
+    @GetMapping(value = "/select/{itemIdList}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<BaseResponse> getSelectCartItemList(@CurrentCustomer Customer customer, @PathVariable List<Long> itemIdList) {
+        List<CartData> cartItemList = cartService.getSelectCartItemList(customer, itemIdList);
+
+        return BaseResponse.ok(cartItemList);
+    }
+
     @ApiOperation(value = "구매자 장바구니 상품 수량 수정")
     @PutMapping(value = {"/", ""}, produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<BaseResponse> updateCartItemQuantity(@CurrentCustomer Customer customer, @RequestBody CartRequest cartRequest) {
@@ -51,8 +60,8 @@ public class CartController {
 
     @ApiOperation(value = "구매자 장바구니 상품 삭제")
     @DeleteMapping(value = {"/", ""}, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<BaseResponse> deleteCartItem(@CurrentCustomer Customer customer, @RequestBody Long itemId) {
-        cartService.deleteCartItem(customer, itemId);
+    public ResponseEntity<BaseResponse> deleteCartItem(@CurrentCustomer Customer customer, @RequestBody List<Long> itemIdList) {
+        cartService.deleteCartItem(customer, itemIdList);
 
         return BaseResponse.ok();
     }

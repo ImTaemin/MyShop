@@ -35,31 +35,39 @@ public class OrderRepositoryCustomImpl extends QuerydslRepositorySupport impleme
     public OrderData selectOrdersByOrderId(Customer customer, String orderId) {
         // 주문 번호에 해당하는 주문 상세 조회
         OrderData orderData = jpaQueryFactory
-                .select(Projections.constructor(OrderData.class,
+                .select(Projections.bean(OrderData.class,
                         qOrders.id.as("orderNo"),
                         qOrders.totalPayment,
                         qOrders.orderDate,
                         qOrders.cancelDate,
                         qOrders.address().roadName,
                         qOrders.address().detail,
-                        qOrders.address().postalCode,
-                        Projections.list(
-                            Projections.constructor(OrderItemData.class,
-                                qOrderItem.cnt,
-                                qOrderItem.orders().id.as("orderNo"),
-                                qOrderItem.quantity,
-                                qOrderItem.payment,
-                                qOrderItem.orderStatus,
-                                qOrderItem.orders().orderDate,
-                                Projections.constructor(ItemData.ItemSimple.class,
+                        qOrders.address().postalCode
+                    )
+                )
+                .from(qOrders)
+                .where(qOrders.id.eq(orderId)
+                        .and(qOrders.customer().id.eq(customer.getId())))
+                .fetchOne();
+
+        List<OrderItemData> orderItemDataList = jpaQueryFactory
+                .select(
+                    Projections.constructor(OrderItemData.class,
+                            qOrderItem.cnt,
+                            qOrderItem.orders().id.as("orderNo"),
+                            qOrderItem.quantity,
+                            qOrderItem.payment,
+                            qOrderItem.orderStatus,
+                            qOrderItem.orders().orderDate,
+                            Projections.constructor(ItemData.ItemSimple.class,
                                     qItem.id,
                                     qItem.code,
                                     qItem.name,
                                     qItem.brandName,
                                     qItem.price,
                                     qItem.mainImage
-                                ),
-                                Projections.constructor(CouponData.class,
+                            ),
+                            Projections.constructor(CouponData.class,
                                     qCoupon.id,
                                     qCoupon.code,
                                     qCoupon.content,
@@ -67,18 +75,16 @@ public class OrderRepositoryCustomImpl extends QuerydslRepositorySupport impleme
                                     Expressions.numberTemplate(
                                             Integer.class, "{0}",
                                             qCoupon.discount.multiply(100).intValue())
-                                )
                             )
-                        )
                     )
                 )
-                .from(qOrders)
-                .leftJoin(qOrders.orderItemList, qOrderItem)
+                .from(qOrderItem)
                 .leftJoin(qOrderItem.item(), qItem)
                 .leftJoin(qOrderItem.coupon(), qCoupon)
-                .where(qOrders.id.eq(orderId)
-                        .and(qOrders.customer().id.eq(customer.getId())))
-                .fetchOne();
+                .where(qOrderItem.orders().id.eq(orderId))
+                .fetch();
+
+        orderData.setOrderItemDataList(orderItemDataList);
 
         return orderData;
     }

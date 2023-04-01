@@ -21,6 +21,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.core.Is.is;
@@ -148,6 +149,6 @@ public class CartControllerTest {
                 .andExpect(status().isOk());
 
         //then
-        verify(cartService).deleteCartItem(any(Customer.class), anyLong());
+        verify(cartService).deleteCartItem(any(Customer.class), Collections.singletonList(anyLong()));
     }
 }
