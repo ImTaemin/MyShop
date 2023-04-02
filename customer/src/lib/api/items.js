@@ -1,8 +1,7 @@
 import client from "./client";
-import qs from 'qs';
 
-export const loadCategoryItems = ({page, type}) => {
-  const queryString = qs.stringify({page});
+export const loadCategoryItems = ({type, page}) => {
+  const pageRequest = {page};
 
-  return client.get(`/item/category/${type}?${queryString}`);
+  return client.get(`/item/category/${type}`, {params: pageRequest});
 }

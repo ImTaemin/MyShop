@@ -10,8 +10,8 @@
 
 .item-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(20%, auto));
-  grid-auto-rows: minmax(370px, auto);
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(6, 1fr);
 
   a, a:hover {
     text-decoration: none;

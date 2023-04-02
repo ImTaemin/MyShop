@@ -3,7 +3,7 @@ import qs from 'qs';
 
 export const listOrders = ({page, orderStatus}) => {
   const queryString = qs.stringify({
-    page, status: orderStatus
+    page, orderStatus
   });
 
   return client.get(`/provider/order?${queryString}`);

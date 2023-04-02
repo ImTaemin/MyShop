@@ -1,7 +1,7 @@
 import {Table} from "react-bootstrap";
 import ItemListItem from "./ItemListItem";
 import {useDispatch, useSelector} from "react-redux";
-import {useEffect} from "react";
+import {useCallback, useEffect, useRef} from "react";
 import {listItem, unLoadItems} from "../../modules/items";
 import Loader from "../loader/Loader";
 import client from "../../lib/api/client";
@@ -10,22 +10,49 @@ const ItemList = (props) => {
 
   const dispatch = useDispatch();
 
-  const {items, error, checkItemIds, page, loading} = useSelector(({items, loading}) => ({
+  const {items, error, checkItemIds, page, isLast, loading} = useSelector(({items, loading}) => ({
     items: items.items,
     error: items.error,
     checkItemIds: items.checkItemIds,
     page: items.page,
+    isLast: items.isLast,
     loading: loading['items/LIST_ITEMS'],
   }));
 
+  const observerRef = useRef(null);
+  const observerCallback = useCallback((entries) => {
+    const target = entries[0];
+    if (target.isIntersecting && !loading && !isLast) {
+      dispatch(listItem(page));
+    }
+  }, [page, isLast, dispatch]);
+
   useEffect(() => {
     client.defaults.headers.common['X-AUTH-TOKEN'] = localStorage.getItem("accessToken");
-    dispatch(listItem(page));
 
-    return () => {
-      dispatch(unLoadItems());
+    if (observerRef.current) {
+      const observer = new IntersectionObserver(observerCallback);
+      observer.observe(observerRef.current);
+
+      return () => {
+        observer.disconnect();
+      }
     }
-  }, [dispatch, page, props.isRegModalChanged, props.isDelModalChanged]);
+  }, [observerRef.current, observerCallback, page, isLast, props.isRegModalChanged, props.isDelModalChanged]);
+
+  useEffect(() => {
+    dispatch(unLoadItems());
+  }, []);
+
+  // useEffect(() => {
+  //   client.defaults.headers.common['X-AUTH-TOKEN'] = localStorage.getItem("accessToken");
+  //   dispatch(listItem(page));
+  //
+  //   return () => {
+  //     dispatch(unLoadItems());
+  //
+  //   }
+  // }, [dispatch, page, props.isRegModalChanged, props.isDelModalChanged]);
 
   return (
     <>
@@ -58,6 +85,9 @@ const ItemList = (props) => {
         }
         </tbody>
       </Table>
+      {!error && !loading && !isLast && (
+        <div style={{width: "100%", height: "30px"}} ref={observerRef} />
+      )}
       {loading && (
         <Loader />
       )}

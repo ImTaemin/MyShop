@@ -1,7 +1,7 @@
 import {Table} from "react-bootstrap";
 import OrderListItem from "./OrderListItem";
 import {useDispatch, useSelector} from "react-redux";
-import {useEffect} from "react";
+import {useCallback, useEffect, useRef} from "react";
 import client from "../../lib/api/client";
 import {listOrders, unLoadOrders} from "../../modules/orders";
 import Loader from "../loader/Loader";
@@ -9,24 +9,39 @@ import Loader from "../loader/Loader";
 const OrderList = ({orderStatus}) => {
   const dispatch = useDispatch();
 
-  const {orders, error, page, checkOrderList, loading} = useSelector(({orders, loading}) => ({
+  const {orders, error, page, isLast, checkOrderList, loading} = useSelector(({orders, loading}) => ({
     orders: orders.orders,
     error: orders.error,
     page: orders.page,
+    isLast: orders.isLast,
     checkOrderList: orders.checkOrders,
     loading: loading['orders/LIST_ORDERS'],
   }));
 
-  // 주문내역 불러오기
+  const observerRef = useRef(null);
+  const observerCallback = useCallback((entries) => {
+    const target = entries[0];
+    if (target.isIntersecting && !loading && !isLast) {
+      dispatch(listOrders({page, orderStatus}));
+    }
+  }, [page, isLast, orderStatus, dispatch]);
+
   useEffect(() => {
     client.defaults.headers.common['X-AUTH-TOKEN'] = localStorage.getItem("accessToken");
 
-    dispatch(listOrders({page, orderStatus}));
+    if (observerRef.current) {
+      const observer = new IntersectionObserver(observerCallback);
+      observer.observe(observerRef.current);
 
-    return () => {
-      dispatch(unLoadOrders())
+      return () => {
+        observer.disconnect();
+      }
     }
-  }, [dispatch, page, orderStatus]);
+  }, [observerRef.current, observerCallback, page, isLast, orderStatus]);
+
+  useEffect(() => {
+    dispatch(unLoadOrders());
+  }, [orderStatus]);
 
   return (
     <>
@@ -46,18 +61,23 @@ const OrderList = ({orderStatus}) => {
         <tbody>
         {
           !loading && orders && (
-            orders.map((order, index) => (
-              <OrderListItem
-                order={order}
-                checked={checkOrderList.some(checkOrder => {
-                    return checkOrder.cnt === order.cnt && checkOrder.orderNo === order.orderNo
-                  }
-                )}
-                key={index} />
-            ))
+            <>
+              {orders.map((order, index) => (
+                <OrderListItem
+                  order={order}
+                  checked={checkOrderList.some(checkOrder => {
+                      return checkOrder.cnt === order.cnt && checkOrder.orderNo === order.orderNo
+                    }
+                  )}
+                  key={index}/>
+              ))}
+            </>
           )}
         </tbody>
       </Table>
+      {!error && !loading && !isLast && (
+        <div style={{width: "100%", height: "30px"}} ref={observerRef} />
+      )}
       {loading && (
         <Loader />
       )}

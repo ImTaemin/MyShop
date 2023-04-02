@@ -33,9 +33,10 @@ export function* ordersSaga() {
 
 // init
 const initialState = {
-  orders: null,
+  orders: [],
   error: null,
   page: 0,
+  isLast: false,
   checkOrders: []
 };
 
@@ -43,8 +44,9 @@ const initialState = {
 const orders = handleActions({
     [LIST_ORDERS_SUCCESS]: (state, {payload: orders}) => ({
       ...state,
-      orders: orders.data.content,
-      page: orders.data.pageable.pageNumber
+      orders: state.orders.concat(orders.data.content),
+      page: orders.data.pageable.pageNumber + 1,
+      isLast: orders.data.last,
     }),
 
     [LIST_ORDERS_FAILURE]: (state, {payload: error}) => ({

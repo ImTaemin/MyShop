@@ -1,9 +1,9 @@
 import client from "./client";
 
-export const listItems = ({page}) => {
-  return client.get(`/item`, {
-    page
-  });
+export const listItems = (page) => {
+  const pageRequest = {page};
+
+  return client.get(`/item`, {params: pageRequest});
 }
 
 export const deleteItems = (checkItemIds) => {
