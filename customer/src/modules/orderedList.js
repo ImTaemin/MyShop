@@ -24,14 +24,15 @@ const initialState = {
   ordered: [],
   error: null,
   page: 0,
+  isLast: false,
 }
 
 const orderedList = handleActions({
-    [LOAD_ORDERED_LIST_SUCCESS]: (state, {payload: orderedList}) => (
-      console.log(orderedList),{
+    [LOAD_ORDERED_LIST_SUCCESS]: (state, {payload: orderedList}) => ({
       ...state,
-      ordered: orderedList.data.content,
-      page: orderedList.data.pageable.pageNumber
+      ordered: state.ordered.concat(orderedList.data.content),
+      page: orderedList.data.pageable.pageNumber + 1,
+      isLast: orderedList.data.last,
     }),
 
     [LOAD_ORDERED_LIST_FAILURE]: (state, {payload: error}) => ({

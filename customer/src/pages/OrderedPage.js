@@ -15,7 +15,6 @@ const OrderedPage = () => {
 
     client.post("/customer/order", params.get("orderId"))
       .then(response => {
-        console.log(response);
         if(!response.data.data){
           alert("주문번호에 해당하는 상세 주문이 없습니다.");
           navigate("/");

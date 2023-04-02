@@ -21,17 +21,19 @@ export function* categoryItemSaga() {
 
 // init
 const initialState = {
-  categoryItems: null,
+  categoryItems: [],
   error: null,
   page: 0,
+  isLast: false,
 }
 
 // reducer
 const categoryItems = handleActions({
     [LOAD_CATEGORY_ITEM_SUCCESSS]: (state, {payload: categoryItems}) => ({
       ...state,
-      categoryItems: categoryItems.data.content,
-      page: categoryItems.data.pageable.pageNumber,
+      categoryItems: state.categoryItems.concat(categoryItems.data.content),
+      page: categoryItems.data.pageable.pageNumber + 1,
+      isLast: categoryItems.data.last,
     }),
 
     [LOAD_CATEGORY_ITEM_FAILURES]: (state, {payload: error}) => ({

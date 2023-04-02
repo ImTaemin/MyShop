@@ -30,7 +30,6 @@ const ItemInfoPage = () => {
 
     client.get(`/item/${itemId}`)
       .then(response => {
-        console.log(response);
         setItem(response.data.data);
         setPrice(response.data.data.price);
         setFavorite(response.data.data.isFavorite);
@@ -45,6 +44,7 @@ const ItemInfoPage = () => {
     // 로그인 하지 않은 상태
     const token = localStorage.getItem("accessToken");
     if(!token){
+      alert("로그인을 해주세요");
       navigate("/auth");
       return;
     }
@@ -92,6 +92,13 @@ const ItemInfoPage = () => {
   }, [quantity, price]);
 
   const favoriteBtnHandler = useCallback((e) => {
+
+    if(localStorage.getItem("accessToken") === null) {
+      alert("로그인을 해주세요");
+      navigate("/auth");
+      return;
+    }
+    
     addFavorite(itemId)
       .then(response => {
         setFavorite(!favorite);
@@ -114,7 +121,8 @@ const ItemInfoPage = () => {
         alert(`${response.data.msg}`);
       })
       .catch(error => {
-        alert(`${error}`);
+        alert("로그인을 해주세요");
+        navigate("/auth");
       });
   }, [quantity]);
 

@@ -23,17 +23,20 @@ export function* itemsSaga() {
 
 // init
 const initialState = {
-  items: null,
+  items: [],
   error: null,
   page: 0,
+  isLast: false,
   checkItemIds: []
 };
 
 const items = handleActions({
-    [LIST_ITEM_SUCCESS]: (state, {payload: items}) => ({
+    [LIST_ITEM_SUCCESS]: (state, {payload: items}) => (
+      console.log(items),{
       ...state,
-      items: items.data.content,
-      page: items.data.pageable.pageNumber,
+      items: state.items.concat(items.data.content),
+      page: items.data.pageable.pageNumber + 1,
+      isLast: items.data.last,
     }),
 
     [LIST_ITEM_FAILURE]: (state, {payload: error}) => ({
