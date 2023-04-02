@@ -1,5 +1,6 @@
 package com.myshop.api.service;
 
+import com.myshop.api.domain.dto.request.CustomPageRequest;
 import com.myshop.api.domain.dto.request.ItemRequest;
 import com.myshop.api.domain.dto.response.data.ItemData;
 import com.myshop.api.domain.entity.*;
@@ -11,7 +12,9 @@ import com.myshop.api.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,28 +52,28 @@ public class ItemServiceImpl implements ItemService {
 
     @Transactional
     @Override
-    public PageImpl<ItemData.ItemSimple> getItemsByBrandName(String brandName, Pageable pageable) {
-        List<ItemData.ItemSimple> simpleItemList = itemRepository.selectByBrandName(brandName, pageable);
+    public Page<ItemData.ItemSimple> getItemsByBrandName(String brandName, Pageable pageable) {
+        Page<ItemData.ItemSimple> simpleItemList = itemRepository.selectByBrandName(brandName, pageable);
 
         LOGGER.info("브랜드 상품 페이징 조회 완료");
 
-        return new PageImpl<>(simpleItemList, pageable, simpleItemList.size());
+        return simpleItemList;
     }
 
-    public PageImpl<ItemData.Item> getItemsByProvider(Provider provider, Pageable pageable) {
-        List<ItemData.Item> providerItemList = itemRepository.selectByProvider(provider, pageable);
+    public Page<ItemData.Item> getItemsByProvider(Provider provider, Pageable pageable) {
+        Page<ItemData.Item> providerItemList = itemRepository.selectByProvider(provider, pageable);
 
         LOGGER.info("판매자 상품 페이징 조회 완료");
 
-        return new PageImpl<>(providerItemList, pageable, providerItemList.size());
+        return providerItemList;
     }
 
     @Transactional
     @Override
-    public PageImpl<ItemData.ItemSimple> getItemsByCategory(ItemType itemType, Pageable pageable) {
-        List<ItemData.ItemSimple> categoryItemList = itemRepository.selectByItemType(itemType, pageable);
+    public Page<ItemData.ItemSimple> getItemsByCategory(ItemType itemType, Pageable pageable) {
+        Page<ItemData.ItemSimple> categoryItemList = itemRepository.selectByItemType(itemType, pageable);
 
-        return new PageImpl<>(categoryItemList, pageable, categoryItemList.size());
+        return categoryItemList;
     }
 
     @Transactional

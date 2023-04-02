@@ -6,6 +6,8 @@ import com.myshop.api.domain.entity.*;
 import com.myshop.api.enumeration.ItemType;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Component;
@@ -32,9 +34,9 @@ public class ItemRepositoryCustomImpl extends QuerydslRepositorySupport implemen
     }
 
     @Override
-    public List<ItemData.ItemSimple> selectByBrandName(String brandName, Pageable pageable) {
+    public Page<ItemData.ItemSimple> selectByBrandName(String brandName, Pageable pageable) {
 
-        return jpaQueryFactory.select(
+        List<ItemData.ItemSimple> brandItemList = jpaQueryFactory.select(
                 Projections.bean(ItemData.ItemSimple.class,
                                 qItem.id,
                                 qItem.code,
@@ -48,11 +50,18 @@ public class ItemRepositoryCustomImpl extends QuerydslRepositorySupport implemen
                 .limit(pageable.getPageSize())
                 .orderBy(qItem.createDate.desc())
                 .fetch();
+
+        Long cnt = jpaQueryFactory.select(qItem.count())
+                .from(qItem)
+                .where(qItem.provider().brandName.eq(brandName))
+                .fetchOne();
+
+        return new PageImpl<>(brandItemList, pageable, cnt);
     }
 
     @Override
-    public List<ItemData.ItemSimple> selectByItemType(ItemType itemType, Pageable pageable) {
-        return jpaQueryFactory.select(
+    public Page<ItemData.ItemSimple> selectByItemType(ItemType itemType, Pageable pageable) {
+        List<ItemData.ItemSimple> categoryItemList = jpaQueryFactory.select(
                         Projections.bean(ItemData.ItemSimple.class,
                                 qItem.id,
                                 qItem.code,
@@ -66,12 +75,19 @@ public class ItemRepositoryCustomImpl extends QuerydslRepositorySupport implemen
                 .limit(pageable.getPageSize())
                 .orderBy(qItem.createDate.desc())
                 .fetch();
+
+        Long cnt = jpaQueryFactory.select(qItem.count())
+                .from(qItem)
+                .where(qItem.itemType.eq(itemType))
+                .fetchOne();
+
+        return new PageImpl<>(categoryItemList, pageable, cnt);
     }
 
     @Override
-    public List<ItemData.Item> selectByProvider(Provider provider, Pageable pageable) {
+    public Page<ItemData.Item> selectByProvider(Provider provider, Pageable pageable) {
 
-        return jpaQueryFactory.select(
+        List<ItemData.Item> providerItemList = jpaQueryFactory.select(
                 Projections.bean(ItemData.Item.class,
                         qItem.id,
                         qItem.code,
@@ -89,6 +105,13 @@ public class ItemRepositoryCustomImpl extends QuerydslRepositorySupport implemen
                 .limit(pageable.getPageSize())
                 .orderBy(qItem.createDate.desc())
                 .fetch();
+
+        Long cnt = jpaQueryFactory.select(qItem.count())
+                .from(qItem)
+                .where(qProvider.id.eq(provider.getId()))
+                .fetchOne();
+
+        return new PageImpl<>(providerItemList, pageable, cnt);
     }
 
     @Override

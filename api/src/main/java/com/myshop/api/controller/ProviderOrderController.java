@@ -11,6 +11,7 @@ import com.myshop.api.service.OrderService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -26,10 +27,10 @@ public class ProviderOrderController {
 
     @ApiOperation(value = "상태별 주문내역 조회")
     @GetMapping(value = {"/", ""}, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PageImpl<OrderItemData>> getStatusOrders(@CurrentProvider Provider provider, CustomPageRequest pageRequest, @RequestParam(required = false, name = "status", defaultValue = "PAY_SUCCESS") OrderStatus orderStatus) {
-        PageImpl<OrderItemData> pagingOrders = orderService.getOrdersByProvider(provider, pageRequest.of(), orderStatus);
+    public Page<OrderItemData> getStatusOrders(@CurrentProvider Provider provider, CustomPageRequest pageRequest, OrderStatus orderStatus) {
+        Page<OrderItemData> pagingOrders = orderService.getOrdersByProvider(provider, pageRequest.of(), orderStatus);
 
-        return ResponseEntity.ok(pagingOrders);
+        return pagingOrders;
     }
     
     @ApiOperation(value = "선택한 주문 상태 변경")
