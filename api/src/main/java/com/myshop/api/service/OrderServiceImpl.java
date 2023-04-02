@@ -11,6 +11,7 @@ import com.myshop.api.enumeration.OrderStatus;
 import com.myshop.api.repository.CartRepository;
 import com.myshop.api.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -36,21 +37,20 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.selectOrdersByOrderId(customer, orderId);
     }
 
-
     @Transactional
     @Override
-    public PageImpl<OrderItemData> getOrdersByCustomer(Customer customer, Pageable pageable) {
-        List<OrderItemData> orderItemList = orderRepository.selectByCustomer(customer, pageable);
+    public Page<OrderItemData> getOrdersByCustomer(Customer customer, Pageable pageable) {
+        Page<OrderItemData> orderItemList = orderRepository.selectByCustomer(customer, pageable);
 
-        return new PageImpl<>(orderItemList, pageable, orderItemList.size());
+        return orderItemList;
     }
 
     @Transactional
     @Override
-    public PageImpl<OrderItemData> getOrdersByProvider(Provider provider, Pageable pageable , OrderStatus orderStatus) {
-        List<OrderItemData> orderItemList = orderRepository.selectByProvider(provider, pageable, orderStatus);
+    public Page<OrderItemData> getOrdersByProvider(Provider provider, Pageable pageable , OrderStatus orderStatus) {
+        Page<OrderItemData> orderItemList = orderRepository.selectByProvider(provider, pageable, orderStatus);
 
-        return new PageImpl<>(orderItemList, pageable, orderItemList.size());
+        return orderItemList;
     }
 
     @Transactional

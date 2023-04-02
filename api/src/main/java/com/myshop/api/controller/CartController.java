@@ -2,16 +2,13 @@ package com.myshop.api.controller;
 
 import com.myshop.api.annotation.CurrentCustomer;
 import com.myshop.api.domain.dto.request.CartRequest;
-import com.myshop.api.domain.dto.request.CustomPageRequest;
 import com.myshop.api.domain.dto.response.BaseResponse;
 import com.myshop.api.domain.dto.response.data.CartData;
-import com.myshop.api.domain.dto.response.data.ItemData;
 import com.myshop.api.domain.entity.Customer;
 import com.myshop.api.service.CartService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

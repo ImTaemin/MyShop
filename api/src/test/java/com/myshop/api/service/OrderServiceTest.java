@@ -17,6 +17,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
@@ -95,13 +97,13 @@ public class OrderServiceTest {
     public void getOrderByCustomerTest() throws Exception {
         //given
         given(orderRepository.selectByCustomer(any(Customer.class), any(Pageable.class)))
-                .willReturn(orderItemList);
+                .willReturn(new PageImpl<>(orderItemList, new CustomPageRequest().of(), 100));
 
         //when
-        List<OrderItemData> orderItemList = orderRepository.selectByCustomer(customer, new CustomPageRequest().of());
+        Page<OrderItemData> orderItemList = orderRepository.selectByCustomer(customer, new CustomPageRequest().of());
 
         //then
-        Assertions.assertEquals(orderItemList.size(), 2);
+        Assertions.assertEquals(orderItemList.getTotalElements(), 2);
         verify(orderRepository).selectByCustomer(any(Customer.class), any(Pageable.class));
 
     }

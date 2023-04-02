@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
@@ -179,10 +180,11 @@ public class ItemServiceTest {
         for(int i=0; i<100; i++) {
             itemList.add(new ItemData.ItemSimple());
         }
-        given(itemRepository.selectByBrandName(anyString(), any(Pageable.class))).willReturn(itemList);
+        Page<ItemData.ItemSimple> itemSimplePage = new PageImpl<>(itemList, new CustomPageRequest().of(), 100);
+        given(itemRepository.selectByBrandName(anyString(), any(Pageable.class))).willReturn(itemSimplePage);
 
         //when
-        PageImpl<ItemData.ItemSimple> resBrandNameItems = itemService.getItemsByBrandName(item.getBrandName(), new CustomPageRequest().of());
+        Page<ItemData.ItemSimple> resBrandNameItems = itemService.getItemsByBrandName(item.getBrandName(), new CustomPageRequest().of());
 
         //then
         Assertions.assertNotNull(resBrandNameItems);

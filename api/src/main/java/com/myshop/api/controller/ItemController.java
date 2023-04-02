@@ -13,7 +13,7 @@ import com.myshop.api.service.ItemService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,10 +40,8 @@ public class ItemController {
 
     @ApiOperation(value = "판매자 상품 목록 조회")
     @GetMapping(value = {"/", ""}, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PageImpl<ItemData.Item>> getItems(@CurrentProvider Provider provider, CustomPageRequest pageRequest) {
-        PageImpl<ItemData.Item> pagingItems = itemService.getItemsByProvider(provider, pageRequest.of());
-
-        return ResponseEntity.ok(pagingItems);
+    public Page<ItemData.Item> getItems(@CurrentProvider Provider provider, CustomPageRequest pageRequest) {
+        return itemService.getItemsByProvider(provider, pageRequest.of());
     }
 
     @ApiOperation(value = "상품 등록")
@@ -113,19 +111,14 @@ public class ItemController {
 
     @ApiOperation(value = "브랜드명으로 상품 목록 조회")
     @GetMapping(value = "/brand/{brandName}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PageImpl<ItemData.ItemSimple>> getItemsByBrandName(@PathVariable String brandName, CustomPageRequest pageRequest) {
-        PageImpl<ItemData.ItemSimple> pagingItems = itemService.getItemsByBrandName(brandName, pageRequest.of());
-
-        return ResponseEntity.ok(pagingItems);
+    public Page<ItemData.ItemSimple> getItemsByBrandName(@PathVariable String brandName, CustomPageRequest pageRequest) {
+        return itemService.getItemsByBrandName(brandName, pageRequest.of());
     }
 
     @ApiOperation(value = "상품 타입으로 상품 목록 조회")
     @GetMapping(value = "/category/{category}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PageImpl<ItemData.ItemSimple>> getItemsByCategory(@PathVariable String category, CustomPageRequest pageRequest) {
-        PageImpl<ItemData.ItemSimple> pagingItems = itemService.getItemsByCategory(ItemType.valueOf(category), pageRequest.of());
-
-        return ResponseEntity.ok(pagingItems);
+    public Page<ItemData.ItemSimple> getItemsByCategory(@PathVariable String category, CustomPageRequest pageRequest) {
+        return itemService.getItemsByCategory(ItemType.valueOf(category), pageRequest.of());
     }
-
 
 }

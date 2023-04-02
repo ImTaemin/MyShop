@@ -10,6 +10,8 @@ import com.myshop.api.enumeration.OrderStatus;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Component;
@@ -90,9 +92,9 @@ public class OrderRepositoryCustomImpl extends QuerydslRepositorySupport impleme
     }
 
     @Override
-    public List<OrderItemData> selectByCustomer(Customer customer, Pageable pageable) {
+    public Page<OrderItemData> selectByCustomer(Customer customer, Pageable pageable) {
 
-        return jpaQueryFactory
+        List<OrderItemData> customerOrderList = jpaQueryFactory
                 .select(
                         Projections.bean(OrderItemData.class,
                                 qOrderItem.orders().id.as("orderNo"),
@@ -117,12 +119,23 @@ public class OrderRepositoryCustomImpl extends QuerydslRepositorySupport impleme
                 .limit(pageable.getPageSize())
                 .orderBy(qOrders.orderDate.desc())
                 .fetch();
+
+        Long cnt = jpaQueryFactory.select(qOrderItem.count())
+                .from(qOrders)
+                .innerJoin(qOrderItem)
+                .on(qOrders.id.eq(qOrderItem.orders().id))
+                .innerJoin(qItem)
+                .on(qOrderItem.item().id.eq(qItem.id))
+                .where(qOrders.customer().id.eq(customer.getId()))
+                .fetchOne();
+
+        return new PageImpl<>(customerOrderList, pageable, cnt);
     }
 
     @Override
-    public List<OrderItemData> selectByProvider(Provider provider, Pageable pageable, OrderStatus orderStatus) {
+    public Page<OrderItemData> selectByProvider(Provider provider, Pageable pageable, OrderStatus orderStatus) {
 
-        return jpaQueryFactory
+        List<OrderItemData> providerOrderList = jpaQueryFactory
                 .select(
                         Projections.bean(OrderItemData.class,
                                 qOrderItem.cnt,
@@ -149,6 +162,14 @@ public class OrderRepositoryCustomImpl extends QuerydslRepositorySupport impleme
                 .limit(pageable.getPageSize())
                 .orderBy(qOrders.orderDate.desc())
                 .fetch();
+
+        Long cnt = jpaQueryFactory.select(qOrderItem.count())
+                .from(qOrderItem)
+                .where(qItem.provider().id.eq(provider.getId())
+                        .and(qOrderItem.orderStatus.eq(orderStatus)))
+                .fetchOne();
+
+        return new PageImpl<>(providerOrderList, pageable, cnt);
     }
 
     @Override
