@@ -115,14 +115,6 @@
             <artifactId>spring-cloud-gcp-starter-storage</artifactId>
             <version>1.2.8.RELEASE</version>
         </dependency>
-
-        <!-- Maven Plugin -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-maven-plugin</artifactId>
-            <version>3.0.5</version>
-        </dependency>
-
     </dependencies>
 
     <build>
@@ -181,6 +173,12 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${parent.version}</version>
             </plugin>
         </plugins>
     </build>
