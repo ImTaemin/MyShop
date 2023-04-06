@@ -56,12 +56,12 @@ const initialState = {
 const orderForm = handleActions({
     [LOAD_ITEM_SUCCESS]: (state, { payload: {item, quantity} }) => ({
       ...state,
-      items: state.items.concat({
-        id: item.data.id,
+      items: [{
+        id: item.data.data.id,
         data: item.data.data,
         coupon: null,
         quantity: quantity,
-      }),
+      }],
     }),
 
     [LOAD_ITEMS_SUCCESS]: (state, {payload: item}) => ({

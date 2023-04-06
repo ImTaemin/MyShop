@@ -27,7 +27,7 @@ const OrderList = ({orderStatus}) => {
   }, [page, isLast, orderStatus, dispatch]);
 
   useEffect(() => {
-    client.defaults.headers.common['X-AUTH-TOKEN'] = localStorage.getItem("accessToken");
+    client.defaults.headers.common['X-AUTH-TOKEN'] = localStorage.getItem("providerAccessToken");
 
     if (observerRef.current) {
       const observer = new IntersectionObserver(observerCallback);
@@ -75,7 +75,7 @@ const OrderList = ({orderStatus}) => {
           )}
         </tbody>
       </Table>
-      {!error && !loading && !isLast && (
+      {!error && !isLast && (
         <div style={{width: "100%", height: "30px"}} ref={observerRef} />
       )}
       {loading && (

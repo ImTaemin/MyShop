@@ -41,7 +41,6 @@ const CouponRegisterModal = (props) => {
         const response = await client.get(`/coupon/exists/code/${couponCode}`);
         if (response.status === 200) {
           setIsCheckCode(true);
-          console.log(isCheckCode);
           return;
         }
         setIsCheckCode(false);

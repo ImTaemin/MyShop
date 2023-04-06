@@ -10,12 +10,13 @@ import com.myshop.api.enumeration.ItemType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
 
 public interface ItemService {
 
-    ItemData.Item getItem(Customer customer, Long itemId);
+    ItemData.Item getItem(UserDetails userDetails, Long itemId);
     Page<ItemData.ItemSimple> getItemsByBrandName(String brandName, Pageable pageable);
     Page<ItemData.ItemSimple> getItemsByCategory(ItemType itemType, Pageable pageable);
     Page<ItemData.Item> getItemsByProvider(Provider provider, Pageable pageable);

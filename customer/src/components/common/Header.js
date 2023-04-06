@@ -9,7 +9,7 @@ const Header = () => {
   const naviagte = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem("accessToken");
+    const token = localStorage.getItem("customerAccessToken");
     const decoded = decodeToken(token);
     if(decoded && decoded.roles[0].authority === 'CUSTOMER'){
       setUserId(decoded.sub);

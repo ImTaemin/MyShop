@@ -31,8 +31,7 @@ const initialState = {
 };
 
 const items = handleActions({
-    [LIST_ITEM_SUCCESS]: (state, {payload: items}) => (
-      console.log(items),{
+    [LIST_ITEM_SUCCESS]: (state, {payload: items}) => ({
       ...state,
       items: state.items.concat(items.data.content),
       page: items.data.pageable.pageNumber + 1,

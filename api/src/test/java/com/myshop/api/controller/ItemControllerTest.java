@@ -22,6 +22,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -103,7 +104,7 @@ class ItemControllerTest {
     @DisplayName("상품 단건 조회 테스트")
     public void getItemTest() throws Exception {
         //given
-        given(itemService.getItem(any(Customer.class), anyLong())).willReturn(resItem);
+        given(itemService.getItem(any(UserDetails.class), anyLong())).willReturn(resItem);
 
         //when
         mockMvc.perform(
@@ -123,7 +124,7 @@ class ItemControllerTest {
                 .andDo(print());
 
         //then
-        verify(itemService).getItem(any(Customer.class), anyLong());
+        verify(itemService).getItem(any(UserDetails.class), anyLong());
     }
 
     @Test
