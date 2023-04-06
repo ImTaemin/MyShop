@@ -24,6 +24,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
@@ -156,7 +157,7 @@ public class ItemServiceTest {
         given(itemRepository.findById(anyLong())).willReturn(Optional.ofNullable(item));
 
         //when
-        ItemData.Item resItem = itemService.getItem(new Customer(), 1L);
+        ItemData.Item resItem = itemService.getItem(any(UserDetails.class), 1L);
 
         //then
         Assertions.assertNotNull(resItem.getId());

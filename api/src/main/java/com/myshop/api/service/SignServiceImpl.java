@@ -53,6 +53,7 @@ public class SignServiceImpl implements SignService {
         return signUpResponse;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public SignData.SignInResponse signInProvider(String userId, String password) {
         Provider dbProvider = providerRepository.findByUserId(userId).orElseThrow(UserNotFoundException::new);
@@ -60,6 +61,7 @@ public class SignServiceImpl implements SignService {
         return signIn(password, dbProvider);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public SignData.SignInResponse signInCustomer(String userId, String password) {
         Customer dbCustomer = customerRepository.findByUserId(userId).orElseThrow(UserNotFoundException::new);

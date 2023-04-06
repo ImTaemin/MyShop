@@ -1,12 +1,10 @@
 package com.myshop.api.controller;
 
-import com.myshop.api.annotation.CurrentCustomer;
 import com.myshop.api.annotation.CurrentProvider;
 import com.myshop.api.domain.dto.request.CustomPageRequest;
 import com.myshop.api.domain.dto.request.ItemRequest;
 import com.myshop.api.domain.dto.response.BaseResponse;
 import com.myshop.api.domain.dto.response.data.ItemData;
-import com.myshop.api.domain.entity.Customer;
 import com.myshop.api.domain.entity.Provider;
 import com.myshop.api.enumeration.ItemType;
 import com.myshop.api.service.ItemService;
@@ -16,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,14 +29,14 @@ public class ItemController {
 
     private final ItemService itemService;
 
+
     @ApiOperation(value = "상품 상세 조회")
     @GetMapping(value = "/{itemId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<BaseResponse> getItem(@CurrentCustomer Customer customer, @PathVariable Long itemId) {
-        ItemData.Item resItem = itemService.getItem(customer, itemId);
+    public ResponseEntity<BaseResponse> getItem(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Long itemId) {
+        ItemData.Item resItem = itemService.getItem(userDetails, itemId);
 
         return BaseResponse.ok(resItem);
     }
-
 
     @ApiOperation(value = "판매자 상품 목록 조회")
     @GetMapping(value = {"/", ""}, produces = MediaType.APPLICATION_JSON_VALUE)
