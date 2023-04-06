@@ -9,7 +9,7 @@ const OrderedPage = () => {
   const [orders, setOrders] = useState(null);
 
   useEffect(() => {
-    client.defaults.headers.common['X-AUTH-TOKEN'] = localStorage.getItem("accessToken");
+    client.defaults.headers.common['X-AUTH-TOKEN'] = localStorage.getItem("customerAccessToken");
 
     const params = new URLSearchParams(window.location.search);
 

@@ -20,6 +20,7 @@ public class FavoriteServiceImpl implements FavoriteService {
 
     private final FavoriteRepository favoriteRepository;
 
+    @Transactional(readOnly = true)
     @Override
     public List<ItemData.ItemSimple> getFavoriteItemList(Customer customer) {
         return favoriteRepository.getFavoriteItemList(customer);

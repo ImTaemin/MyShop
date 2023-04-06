@@ -1,5 +1,7 @@
 package com.myshop.api.service;
 
+import com.myshop.api.domain.dto.account.CustomerAccount;
+import com.myshop.api.domain.dto.account.ProviderAccount;
 import com.myshop.api.domain.dto.request.CustomPageRequest;
 import com.myshop.api.domain.dto.request.ItemRequest;
 import com.myshop.api.domain.dto.response.data.ItemData;
@@ -16,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,23 +37,25 @@ public class ItemServiceImpl implements ItemService {
     private final FavoriteRepository favoriteRepository;
     private final GCPStorageService gcpStorageService;
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
-    public ItemData.Item getItem(Customer customer, Long itemId) {
+    public ItemData.Item getItem(UserDetails userDetails, Long itemId) {
         Item item = itemRepository.findById(itemId).orElseThrow(ItemNotFoundException::new);
         LOGGER.info("상품 조회 완료");
 
         ItemData.Item resItem = new ItemData.Item(item);
 
-        if(customer != null) {
-            Favorite favorite = favoriteRepository.findFavoriteByCustomerAndItemId(customer, itemId);
+        if(userDetails instanceof CustomerAccount) {
+            Favorite favorite = favoriteRepository.findFavoriteByCustomerAndItemId(((CustomerAccount) userDetails).getCustomer(), itemId);
             resItem.setIsFavorite(favorite != null);
+        } else if(userDetails instanceof ProviderAccount) {
+            return resItem;
         }
 
         return resItem;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public Page<ItemData.ItemSimple> getItemsByBrandName(String brandName, Pageable pageable) {
         Page<ItemData.ItemSimple> simpleItemList = itemRepository.selectByBrandName(brandName, pageable);
@@ -60,6 +65,8 @@ public class ItemServiceImpl implements ItemService {
         return simpleItemList;
     }
 
+    @Transactional(readOnly = true)
+    @Override
     public Page<ItemData.Item> getItemsByProvider(Provider provider, Pageable pageable) {
         Page<ItemData.Item> providerItemList = itemRepository.selectByProvider(provider, pageable);
 
@@ -68,7 +75,7 @@ public class ItemServiceImpl implements ItemService {
         return providerItemList;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public Page<ItemData.ItemSimple> getItemsByCategory(ItemType itemType, Pageable pageable) {
         Page<ItemData.ItemSimple> categoryItemList = itemRepository.selectByItemType(itemType, pageable);
@@ -202,7 +209,7 @@ public class ItemServiceImpl implements ItemService {
         return itemRepository.deleteByProviderItems(provider.getId(), itemIds);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public Boolean checkItemCode(String brandName, String itemCode) {
         // 존재하지 않으면 true 반환 (사용 가능)

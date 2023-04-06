@@ -26,7 +26,7 @@ const OrderedListPage = () => {
   }, [page, isLast, dispatch]);
 
   useEffect(() => {
-    client.defaults.headers.common['X-AUTH-TOKEN'] = localStorage.getItem("accessToken");
+    client.defaults.headers.common['X-AUTH-TOKEN'] = localStorage.getItem("customerAccessToken");
 
     if (observerRef.current) {
       const observer = new IntersectionObserver(observerCallback);

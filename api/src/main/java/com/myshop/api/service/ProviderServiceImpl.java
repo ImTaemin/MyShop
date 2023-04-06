@@ -22,6 +22,7 @@ public class ProviderServiceImpl implements ProviderService{
 
     private final ProviderRepository providerRepository;
 
+    @Transactional(readOnly = true)
     @Override
     public UserDetails getProviderByUserId(String userId) {
         Provider provider =  providerRepository.findByUserId(userId).orElseThrow(UserNotFoundException::new);
@@ -29,6 +30,7 @@ public class ProviderServiceImpl implements ProviderService{
         return new ProviderAccount(provider);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public ProviderData.Provider getInfo(Provider provider) {
         if(provider == null) throw new UserNotFoundException();
@@ -36,13 +38,13 @@ public class ProviderServiceImpl implements ProviderService{
         return new ProviderData.Provider(provider);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public Boolean checkUserId(String userId) {
         return !providerRepository.existsByUserId(userId);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public Boolean checkBrandName(String brandName) {
         return !providerRepository.existsByBrandName(brandName);

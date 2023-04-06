@@ -20,14 +20,14 @@ import MyPage from "../pages/MyPage";
 
 // 액세스 토큰이 이미 있는 상태면 구매자인지 확인 후 이동
 const AuthRoute = ({element, ...rest}) => {
-  const accessToken = localStorage.getItem("accessToken");
-  if(accessToken) {
-    const decoded = decodeToken(accessToken);
+  const customerAccessToken = localStorage.getItem("customerAccessToken");
+  if(customerAccessToken) {
+    const decoded = decodeToken(customerAccessToken);
     const role = decoded.roles[0].authority;
     if(role === 'CUSTOMER'){
       return <Navigate to="/" />;
     } else {
-      localStorage.removeItem("accessToken");
+      localStorage.removeItem("customerAccessToken");
     }
   }
 
@@ -35,9 +35,9 @@ const AuthRoute = ({element, ...rest}) => {
 }
 
 const PrivateRoute = ({ element, ...rest }) => {
-  const accessToken = localStorage.getItem('accessToken');
+  const customerAccessToken = localStorage.getItem('customerAccessToken');
 
-  if (!accessToken) {
+  if (!customerAccessToken) {
     return <Navigate to="/auth" />;
   }
   return element;

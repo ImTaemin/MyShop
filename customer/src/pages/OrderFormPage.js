@@ -68,7 +68,7 @@ const OrderFormPage = () => {
   }, [items, name, phone, roadAddress, postalCode, detailAddress, payMethod]);
 
   useEffect(() => {
-    client.defaults.headers.common['X-AUTH-TOKEN'] = localStorage.getItem("accessToken");
+    client.defaults.headers.common['X-AUTH-TOKEN'] = localStorage.getItem("customerAccessToken");
 
     if(itemId) {
       // 바로 구매

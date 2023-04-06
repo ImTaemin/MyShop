@@ -26,7 +26,7 @@ const ItemInfoPage = () => {
 
   // 상세 조회
   useEffect(() => {
-    client.defaults.headers.common['X-AUTH-TOKEN'] = localStorage.getItem("accessToken");
+    client.defaults.headers.common['X-AUTH-TOKEN'] = localStorage.getItem("customerAccessToken");
 
     client.get(`/item/${itemId}`)
       .then(response => {
@@ -42,7 +42,7 @@ const ItemInfoPage = () => {
     e.preventDefault();
 
     // 로그인 하지 않은 상태
-    const token = localStorage.getItem("accessToken");
+    const token = localStorage.getItem("customerAccessToken");
     if(!token){
       alert("로그인을 해주세요");
       navigate("/auth");
@@ -93,7 +93,7 @@ const ItemInfoPage = () => {
 
   const favoriteBtnHandler = useCallback((e) => {
 
-    if(localStorage.getItem("accessToken") === null) {
+    if(localStorage.getItem("customerAccessToken") === null) {
       alert("로그인을 해주세요");
       navigate("/auth");
       return;

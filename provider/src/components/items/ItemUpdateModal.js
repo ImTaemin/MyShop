@@ -185,7 +185,6 @@ const ItemUpdateModal = (props) => {
               >
                 {imageList.length > 0 && (
                   imageList.map((image, index) => (
-                    console.log(image),
                     <SwiperSlide key={`slide-${index}`}>
                       {(typeof image) === "object" && (
                         <img src={URL.createObjectURL(image)} className="input-image" alt={`slide-${index}`}

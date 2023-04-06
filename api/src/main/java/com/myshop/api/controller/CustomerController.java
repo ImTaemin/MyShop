@@ -19,7 +19,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.security.auth.login.AccountNotFoundException;
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @Api(tags = {"구매자 REST API"})

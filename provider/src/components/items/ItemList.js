@@ -28,7 +28,7 @@ const ItemList = (props) => {
   }, [page, isLast, dispatch]);
 
   useEffect(() => {
-    client.defaults.headers.common['X-AUTH-TOKEN'] = localStorage.getItem("accessToken");
+    client.defaults.headers.common['X-AUTH-TOKEN'] = localStorage.getItem("providerAccessToken");
 
     if (observerRef.current) {
       const observer = new IntersectionObserver(observerCallback);
@@ -45,7 +45,7 @@ const ItemList = (props) => {
   }, []);
 
   // useEffect(() => {
-  //   client.defaults.headers.common['X-AUTH-TOKEN'] = localStorage.getItem("accessToken");
+  //   client.defaults.headers.common['X-AUTH-TOKEN'] = localStorage.getItem("providerAccessToken");
   //   dispatch(listItem(page));
   //
   //   return () => {

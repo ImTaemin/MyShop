@@ -25,4 +25,4 @@ server:
   port: 9090
 
 client:
-  url: http://localhost:3001
+  url: https://localhost:3001

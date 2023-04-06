@@ -21,7 +21,7 @@ public class CouponServiceImpl implements CouponService{
 
     private final CouponRepository couponRepository;
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public List<CouponData> getCouponList(Provider provider) {
         return couponRepository.getCouponList(provider);
@@ -47,7 +47,7 @@ public class CouponServiceImpl implements CouponService{
         }
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public Boolean checkCouponCode(Long providerId, String code) {
         return !couponRepository.existsByCouponCode(providerId, code);
@@ -65,7 +65,7 @@ public class CouponServiceImpl implements CouponService{
         couponRepository.deleteCoupon(provider, code);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public CouponData searchCoupon(Customer customer, String couponCode, Long itemId) {
         return couponRepository.searchCoupon(customer, couponCode, itemId);

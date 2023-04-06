@@ -34,6 +34,6 @@ export const signIn = async ({id, password}) => {
 };
 
 export const signOut = () => {
-  localStorage.removeItem("accessToken");
-  removeCookie("refreshToken");
+  localStorage.removeItem("providerAccessToken");
+  removeCookie("providerRefreshToken");
 }
