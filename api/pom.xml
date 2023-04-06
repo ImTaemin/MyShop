@@ -116,6 +116,13 @@
             <version>1.2.8.RELEASE</version>
         </dependency>
 
+        <!-- Maven Plugin -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+            <version>3.0.5</version>
+        </dependency>
+
     </dependencies>
 
     <build>
