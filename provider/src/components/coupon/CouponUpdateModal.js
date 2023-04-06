@@ -79,8 +79,6 @@ const CouponUpdateModal = (props) => {
 
     try {
       if (response.status === 200) {
-
-        console.log(response);
         handleSuccess("삭제 완료");
         unLoadModal();
         return;

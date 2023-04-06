@@ -1,5 +1,5 @@
 import React, {Suspense} from 'react';
-import ReactDOM from 'react-dom/client';
+import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
@@ -21,17 +21,20 @@ const store = configureStore({
 })
 sagaMiddleware.run(rootSaga);
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <Suspense fallback={<Loader />}>
-    <Provider store={store}>
-      <BrowserRouter>
-        <HelmetProvider>
-          <App />
-        </HelmetProvider>
-      </BrowserRouter>
-    </Provider>
-  </Suspense>
+ReactDOM.render(
+  <React.StrictMode>
+    <Suspense fallback={<Loader />}>
+      <Provider store={store}>
+        <BrowserRouter>
+          <HelmetProvider>
+            <App />
+          </HelmetProvider>
+        </BrowserRouter>
+      </Provider>
+    </Suspense>
+  </React.StrictMode>
+  ,
+  document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function

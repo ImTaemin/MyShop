@@ -39,11 +39,11 @@ const SignIn = ({changeAuthMode, isRegistered, setIsRegistered}) => {
       const response = await signIn({ id, password });
 
       if(response.status === true) {
-        localStorage.setItem("accessToken", response.accessToken);
-        setCookie("refreshToken", response.refreshToken);
+        localStorage.setItem("providerAccessToken", response.accessToken);
+        setCookie("providerRefreshToken", response.refreshToken);
 
         // 전역 헤더 설정
-        client.defaults.headers.common['X-AUTH-TOKEN'] = localStorage.getItem("accessToken");
+        client.defaults.headers.common['X-AUTH-TOKEN'] = localStorage.getItem("providerAccessToken");
 
         navigate('/orders');
       } else if (response.status === false) {
