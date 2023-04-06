@@ -19,6 +19,7 @@ public class CustomerServiceImpl implements CustomerService{
 
     private final CustomerRepository customerRepository;
 
+    @Transactional(readOnly = true)
     @Override
     public UserDetails getCustomerByUserId(String userId) throws UsernameNotFoundException {
         Customer customer = customerRepository.findByUserId(userId).orElseThrow(UserNotFoundException::new);
@@ -33,7 +34,7 @@ public class CustomerServiceImpl implements CustomerService{
         return new CustomerData.Customer(customer);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public Boolean checkUserId(String userId) {
         return !customerRepository.existsByUserId(userId);

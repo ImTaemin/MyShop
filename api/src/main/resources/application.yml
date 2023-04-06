@@ -20,10 +20,16 @@ spring:
       file-size-threshold: 2KB
 
 server:
+#  ssl:
+#    enabled: true
+#    key-alias: myshop-ssl
+#    key-store: classpath:myshop-keystore.p12
+#    key-store-password: myshop123
+#    key-store-type: PKCS12
   servlet:
     encoding:
       charset: UTF-8
 
 api:
   url:
-    baseUrl: https://48d3-210-100-160-190.jp.ngrok.io
+    baseUrl: http://api.myshop.r-e.kr

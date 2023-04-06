@@ -37,7 +37,7 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.selectOrdersByOrderId(customer, orderId);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public Page<OrderItemData> getOrdersByCustomer(Customer customer, Pageable pageable) {
         Page<OrderItemData> orderItemList = orderRepository.selectByCustomer(customer, pageable);
@@ -45,7 +45,7 @@ public class OrderServiceImpl implements OrderService {
         return orderItemList;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public Page<OrderItemData> getOrdersByProvider(Provider provider, Pageable pageable , OrderStatus orderStatus) {
         Page<OrderItemData> orderItemList = orderRepository.selectByProvider(provider, pageable, orderStatus);

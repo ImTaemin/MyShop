@@ -22,11 +22,13 @@ public class CartServiceImpl implements CartService {
 
     private final CartRepository cartRepository;
 
+    @Transactional(readOnly = true)
     @Override
     public List<CartData> getCartItemList(Customer customer) {
         return cartRepository.getCartItemList(customer);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<CartData> getSelectCartItemList(Customer customer, List<Long> itemIdList) {
         return cartRepository.getSelectCartItemList(customer, itemIdList);
