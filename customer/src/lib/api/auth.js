@@ -43,6 +43,6 @@ export const submitAuthInfo = (submitAuthData) => {
 }
 
 export const signOut = () => {
-  localStorage.removeItem("accessToken");
-  removeCookie("refreshToken");
+  localStorage.removeItem("customerAccessToken");
+  removeCookie("customerRefreshToken");
 }

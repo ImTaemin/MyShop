@@ -51,7 +51,7 @@ const orders = handleActions({
 
     [LIST_ORDERS_FAILURE]: (state, {payload: error}) => ({
       ...state,
-      error: error.response.data,
+      error: error.response,
     }),
 
     [CHECK_ORDERS]: (state, {payload: {cnt, orderNo}}) => ({

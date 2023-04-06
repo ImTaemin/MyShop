@@ -16,7 +16,7 @@ const FavoritePage = () => {
   }));
 
   useEffect(() => {
-    client.defaults.headers.common['X-AUTH-TOKEN'] = localStorage.getItem("accessToken");
+    client.defaults.headers.common['X-AUTH-TOKEN'] = localStorage.getItem("customerAccessToken");
 
     dispatch(loadFavoriteItems());
 

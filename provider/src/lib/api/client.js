@@ -23,21 +23,21 @@ client.interceptors.response.use(
       }
       isReissuance = true;
 
-      const preRefreshToken = getCookie("refreshToken");
+      const preProviderRefreshToken = getCookie("providerRefreshToken");
 
-      if(preRefreshToken) {
+      if(preProviderRefreshToken) {
         try{
           const response = await axios.post(`${process.env.REACT_APP_API_MYSHOP}/provider/reissue`, {},{
             headers: {
-              "X-AUTH-TOKEN": preRefreshToken
+              "X-AUTH-TOKEN": preProviderRefreshToken
             }
           });
 
           const {accessToken, refreshToken} = response.data;
-          localStorage.setItem("accessToken", accessToken);
+          localStorage.setItem("providerAccessToken", accessToken);
           client.defaults.headers.common['X-AUTH-TOKEN'] = accessToken;
 
-          setCookie("refreshToken", refreshToken);
+          setCookie("providerRefreshToken", refreshToken);
           error.config.headers["X-AUTH-TOKEN"] = accessToken;
 
           return client(error.config);

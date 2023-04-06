@@ -24,7 +24,7 @@ const item = handleActions(
   {
     [READ_ITEM_SUCCESS]: (state, {payload: item}) => ({
       ...state,
-      item: item.data,
+      item: item.data.data,
     }),
 
     [READ_ITEM_FAILURE]: (state, {payload: error}) => ({

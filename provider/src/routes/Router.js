@@ -10,18 +10,18 @@ const InfoPage =  lazy(() => import("../pages/InfoPage.js"));
 const AuthPage =  lazy(() => import("../pages/AuthPage"));
 
 const PrivateRoute = ({ element, ...rest }) => {
-  const accessToken = localStorage.getItem('accessToken');
+  const providerAccessToken = localStorage.getItem('providerAccessToken');
 
-  if (!accessToken) {
+  if (!providerAccessToken) {
     return <Navigate to="/auth" />;
   }
   return element;
 };
 
 const AuthRoute = ({element, ...rest}) => {
-  const accessToken = localStorage.getItem("accessToken");
+  const providerAccessToken = localStorage.getItem("providerAccessToken");
 
-  if (accessToken) {
+  if (providerAccessToken) {
     return <Navigate to="/orders" />;
   }
 
