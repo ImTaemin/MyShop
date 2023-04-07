@@ -4,7 +4,7 @@ WORKDIR /app
 RUN yarn global add serve@14.2.0
 
 COPY package*.json ./
-RUN yarn install --silent --frozen-lockfile
+RUN yarn install
 
 COPY . /app
 RUN yarn run build
