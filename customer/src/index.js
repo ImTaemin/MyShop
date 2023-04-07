@@ -21,21 +21,19 @@ const store = configureStore({
 })
 sagaMiddleware.run(rootSaga);
 
-ReactDOM.render(
-  <React.StrictMode>
-    <Suspense fallback={<Loader />}>
-      <Provider store={store}>
-        <BrowserRouter>
-          <HelmetProvider>
-            <App />
-          </HelmetProvider>
-        </BrowserRouter>
-      </Provider>
-    </Suspense>
-  </React.StrictMode>
-  ,
-  document.getElementById("root")
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(
+  <Suspense fallback={<Loader />}>
+    <Provider store={store}>
+      <BrowserRouter>
+        <HelmetProvider>
+          <App/>
+        </HelmetProvider>
+      </BrowserRouter>
+    </Provider>
+  </Suspense>
 );
+
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
