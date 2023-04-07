@@ -33,16 +33,16 @@ import java.util.List;
 public class KakaoPayServiceImpl implements KakaoPayService{
 
     @Value("${kakao.url.ready}")
-    String readyUrl;
+    private String readyUrl;
 
     @Value("${kakao.url.approve}")
-    String approveUrl;
+    private String approveUrl;
 
     @Value("${kakao.key.admin}")
-    String adminKey;
+    private String adminKey;
 
     @Value("${api.url.baseUrl}")
-    String apiBaseUrl;
+    private String apiBaseUrl;
 
     private final ItemRepository itemRepository;
     private final CouponRepository couponRepository;
