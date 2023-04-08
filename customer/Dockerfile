@@ -3,7 +3,7 @@ FROM node:16-alpine
 WORKDIR /app
 
 COPY package*.json .
-RUN yarn install -g serve
+CMD ["yarn", "global", "add", "serve"]
 
 COPY . .
 RUN yarn run build
