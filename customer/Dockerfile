@@ -1,10 +1,9 @@
 FROM node:16-alpine
 
 WORKDIR /app
-RUN yarn global add serve@14.2.0
 
 COPY package*.json .
-RUN yarn install
+RUN yarn install -g serve
 
 COPY . .
 RUN yarn run build

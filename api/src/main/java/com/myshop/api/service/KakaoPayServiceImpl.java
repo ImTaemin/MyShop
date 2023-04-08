@@ -32,22 +32,33 @@ import java.util.List;
 @RequiredArgsConstructor
 public class KakaoPayServiceImpl implements KakaoPayService{
 
-    @Value("${kakao.url.ready}")
-    private String readyUrl;
-
-    @Value("${kakao.url.approve}")
-    private String approveUrl;
-
-    @Value("${kakao.key.admin}")
-    private String adminKey;
-
-    @Value("${api.url.baseUrl}")
-    private String apiBaseUrl;
+    private final String readyUrl;
+    private final String approveUrl;
+    private final String adminKey;
+    private final String apiBaseUrl;
 
     private final ItemRepository itemRepository;
     private final CouponRepository couponRepository;
     private final OrderRepository orderRepository;
     private final UsedCouponRepository usedCouponRepository;
+
+    public KakaoPayServiceImpl(@Value("${kakao.url.ready}") String readyUrl,
+                               @Value("${kakao.url.approve}") String approveUrl,
+                               @Value("${kakao.key.admin}") String adminKey,
+                               @Value("${api.url.baseUrl}") String apiBaseUrl,
+                               ItemRepository itemRepository,
+                               CouponRepository couponRepository,
+                               OrderRepository orderRepository,
+                               UsedCouponRepository usedCouponRepository) {
+        this.readyUrl = readyUrl;
+        this.approveUrl = approveUrl;
+        this.adminKey = adminKey;
+        this.apiBaseUrl = apiBaseUrl;
+        this.itemRepository = itemRepository;
+        this.couponRepository = couponRepository;
+        this.orderRepository = orderRepository;
+        this.usedCouponRepository = usedCouponRepository;
+    }
 
     @Override
     public ReadyResponse ready(Customer customer, String orderId, OrderRequest.Order orderRequest) {
