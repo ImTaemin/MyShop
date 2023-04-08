@@ -13,7 +13,6 @@ import com.myshop.api.repository.ItemRepository;
 import com.myshop.api.repository.OrderRepository;
 import com.myshop.api.repository.UsedCouponRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -35,19 +34,19 @@ public class KakaoPayServiceImpl implements KakaoPayService{
 
     /**
      * bean간에 주입을 모두 마친 후 @Value 작업 시작하기 때문에 yml 값을 못 읽는 상황이 벌어진다.
-     * Environment env를 사용하는 쪽에서 생성자로 보낼 수 있지만, 나는 static 사용
+     * Environment env를 사용하는 쪽에서 생성자로 보낼 수 있다.
      */
     @Value("${kakao.url.ready}")
-    private static String readyUrl;
+    private static String readyUrl = "https://kapi.kakao.com/v1/payment/ready";
 
     @Value("${kakao.url.approve}")
-    private String approveUrl;
+    private String approveUrl = "https://kapi.kakao.com/v1/payment/approve";
 
     @Value("${kakao.key.admin}")
-    private String adminKey;
+    private String adminKey = "f81ae7787c4fba8226b7798b88502c72";
 
     @Value("${api.url.baseUrl}")
-    private String apiBaseUrl;
+    private String apiBaseUrl = "http://api.myshop.r-e.kr";
 
     private final ItemRepository itemRepository;
     private final CouponRepository couponRepository;
