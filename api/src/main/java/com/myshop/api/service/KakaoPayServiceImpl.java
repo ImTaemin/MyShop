@@ -13,9 +13,8 @@ import com.myshop.api.repository.ItemRepository;
 import com.myshop.api.repository.OrderRepository;
 import com.myshop.api.repository.UsedCouponRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -24,7 +23,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import javax.annotation.PostConstruct;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -35,25 +33,30 @@ import java.util.List;
 @RequiredArgsConstructor
 public class KakaoPayServiceImpl implements KakaoPayService{
 
-    private String readyUrl;
+    /**
+     * bean간에 주입을 모두 마친 후 @Value 작업 시작하기 때문에 yml 값을 못 읽는 상황이 벌어진다.
+     * Environment env를 사용하는 쪽에서 생성자로 보낼 수 있지만, 나는 static 사용
+     */
+    @Value("${kakao.url.ready}")
+    @Setter
+    private static String readyUrl;
+
+    @Value("${kakao.url.approve}")
+    @Setter
     private String approveUrl;
+
+    @Value("${kakao.url.admin}")
+    @Setter
     private String adminKey;
+
+    @Value("${kakao.url.baseUrl}")
+    @Setter
     private String apiBaseUrl;
 
     private final ItemRepository itemRepository;
     private final CouponRepository couponRepository;
     private final OrderRepository orderRepository;
     private final UsedCouponRepository usedCouponRepository;
-
-    private final Environment environment;
-
-    @PostConstruct
-    private void init() {
-        readyUrl = environment.getProperty("kakao.url.ready");
-        approveUrl = environment.getProperty("kakao.url.approve");
-        adminKey = environment.getProperty("kakao.key.admin");
-        apiBaseUrl = environment.getProperty("api.url.baseUrl");
-    }
 
     @Override
     public ReadyResponse ready(Customer customer, String orderId, OrderRequest.Order orderRequest) {
