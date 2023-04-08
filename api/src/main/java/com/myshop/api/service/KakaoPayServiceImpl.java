@@ -37,30 +37,27 @@ public class KakaoPayServiceImpl implements KakaoPayService{
      * bean간에 주입을 모두 마친 후 @Value 작업 시작하기 때문에 yml 값을 못 읽는 상황이 벌어진다.
      * Environment env를 사용하는 쪽에서 생성자로 보낼 수 있지만, 나는 static 사용
      */
-    @Value("${kakao.url.ready}")
     private static String readyUrl;
-
-    @Value("${kakao.url.approve}")
     private String approveUrl;
-
-    @Value("${kakao.url.admin}")
     private String adminKey;
-
-    @Value("${kakao.url.baseUrl}")
     private String apiBaseUrl;
 
+    @Value("${kakao.url.ready}")
     public static void setReadyUrl(String readyUrl) {
         KakaoPayServiceImpl.readyUrl = readyUrl;
     }
 
+    @Value("${kakao.url.approve}")
     public void setApproveUrl(String approveUrl) {
         this.approveUrl = approveUrl;
     }
 
+    @Value("${kakao.url.admin}")
     public void setAdminKey(String adminKey) {
         this.adminKey = adminKey;
     }
 
+    @Value("${kakao.url.baseUrl}")
     public void setApiBaseUrl(String apiBaseUrl) {
         this.apiBaseUrl = apiBaseUrl;
     }
