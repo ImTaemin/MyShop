@@ -2,15 +2,15 @@ FROM node:16-alpine
 
 WORKDIR /app
 
-COPY package*.json yarn.lock ./
+COPY package*.json ./
 
-RUN yarn install --modules-folder /node_modules
+RUN npm install
 
 COPY . .
 
-RUN yarn run build
+RUN npm run build
 
-CMD ["yarn", "global", "add", "serve"]
+CMD ["npm", "install", "-g", "serve"]
 
 CMD ["serve", "-s", "build"]
 
