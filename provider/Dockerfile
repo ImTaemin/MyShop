@@ -1,11 +1,17 @@
-FROM node:16-alpine
+FROM nginx
 
 WORKDIR /app
-COPY package.json .
-COPY yarn.lock .
-RUN yarn install --frozen-lockfile
-COPY . .
-RUN yarn build
 
-CMD ["serve", "-s", "build"]
-EXPOSE 3000
+# /app/build 폴더 생성
+RUN mkdir ./build
+
+# host의 빌드된 폴더를 /app/build에 복사
+ADD ./build ./build
+
+RUN rm /etc/nginx/conf.d/default.conf
+
+# host의 nginx 설정 파일 복사
+COPY ./provider.conf /etc/nginx/conf.d
+
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
