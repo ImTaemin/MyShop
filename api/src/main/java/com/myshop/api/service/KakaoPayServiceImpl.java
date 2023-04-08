@@ -37,7 +37,7 @@ public class KakaoPayServiceImpl implements KakaoPayService{
      * Environment env를 사용하는 쪽에서 생성자로 보낼 수 있다.
      */
 //    @Value("${kakao.url.ready}")
-    private static String readyUrl = "https://kapi.kakao.com/v1/payment/ready";
+    private String readyUrl = "https://kapi.kakao.com/v1/payment/ready";
 
 //    @Value("${kakao.url.approve}")
     private String approveUrl = "https://kapi.kakao.com/v1/payment/approve";
