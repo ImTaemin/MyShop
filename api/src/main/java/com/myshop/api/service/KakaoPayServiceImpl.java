@@ -38,28 +38,28 @@ public class KakaoPayServiceImpl implements KakaoPayService{
      * Environment env를 사용하는 쪽에서 생성자로 보낼 수 있지만, 나는 static 사용
      */
     private static String readyUrl;
-    private String approveUrl;
-    private String adminKey;
-    private String apiBaseUrl;
+    private static String approveUrl;
+    private static String adminKey;
+    private static String apiBaseUrl;
 
     @Value("${kakao.url.ready}")
-    public static void setReadyUrl(String readyUrl) {
+    public void setReadyUrl(String readyUrl) {
         KakaoPayServiceImpl.readyUrl = readyUrl;
     }
 
     @Value("${kakao.url.approve}")
     public void setApproveUrl(String approveUrl) {
-        this.approveUrl = approveUrl;
+        KakaoPayServiceImpl.approveUrl = approveUrl;
     }
 
     @Value("${kakao.url.admin}")
     public void setAdminKey(String adminKey) {
-        this.adminKey = adminKey;
+        KakaoPayServiceImpl.adminKey = adminKey;
     }
 
     @Value("${kakao.url.baseUrl}")
     public void setApiBaseUrl(String apiBaseUrl) {
-        this.apiBaseUrl = apiBaseUrl;
+        KakaoPayServiceImpl.apiBaseUrl = apiBaseUrl;
     }
 
     private final ItemRepository itemRepository;
