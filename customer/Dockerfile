@@ -11,7 +11,7 @@ ADD ./build ./build
 RUN rm /etc/nginx/conf.d/default.conf
 
 # host의 nginx 설정 파일 복사
-COPY ./customer.conf /etc/nginx/conf.d
+COPY ./customer.conf /etc/conf.d
 
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
