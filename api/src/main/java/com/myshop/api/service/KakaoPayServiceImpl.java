@@ -13,7 +13,9 @@ import com.myshop.api.repository.ItemRepository;
 import com.myshop.api.repository.OrderRepository;
 import com.myshop.api.repository.UsedCouponRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -22,6 +24,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.PostConstruct;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -32,32 +35,24 @@ import java.util.List;
 @RequiredArgsConstructor
 public class KakaoPayServiceImpl implements KakaoPayService{
 
-    private final String readyUrl;
-    private final String approveUrl;
-    private final String adminKey;
-    private final String apiBaseUrl;
+    private String readyUrl;
+    private String approveUrl;
+    private String adminKey;
+    private String apiBaseUrl;
 
     private final ItemRepository itemRepository;
     private final CouponRepository couponRepository;
     private final OrderRepository orderRepository;
     private final UsedCouponRepository usedCouponRepository;
 
-    public KakaoPayServiceImpl(@Value("${kakao.url.ready}") String readyUrl,
-                               @Value("${kakao.url.approve}") String approveUrl,
-                               @Value("${kakao.key.admin}") String adminKey,
-                               @Value("${api.url.baseUrl}") String apiBaseUrl,
-                               ItemRepository itemRepository,
-                               CouponRepository couponRepository,
-                               OrderRepository orderRepository,
-                               UsedCouponRepository usedCouponRepository) {
-        this.readyUrl = readyUrl;
-        this.approveUrl = approveUrl;
-        this.adminKey = adminKey;
-        this.apiBaseUrl = apiBaseUrl;
-        this.itemRepository = itemRepository;
-        this.couponRepository = couponRepository;
-        this.orderRepository = orderRepository;
-        this.usedCouponRepository = usedCouponRepository;
+    private final Environment environment;
+
+    @PostConstruct
+    private void init() {
+        readyUrl = environment.getProperty("kakao.url.ready");
+        approveUrl = environment.getProperty("kakao.url.approve");
+        adminKey = environment.getProperty("kakao.key.admin");
+        apiBaseUrl = environment.getProperty("api.url.baseUrl");
     }
 
     @Override
