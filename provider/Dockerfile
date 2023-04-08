@@ -1,20 +1,11 @@
 FROM node:16-alpine
 
 WORKDIR /app
-
-COPY package*.json ./
-
-RUN npm config set cache /node_cache \
-    && npm install --cache /node_cache \
-    && rm -rf /node_cache/* \
-    && chown -R node:node /app /node_cache
-
+COPY package.json .
+COPY yarn.lock .
+RUN yarn install --frozen-lockfile
 COPY . .
-
-RUN npm run build
-
-CMD ["npm", "install", "-g", "serve"]
+RUN yarn build
 
 CMD ["serve", "-s", "build"]
-
 EXPOSE 3000
