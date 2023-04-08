@@ -10,7 +10,7 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
  * PropertySourcesPlaceholderConfigurer를 사용하면 런타임 시 속성 값을 확인할 수 있다.
  */
 @Configuration
-@PropertySource("classpath:/application-pay.yml")
+@PropertySource("classpath:/application.yml")
 public class AppConfig {
 
     @Bean
