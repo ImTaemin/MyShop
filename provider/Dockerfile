@@ -4,7 +4,10 @@ WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm install
+RUN npm config set cache /node_cache \
+    && npm install --cache /node_cache \
+    && rm -rf /node_cache/* \
+    && chown -R node:node /app /node_cache
 
 COPY . .
 
@@ -15,5 +18,3 @@ CMD ["npm", "install", "-g", "serve"]
 CMD ["serve", "-s", "build"]
 
 EXPOSE 3000
-
-VOLUME /node_modules
