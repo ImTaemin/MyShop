@@ -1,0 +1,7 @@
+kakao:
+  url:
+    ready: https://kapi.kakao.com/v1/payment/ready
+    approve: https://kapi.kakao.com/v1/payment/approve
+
+  key:
+    admin: ENC(W8CenJ607XdtfrnFFs2tcT6cS711pT6dPWmrg+vqfOir7r+gURGMmJo2p8ZjHWiQ)
