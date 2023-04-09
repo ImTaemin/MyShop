@@ -47,12 +47,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new CorsFilter(corsConfigurationSource());
     }
 
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring()
-                .antMatchers(Constant.permitAllArray)
-                .antMatchers(Constant.ignoreArray);
-    }
+    /**
+     * 권장되지 않는 방법이라고 해서 configure 메서드에 추가함.
+     */
+//    @Override
+//    public void configure(WebSecurity web) throws Exception {
+//        web.ignoring()
+//                .antMatchers(Constant.permitAllArray)
+//                .antMatchers(Constant.ignoreArray);
+//    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -62,6 +65,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .authorizeRequests()
+                .antMatchers(Constant.permitAllArray).permitAll()
+                .antMatchers(Constant.ignoreArray).permitAll()
                 .antMatchers(HttpMethod.POST, "/item/**").hasAuthority(UserRole.PROVIDER.toString())
                 .antMatchers(HttpMethod.GET, "/provider/**").hasAuthority(UserRole.PROVIDER.toString())
                 .antMatchers(HttpMethod.GET, "/customer/**").hasAuthority(UserRole.CUSTOMER.toString())

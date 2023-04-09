@@ -22,7 +22,7 @@ spring:
       password: ENC(Tl6cdxnStbOP5c0z+9LEYA==)
     slave:
       driver-class-name: com.mysql.cj.jdbc.Driver
-      jdbc-url: jdbc:mysql://provider-slave:3307/myshop?serverTimezone=UTC&characterEncoding=UTF-8
+      jdbc-url: jdbc:mysql://provider-slave:3306/myshop?serverTimezone=UTC&characterEncoding=UTF-8
       username: ENC(QG1Q/cDFhSbeex2+X44myw==)
       password: ENC(yQQhpb/2qYYBVm54ZEbWyA==)
 
