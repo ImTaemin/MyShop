@@ -236,5 +236,3 @@ logs
 **/*.backup.*
 **/*.back.*
 *.iml
-api/src/main/resources/myshop-373122-5a778e754845.json
-api/src/main/resources/application-pay.yml
