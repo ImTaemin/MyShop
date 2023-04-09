@@ -1,0 +1,34 @@
+@font-face {
+  font-family: "LINE_Seed_Sans-Bd";
+  src: url(./assets/fonts/LINE_Seed_Sans_KR/LINESeedKR-Bd.ttf);
+}
+
+@font-face {
+  font-family: "LINE_Seed_Sans-Rg";
+  src: url(./assets/fonts/LINE_Seed_Sans_KR/LINESeedKR-Rg.ttf);
+}
+
+@font-face {
+  font-family: "LINE_Seed_Sans-Th";
+  src: url(./assets/fonts/LINE_Seed_Sans_KR/LINESeedKR-Th.ttf);
+}
+
+:root {
+  --font-LINE_Seed_Sans-Bd: "LINE_Seed_Sans-Bd";
+  --font-LINE_Seed_Sans-Rg: "LINE_Seed_Sans-Rg";
+  --font-LINE_Seed_Sans-Th: "LINE_Seed_Sans-Th";
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}

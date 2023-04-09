@@ -1,0 +1,35 @@
+spring:
+  profiles:
+    active: prod, dev
+    include: jwt, gcp, pay
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+
+  cloud:
+    gcp:
+      credentials:
+        location: classpath:myshop-373122-5a778e754845.json
+
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 100MB
+      file-size-threshold: 2KB
+
+server:
+#  ssl:
+#    enabled: true
+#    key-alias: myshop-ssl
+#    key-store: classpath:myshop-keystore.p12
+#    key-store-password: myshop123
+#    key-store-type: PKCS12
+  servlet:
+    encoding:
+      charset: UTF-8
+
+api:
+  url:
+    baseUrl: http://api.myshop.r-e.kr

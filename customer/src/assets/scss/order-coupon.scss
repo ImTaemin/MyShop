@@ -1,0 +1,60 @@
+@import "common";
+
+.discount-info-container {
+  border: $custom-border;
+  display: flex;
+  flex-direction: column;
+
+  & + & {
+    border-bottom: $custom-border;
+  }
+}
+
+.discount-info-wrap {
+  flex-grow: 1;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+
+  & + & {
+    border-top: $custom-border;
+  }
+
+  p {
+    font-size: 14px;
+    font-weight: bold;
+    display: inline-flex;
+    width: 140px;
+    margin: 0;
+  }
+
+
+  .discount-item {
+    margin-right: 10px;
+  }
+
+  .address-detail{
+    flex-grow: 1;
+  }
+}
+
+.no-wrap{
+  white-space: nowrap;
+}
+
+.btn-custom-border {
+  padding: 6px 10px;
+  background: white;
+  font-weight: bold;
+  border: $custom-border;
+}
+
+.line-through{
+  text-decoration: line-through;
+}
+
+.search-result{
+  flex-grow: 1;
+  color: red;
+}

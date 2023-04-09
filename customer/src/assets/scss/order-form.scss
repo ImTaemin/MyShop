@@ -1,0 +1,37 @@
+@import "common";
+
+.order-form-container, .cart-item-container {
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+
+  p.order-title {
+    margin: 0;
+    font-size: 24px;
+  }
+
+  h5.title {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .order-form-wrap + .order-form-wrap {
+    margin-top: 50px;
+  }
+
+  .btn-order {
+    color: white;
+    background: #0078ff;
+    border: none;
+    width: 200px;
+    height: 50px;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 10px auto;
+  }
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}

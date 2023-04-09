@@ -1,0 +1,65 @@
+
+@mixin badge-div {
+  .badge-box {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+
+    :last-child {
+      margin-top: 3px;
+      width: 60%;
+      &::after{
+        content: "%";
+      }
+    }
+  }
+}
+
+.coupon-container {
+  display: flex;
+  flex-wrap: wrap;
+
+  :hover {
+    background: #eeeeee;
+    cursor: pointer;
+  }
+
+  .list-group-item {
+    border-left-width: 1px !important;
+  }
+
+  .coupon-item {
+    width: 50%;
+
+    .content-box {
+      margin-right: 10px;
+    }
+
+    @include badge-div
+  }
+
+  @media (min-width: 768px) {
+    .coupon-item {
+      width: 33.33%; // 4 items in a row on smaller screens
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .coupon-item {
+      width: 25%; // 4 items in a row on smaller screens
+    }
+  }
+
+}
+
+.coupon-preview {
+  border-bottom-left-radius: 0.375rem;
+  padding: 0 20% 0 20%;
+
+  @include badge-div;
+
+}
+
+.coupon-form-container {
+  padding: 0 10% 0 10%;
+}

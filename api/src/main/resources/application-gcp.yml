@@ -1,0 +1,11 @@
+gcp:
+  config:
+    file: classpath:myshop-373122-5a778e754845.json
+  project:
+    name: myshop-373122
+  bucket:
+    name: taemin-myshop
+  dir:
+    image:
+      main: image/main
+      detail: image/detail

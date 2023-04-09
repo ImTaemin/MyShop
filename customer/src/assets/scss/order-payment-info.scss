@@ -1,0 +1,79 @@
+@import "common";
+
+.payment-info-container {
+  border: $custom-border;
+  display: flex;
+  flex-direction: column;
+
+  & + & {
+    border-bottom: $custom-border;
+  }
+}
+
+.payment-info-wrap {
+  flex-grow: 1;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+
+  & + & {
+    border-top: $custom-border;
+  }
+
+  p {
+    font-size: 14px;
+    font-weight: bold;
+    display: inline-flex;
+    width: 140px;
+    margin: 0;
+  }
+
+
+  .payment-item {
+    color: #777;
+    margin-right: 10px;
+
+    ul.cell_detail-list{
+      margin-bottom: 0;
+      padding: 10px 0 0 10px;
+      font-size: 14px;
+      list-style: none;
+    }
+  }
+}
+
+.payment-area-wrap {
+
+  .box-choice {
+    display: inline-block;
+    width: 150px;
+    padding: 6px 0;
+    margin: 0 0 15px 11px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: normal;
+    background: #fff;
+    border: 1px solid #d1d1d1;
+    border-radius: 4px;
+    color: #777;
+    box-sizing: border-box;
+    line-height: 21px;
+  }
+
+  input {
+    display: none;
+  }
+
+  input:checked + label {
+    background: #fff;
+    color: #0078ff;
+    border: 1px solid #0078ff;
+  }
+
+  input:disabled + label {
+    color: #B3B3B3;
+    background-color: #F3F3F3;
+    border-color: #E5E5E5;
+  }
+}

@@ -1,0 +1,47 @@
+$black: #1E2A35;
+
+#header {
+  font-size: 1em;
+  justify-content: space-between;
+  display: flex;
+  align-items: center;
+  height: 10vh;
+  min-height: 55px;
+
+  .nav-item-wrapper {
+    display: flex;
+    padding-left: 1em;
+
+    .nav-item > a {
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 0.2em;
+      color: #39363B;
+      font-weight: bold;
+
+      &.active {
+        color: #214ECC;
+      }
+
+      &:hover {
+        background: #EEF5F9;
+      }
+
+      .icon {
+        font-size: 1.5em;
+      }
+
+      .header-title {
+        margin-top: 5px;
+      }
+    }
+  }
+
+  .nav-info {
+    display: flex;
+    padding-right: 1em;
+    cursor: pointer;
+  }
+}
