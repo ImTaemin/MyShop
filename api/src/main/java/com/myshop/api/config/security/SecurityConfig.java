@@ -48,14 +48,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     /**
-     * 권장되지 않는 방법이라고 해서 configure 메서드에 추가함.
+     * 1. 권장되지 않는 방법이라고 해서 configure 메서드에 추가함.
+     * 2. configure 메서드에 추가하면 인식을 못함 다시 되돌림
      */
-//    @Override
-//    public void configure(WebSecurity web) throws Exception {
-//        web.ignoring()
-//                .antMatchers(Constant.permitAllArray)
-//                .antMatchers(Constant.ignoreArray);
-//    }
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring()
+                .antMatchers(Constant.permitAllArray)
+                .antMatchers(Constant.ignoreArray);
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -65,8 +66,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .authorizeRequests()
-                .antMatchers(Constant.permitAllArray).permitAll()
-                .antMatchers(Constant.ignoreArray).permitAll()
+//                .antMatchers(Constant.permitAllArray).permitAll()
+//                .antMatchers(Constant.ignoreArray).permitAll()
                 .antMatchers(HttpMethod.POST, "/item/**").hasAuthority(UserRole.PROVIDER.toString())
                 .antMatchers(HttpMethod.GET, "/provider/**").hasAuthority(UserRole.PROVIDER.toString())
                 .antMatchers(HttpMethod.GET, "/customer/**").hasAuthority(UserRole.CUSTOMER.toString())
