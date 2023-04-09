@@ -120,6 +120,7 @@ const ItemRegisterModal = (props) => {
       if (response.status === 200) {
         handleSuccess();
         unLoadModal();
+        window.location.reload();
         return;
       }
       handleError(response.data.msg);
