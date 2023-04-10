@@ -34,4 +34,4 @@ jasypt:
     iv-generator-classname: org.jasypt.iv.NoIvGenerator
 
 client:
-  url: http://myshop.r-e.kr
+  url: https://myshop.r-e.kr
