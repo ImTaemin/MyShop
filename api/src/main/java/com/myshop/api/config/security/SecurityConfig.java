@@ -34,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowedOrigins(List.of("https://provider.myshop.r-e.kr", "https://myshop.r-e.kr", "http://localhost:3000", "http://localhost:3001"));
         corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        corsConfiguration.setAllowedHeaders(List.of("X-AUTH-TOKEN", "Content-Type", "Access-Control-Allow-Headers"));
+        corsConfiguration.setAllowedHeaders(List.of("X-AUTH-TOKEN", "Content-Type", "Access-Control-Allow-Headers", "Access-Control-Allow-Origin"));
         corsConfiguration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -47,6 +47,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new CorsFilter(corsConfigurationSource());
     }
 
+    /**
+     * 1. 권장되지 않는 방법이라고 해서 configure 메서드에 추가함.
+     * 2. configure 메서드에 추가하면 인식을 못함 다시 되돌림
+     */
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring()
@@ -62,6 +66,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .authorizeRequests()
+//                .antMatchers(Constant.permitAllArray).permitAll()
+//                .antMatchers(Constant.ignoreArray).permitAll()
                 .antMatchers(HttpMethod.POST, "/item/**").hasAuthority(UserRole.PROVIDER.toString())
                 .antMatchers(HttpMethod.GET, "/provider/**").hasAuthority(UserRole.PROVIDER.toString())
                 .antMatchers(HttpMethod.GET, "/customer/**").hasAuthority(UserRole.CUSTOMER.toString())

@@ -32,17 +32,21 @@ import java.util.List;
 @RequiredArgsConstructor
 public class KakaoPayServiceImpl implements KakaoPayService{
 
+    /**
+     * bean간에 주입을 모두 마친 후 @Value 작업 시작하기 때문에 yml 값을 못 읽는 상황이 벌어진다.
+     * Environment env를 사용하는 쪽에서 생성자로 보낼 수 있다.
+     */
     @Value("${kakao.url.ready}")
-    String readyUrl;
+    private String readyUrl;
 
     @Value("${kakao.url.approve}")
-    String approveUrl;
+    private String approveUrl;
 
     @Value("${kakao.key.admin}")
-    String adminKey;
+    private String adminKey;
 
     @Value("${api.url.baseUrl}")
-    String apiBaseUrl;
+    private String apiBaseUrl;
 
     private final ItemRepository itemRepository;
     private final CouponRepository couponRepository;

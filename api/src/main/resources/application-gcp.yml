@@ -1,6 +1,6 @@
 gcp:
   config:
-    file: myshop-373122-5a778e754845.json
+    file: classpath:myshop-373122-5a778e754845.json
   project:
     name: myshop-373122
   bucket:
