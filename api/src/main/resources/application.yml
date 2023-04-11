@@ -29,7 +29,3 @@ server:
   servlet:
     encoding:
       charset: UTF-8
-
-api:
-  url:
-    baseUrl: http://api.myshop.r-e.kr

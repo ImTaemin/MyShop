@@ -35,3 +35,7 @@ jasypt:
 
 client:
   url: https://myshop.r-e.kr
+
+api:
+  url:
+    baseUrl: https://api.myshop.r-e.kr
