@@ -51,7 +51,6 @@ public class Coupon {
     private List<UsedCoupon> usedCoupons = new ArrayList<>();
 
     @Builder
-
     public Coupon(Long id, Provider provider, String code, String content, LocalDate expirationDate, float discount, LocalDateTime createDate, List<UsedCoupon> usedCoupons) {
         this.id = id;
         this.provider = provider;
