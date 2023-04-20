@@ -21,7 +21,7 @@ export function* favoriteItemsSaga() {
 
 // init
 const initialState = {
-  favoriteItems: [],
+  favoriteItems: null,
   error: null,
 }
 

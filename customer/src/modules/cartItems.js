@@ -21,7 +21,7 @@ export function* cartItemsSaga() {
 
 // init
 const initialState = {
-  cartItems: [],
+  cartItems: null,
   error: null,
 }
 
