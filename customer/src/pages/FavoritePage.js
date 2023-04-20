@@ -27,7 +27,7 @@ const FavoritePage = () => {
 
   return (
     <>
-      {favoriteItems && favoriteItems.length === 0 && (
+      {favoriteItems?.length === 0 && (
         <div className="text-xxl-center py-3 fs-4">좋아요를 표시한 상품이 없습니다.</div>
       )}
       {error && (
@@ -36,7 +36,7 @@ const FavoritePage = () => {
       {loading && (
         <Loader />
       )}
-      {!loading && favoriteItems && (
+      {favoriteItems?.length > 0 && (
         <div className="item-list">
           {favoriteItems.map((item, index) => (
             <Item item={item} key={index} />
