@@ -29,7 +29,7 @@ const CartPage = () => {
 
   return (
     <>
-      {cartItems?.length === 0 && (
+      {cartItems.length === 0 && (
         <div className="text-xxl-center py-3 fs-4">장바구니에 추가한 상품이 없습니다.</div>
       )}
       {error && (
@@ -38,7 +38,7 @@ const CartPage = () => {
       {loading && (
         <Loader />
       )}
-      {cartItems?.length > 0 && (
+      {cartItems.length > 0 && (
         <>
           <div className="cart-item-container">
             <CartItems />
