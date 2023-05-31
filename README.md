@@ -6,7 +6,7 @@
 
 
 ## 🖼️ Architecture
-![myshop-architecture](myshop-architecture.svg)
+![myshop-architecture](myshop-architecture.png)
 - 젠킨스로 CI, CD 구성
 - Nginx로 API 서버 로드밸런싱, 멀티 도메인 사용
 - 도커로 각 애플리케이션 이미지화
